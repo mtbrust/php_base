@@ -30,18 +30,42 @@ class Core
    *
    * @var [array]
    */
-  private static $url_final;
+  private static $urlFinal;
 
 
   /**
-   * Retorna $url_final
+   * Retorna $urlFinal
    *
    * @return array
    */
   public static function getUrlFinal()
   {
-    return Self::$url_final;
+    return Self::$urlFinal;
   }
+
+
+
+  /**
+   * Instância do controller da página atual.
+   *
+   * @var Controller
+   */
+  private $controller;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   /**
@@ -58,8 +82,11 @@ class Core
     // Trabalha a URL amigável e obtém a view e os parâmetros.
     $this->checkUrl();
 
-    // Carrega dependências específicas para página atual.
-    $this->openDependencesPage();
+    // Carrega controller da página atual.
+    $this->openControllerPage();
+
+    // Executa controle da página atual.
+    $this->controller->start();
 
     // Desenha a página para usuário.
     $this->renderPage();
@@ -89,7 +116,7 @@ class Core
 
 
   /**
-   * Trabalha a URL amigável e parâmetros. Grava em Self::$url_final.
+   * Trabalha a URL amigável e parâmetros. Grava em Self::$urlFinal.
    *
    * @return void
    */
@@ -100,11 +127,11 @@ class Core
 
       $url = explode('/', $_GET['url']);
       // Busca a página e retorna os attr (atributos)
-      Self::$url_final = $this->openFile(count($url), $url);
+      Self::$urlFinal = $this->openFile(count($url), $url);
 
       // Tirar esta parte??????
-      if (Self::$url_final['path']) {
-        require_once Self::$url_final['path'];
+      if (Self::$urlFinal['path']) {
+        require_once Self::$urlFinal['path'];
       } else {
         require_once 'v/pages/404.php';
       }
@@ -116,57 +143,32 @@ class Core
 
 
   /**
-   * Carrega dependências específicas para página atual.
+   * Carrega controller página atual.
    *
    * @return void
    */
-  private function openDependencesPage()
+  private function openControllerPage()
   {
 
     /**
      * Carrega controller da página atual ou controller default.
      */
-    if (isset(Self::$url_final['file']) && isset(Self::$url_final['dir'])) {
-      $controller_name = Self::$url_final['file'] . 'Controller';   // Controller da página atual.
-      $path = Self::$url_final['dir'];                              // Diretório página.
+    if (isset(Self::$urlFinal['file']) && isset(Self::$urlFinal['dir'])) {
+      $controller_name = Self::$urlFinal['file'] . 'Controller';   // Controller da página atual.
+      $path = Self::$urlFinal['dir'];                              // Diretório página.
       $path[0] = 'c';                                               // Diretório controller.
-      $path .= $path . $controller_name . '.php';                   // Caminho completo controller.
+      $path .= $controller_name . '.php';                           // Caminho completo controller.
       if (file_exists($path))
         require_once $path;                                         // Carrega controller se existir.
-      else
-        require_once 'c/pages/defaultController.php';               // Carrega controller default.
-
-      // Instancia classe do controller
-      $refl = new ReflectionClass($controller_name);
-      $controller = $refl->newInstanceArgs();
-
-      if ($_POST) {
-        call_user_func(array($controller, '_post'));
+      else{
+        $controller_name = 'DefaultController';                     // Preenche com controller default.
+        $path = 'c/pages/defaultController.php';                    // Preenche com path default.
+        require_once $path;                                         // Carrega controller default.
       }
 
-      $attr = Self::$url_final['attr'];
-      if ($attr) {
-        switch ($attr[0]) {
-          case 'post':
-            call_user_func(array($controller, 'post'));
-            break;
-          case 'put':
-            call_user_func(array($controller, 'put'));
-            break;
-          case 'get':
-            call_user_func(array($controller, 'get'));
-            break;
-          case 'delete':
-            call_user_func(array($controller, 'delete'));
-            break;
-          default:
-            call_user_func(array($controller, 'index'));
-            break;
-        }
-      } else
-        call_user_func(array($controller, 'index'));
-    } else {
-      require_once 'c/pages/defaultController.php';                 // Carrega controller default.
+      // Instancia classe do controller
+      $refl = new ReflectionClass(ucfirst($controller_name));
+      $this->controller = $refl->newInstanceArgs();
     }
   }
 
@@ -205,22 +207,22 @@ class Core
   private function openFile($length, $url)
   {
     // Grava url e atributos.
-    $url_final['path'] = '';
-    $url_final['file'] = '';
-    $url_final['url'] = '';
-    $url_final['attr'] = array();
+    $urlFinal['path'] = '';
+    $urlFinal['file'] = '';
+    $urlFinal['url'] = '';
+    $urlFinal['attr'] = array();
 
     // Finaliza na primeira posição da url.
     if ($length > 0) {
-      $url_final =  $this->openFile((int)$length - 1, $url);
-      $url_final['url'] .= $url[(int)$length - 1];
+      $urlFinal =  $this->openFile((int)$length - 1, $url);
+      $urlFinal['url'] .= $url[(int)$length - 1];
 
       // Espera proximo parâmetro.
       $proxima = true;
 
       // Verifica próximo parametro é uma página.
       if (count($url) != $length) {
-        $dir = 'v/pages/' . $url_final['url'] . '/';
+        $dir = 'v/pages/' . $urlFinal['url'] . '/';
         $file = $url[$length];
         $path = $dir . $file . '.php';
         $proxima = !file_exists($path);
@@ -228,27 +230,27 @@ class Core
 
       // Monta arquivo atual.
       $dir = 'v/pages/';
-      $file = $url_final['url'];
+      $file = $urlFinal['url'];
       $path = $dir . $file . '.php';
 
       // Verifica se página atual existe e se não existe outra no próximo parametro.
       if (file_exists($path) && $proxima) {
-        $url_final['file'] = $file;     // Grava path da página.
-        $url_final['url'] = '';         // Reinicia a gravação da url.
-        $url_final['dir'] = $dir;
-        $url_final['path'] = $path;
-        $url_final['attr'] = array();
-        return $url_final;
+        $urlFinal['file'] = $file;     // Grava path da página.
+        $urlFinal['url'] = '';         // Reinicia a gravação da url.
+        $urlFinal['dir'] = $dir;
+        $urlFinal['path'] = $path;
+        $urlFinal['attr'] = array();
+        return $urlFinal;
       }
 
       // Monta os parametros
-      $url_final['attr'] = explode('/', $url_final['url']);
-      $url_final['url'] .= '/';
-      return  $url_final;
+      $urlFinal['attr'] = explode('/', $urlFinal['url']);
+      $urlFinal['url'] .= '/';
+      return  $urlFinal;
     }
 
-    $url_final['url'] = '';
-    return $url_final;
+    $urlFinal['url'] = '';
+    return $urlFinal;
   } // Fim function opemFile();
 
 

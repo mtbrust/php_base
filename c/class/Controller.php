@@ -13,7 +13,7 @@ class Controller
    *
    * @var string
    */
-  private $controller_name;
+  protected $controller_name;
 
 
   /**
@@ -21,7 +21,7 @@ class Controller
    *
    * @var array
    */
-  private $attr;
+  protected $attr;
 
 
   /**
@@ -32,10 +32,50 @@ class Controller
     // Trata o nome do controller.
     $this->controller_name = ucfirst(Core::getUrlFinal()['file']);
 
-    
+
     // Pega os atributos (parametros passados pela url).
     $this->attr = Core::getUrlFinal()['attr'];
   }
+
+
+  /**
+   * Inicia a verificação de controle e chama função correspondente.
+   *
+   * @return void
+   */
+  public function start()
+  {
+
+    // Verifica se tem dados $_post para enviar para _post.
+    if ($_POST) {
+      $this->_post();
+    }
+
+    // Verifica os atributos para ver em qual GET vai cair.
+    //$attr = Self::$urlFinal['attr'];
+    if ($this->attr) {
+      switch ($this->attr[0]) {
+        case 'post':
+            $this->post();
+          break;
+        case 'put':
+          $this->put();
+          break;
+        case 'get':
+          $this->get();
+          break;
+        case 'delete':
+          $this->delete();
+          break;
+        default:
+        $this->index();
+          break;
+      }
+    } else {
+      $this->index();
+    }
+  }
+
 
   /**
    * Quando é enviado dados via post.
