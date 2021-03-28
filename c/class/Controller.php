@@ -84,7 +84,7 @@ class Controller
    */
   public function _post()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.';
+    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.<br>';
     var_dump($_POST);
 
     return false;
@@ -98,7 +98,7 @@ class Controller
    */
   public function post()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.';
+    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.<br>';
     print_r($this->attr);
 
     return false;
@@ -112,7 +112,7 @@ class Controller
    */
   public function put()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.';
+    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.<br>';
     print_r($this->attr);
 
     return false;
@@ -126,7 +126,7 @@ class Controller
    */
   public function get()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.';
+    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.<br>';
     print_r($this->attr);
 
     return false;
@@ -140,7 +140,7 @@ class Controller
    */
   public function delete()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.';
+    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.<br>';
 
     return false;
   }
@@ -153,7 +153,7 @@ class Controller
    */
   public function index()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.';
+    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controller_name . __CLASS__ . '</b>.<br>';
     print_r($this->attr);
 
     return false;
