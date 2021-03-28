@@ -8,10 +8,9 @@ RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 
 # Bloquear roubo de imagens TESTAR
 RewriteCond %{HTTP_REFERER} !^$
-RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?localhost/ [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?{HTTP_HOST}/ [NC]
 RewriteRule \.(jpg|jpeg|png|gif)$ - [NC,F,L]
 #RewriteRule .*\.(jpg|jpeg|png|gif)$ m/assets/img/no_image.jpeg [L]
-
 
 
 # Não listar diretórios.
