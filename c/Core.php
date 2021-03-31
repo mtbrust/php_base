@@ -14,7 +14,7 @@ class Core
 
   /**
    * Informações de 
-   * ['url']      -> contém a Url de controle recursivo. (ignorar)
+   * ['url']      -> contém a Url do navegador.
    * ['dir']      -> Caminho do diretório atual acessado.
    * ['file']     -> Nome do arquivo da página atual acessada.
    * ['path']     -> Caminho do diretório = arquivo.
@@ -46,11 +46,20 @@ class Core
 
 
   /**
-   * Instância do controller da página atual.
+   * Instância do controllerPage da página atual.
    *
-   * @var Controller
+   * @var ControllerPage
    */
-  private $controller;
+  private $controllerPage;
+
+
+
+  /**
+   * Instância do controllerPage da página atual.
+   *
+   * @var ControllerApi
+   */
+  private $controllerApi;
 
 
 
@@ -79,17 +88,32 @@ class Core
     // Carrega todas as dependências iniciais do aplicativo.
     $this->openDependences();
 
-    // Trabalha a URL amigável e obtém a view e os parâmetros.
-    $this->checkUrl();
+    // Caso o usuário acesse a API. Senão procura as views.
+    if ($_GET && $_GET['url'][0] == 'a' && $_GET['url'][1] == 'p' && $_GET['url'][2] == 'i') {
 
-    // Carrega controller da página atual.
-    $this->openControllerPage();
+      // Trabalha a URL amigável e obtém a view e os parâmetros.
+      $this->checkUrl('c/');
 
-    // Executa controle da página atual.
-    $this->controller->start();
+      echo "<br><hr>Oi?<br>";
+      print_r(Self::$urlFinal);
+
+      // Carrega controller da página atual e executa.
+      $this->openControllerApi();
+      $this->controllerApi->start();
+
+    } else {
+
+      // Trabalha a URL amigável e obtém a view e os parâmetros.
+      $this->checkUrl('v/pages/');
+
+      // Carrega controller da página atual e executa.
+      $this->openControllerPage();
+      $this->controllerPage->start();
+
+    }
 
     // Desenha a página para usuário.
-    $this->renderPage();
+    //$this->renderPage();
   }
 
 
@@ -104,7 +128,7 @@ class Core
   {
 
     require 'vendor/autoload.php';                  // Carrega todas as dependências do composer.
-    require_once 'c/class/Controller.php';          // Carrega classe pai controller
+    require_once 'c/class/controllerPage.php';          // Carrega classe pai controllerPage
 
     // PENDÊNCIAS
     // Carregar classes e banco de dados...
@@ -120,15 +144,19 @@ class Core
    *
    * @return void
    */
-  private function checkUrl()
+  private function checkUrl($pasta)
   {
     // Verifica se está na home
     if ($_GET) {
 
       $url = explode('/', $_GET['url']);
-      // Busca a página e retorna os attr (atributos)
-      Self::$urlFinal = $this->openFile(count($url), $url);
-
+      // Busca a página e retorna os attr (atributos), path do arquivo, diretorio do arquivo e nome do arquivo.
+      Self::$urlFinal = $this->verificaURL(count($url), $url, $pasta);
+      // Restaura a url.
+      Self::$urlFinal['url'] = $_GET['url'];
+    } else {
+      // Caso não passe nada por URL.
+      Self::$urlFinal['attr'] = array(0 => null);
     }
   }
 
@@ -136,7 +164,7 @@ class Core
 
 
   /**
-   * Carrega controller página atual.
+   * Carrega controllerPage da página atual.
    *
    * @return void
    */
@@ -144,28 +172,32 @@ class Core
   {
 
     /**
-     * Carrega controller da página atual ou controller default.
+     * Carrega controllerPage da página atual ou controllerPage default.
      */
     if (isset(Self::$urlFinal['file']) && isset(Self::$urlFinal['dir'])) {
-      $controller_name = Self::$urlFinal['file'] . 'Controller';    // Controller da página atual.
+
+      $controller_name = Self::$urlFinal['file'] . 'ControllerPage';    // controllerPage da página atual.
       $path = Self::$urlFinal['dir'];                               // Diretório página.
-      $path[0] = 'c';                                               // Diretório controller.
-      $path .= $controller_name . '.php';                           // Caminho completo controller.
+      $path[0] = 'c';                                               // Diretório controllerPage.
+      $path .= $controller_name . '.php';                           // Caminho completo controllerPage.
 
     } else if (!isset(Self::$urlFinal['attr'])) {
+
       // Caso não tenha parâmetro, chama a view index.php
       Self::$urlFinal = array(
         'file'  => 'index',                                         // Define file index.
         'dir'   => 'v/pages',                                       // Define diretório da view index.
         'path'  => 'v/pages/index.php',                             // Define path da view index.
-        'attr'  => array( 0 => null)                                  // Define attr index.
+        'attr'  => array(0 => null)                                  // Define attr index.
+
       );
-      $controller_name = 'IndexController';                         // Preenche com controller default.
-      $path = 'c/pages/indexController.php';                        // Preenche com path default.
+
+      $controller_name = 'IndexControllerPage';                         // Preenche com controllerPage default.
+      $path = 'c/pages/indexControllerPage.php';                        // Preenche com path default.
 
     } else {
-      // Caso tenha um parametro na url mas sem view.
 
+      // Caso tenha um parametro na url mas sem view.
       Self::$urlFinal['file'] = 'default';                          // Define file default.
       Self::$urlFinal['dir'] = 'v/pages';                           // Define diretório da view default.
       Self::$urlFinal['path'] = 'v/pages/default.php';              // Define path da view default.
@@ -174,25 +206,94 @@ class Core
       unset(Self::$urlFinal['attr'][0]);
       Self::$urlFinal['attr'] = array_values(Self::$urlFinal['attr']);
       if (!Self::$urlFinal['attr']) {
-        Self::$urlFinal['attr'] = array( 0 => null);
+        Self::$urlFinal['attr'] = array(0 => null);
       }
 
-      // Controller default
+      // controllerPage default
       $path = '';
     }
 
+
     // Verifica se existe controller.
     if (!file_exists($path)) {
-      $controller_name = 'DefaultController';                     // Preenche com controller default.
-      $path = 'c/pages/defaultController.php';                    // Preenche com path default.
+      $controller_name = 'DefaultControllerPage';                     // Preenche com controller default.
+      $path = 'c/pages/defaultControllerPage.php';                    // Preenche com path default.
     }
 
-    // Carrega controller.
+    // Carrega arquivo controllerPage da página autal.
     require_once $path;
 
-    // Instancia classe do controller
+    // Instancia a classe do controllerPage e salva nos parâmetros do Core.
     $refl = new ReflectionClass(ucfirst($controller_name));
-    $this->controller = $refl->newInstanceArgs();
+    $this->controllerPage = $refl->newInstanceArgs();
+  }
+
+
+
+
+  /**
+   * Carrega controllerPage da página atual.
+   *
+   * @return void
+   */
+  private function openControllerApi()
+  {
+    
+    /**
+     * Carrega controllerApi da página atual ou controllerApi default.
+     */
+    if (isset(Self::$urlFinal['file']) && isset(Self::$urlFinal['dir'])) {
+
+      $controller_name = Self::$urlFinal['file'] . 'ControllerApi';    // controllerApi da página atual.
+      $path = Self::$urlFinal['dir'];                               // Diretório página.
+      //$path[0] = 'c';                                               // Diretório controllerApi.
+      $path .= $controller_name . '.php';                           // Caminho completo controllerApi.
+
+    } else if (!isset(Self::$urlFinal['attr'])) {
+
+      // Caso não tenha parâmetro, chama a view index.php
+      Self::$urlFinal = array(
+        'file'  => 'index',                                         // Define file index.
+        'dir'   => 'c/api',                                       // Define diretório da view index.
+        'path'  => 'c/api/index.php',                             // Define path da view index.
+        'attr'  => array(0 => null)                                  // Define attr index.
+
+      );
+
+      $controller_name = 'IndexControllerApi';                         // Preenche com controllerApi default.
+      $path = 'c/api/indexControllerApi.php';                        // Preenche com path default.
+
+    } else {
+
+      // Caso tenha um parametro na url mas sem view.
+      Self::$urlFinal['file'] = 'default';                          // Define file default.
+      Self::$urlFinal['dir'] = 'c/api';                           // Define diretório da view default.
+      Self::$urlFinal['path'] = 'c/api/default.php';              // Define path da view default.
+
+      // Tira primeiro atributo, pois se refere a página.
+      unset(Self::$urlFinal['attr'][0]);
+      Self::$urlFinal['attr'] = array_values(Self::$urlFinal['attr']);
+      if (!Self::$urlFinal['attr']) {
+        Self::$urlFinal['attr'] = array(0 => null);
+      }
+
+      // controllerApi default
+      $path = '';
+    }
+
+
+    // Verifica se existe controller.
+    if (!file_exists($path)) {
+      $controller_name = 'DefaultControllerPage';                     // Preenche com controller default.
+      $path = 'c/pages/defaultControllerPage.php';                    // Preenche com path default.
+    }
+
+    // Carrega arquivo controllerPage da página autal.
+    require_once $path;
+
+    // Instancia a classe do controllerPage e salva nos parâmetros do Core.
+    $refl = new ReflectionClass(ucfirst($controller_name));
+    $this->controllerPage = $refl->newInstanceArgs();
   }
 
 
@@ -209,25 +310,32 @@ class Core
     // Prepara o twig
     $loader = new \Twig\Loader\FilesystemLoader('v/');
     $twig = new \Twig\Environment($loader);
-    $template = $twig->load('templates/default.html');
+    $template = $twig->load('templates/' . $this->controllerPage->getParamsTemplate('template') . '.html');
 
     $parametros = array();
     $parametros['nome'] = "Mateus";
 
     $conteudo = $template->render($parametros);
     echo $conteudo;
+    echo $this->controllerPage->getParamsTemplate('template');
   }
 
 
 
   /**
    * Trabalha a URL atual e divide ela em página e parâmetros.
+   * Parâmetros de 
+   * ['url']      -> contém a Url do navegador.
+   * ['dir']      -> Caminho do diretório atual acessado.
+   * ['file']     -> Nome do arquivo da página atual acessada.
+   * ['path']     -> Caminho do diretório = arquivo.
+   * ['attr']     -> são os atributos após o file. var array.
    *
    * @param [int] $length
    * @param [string] $url
    * @return array
    */
-  private function openFile($length, $url)
+  private function verificaURL($length, $url, $pasta)
   {
     // Grava url e atributos.
     $urlFinal['path'] = '';
@@ -235,9 +343,11 @@ class Core
     $urlFinal['url'] = '';
     $urlFinal['attr'] = array();
 
+
+
     // Finaliza na primeira posição da url.
     if ($length > 0) {
-      $urlFinal =  $this->openFile((int)$length - 1, $url);
+      $urlFinal =  $this->verificaURL((int)$length - 1, $url, $pasta);
       $urlFinal['url'] .= $url[(int)$length - 1];
 
       // Espera proximo parâmetro.
@@ -245,14 +355,14 @@ class Core
 
       // Verifica próximo parametro é uma página.
       if (count($url) != $length) {
-        $dir = 'v/pages/' . $urlFinal['url'] . '/';
+        $dir = $pasta . $urlFinal['url'] . '/';
         $file = $url[$length];
         $path = $dir . $file . '.php';
         $proxima = !file_exists($path);
       }
 
       // Monta arquivo atual.
-      $dir = 'v/pages/';
+      $dir = $pasta;
       $file = $urlFinal['url'];
       $path = $dir . $file . '.php';
 
@@ -262,7 +372,7 @@ class Core
         $urlFinal['url'] = '';         // Reinicia a gravação da url.
         $urlFinal['dir'] = $dir;
         $urlFinal['path'] = $path;
-        $urlFinal['attr'] = array( 0 => null);
+        $urlFinal['attr'] = array(0 => null);
         return $urlFinal;
       }
 
