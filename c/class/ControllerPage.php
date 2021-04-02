@@ -75,8 +75,22 @@ class ControllerPage
   public function getParamsView($param = false)
   {
     if ($param)
-      return $this->paramsView;
-    return $this->paramsView[$param];
+      return $this->paramsView[$param];
+    return $this->paramsView;
+  }
+
+
+  /**
+   * Parâmetros para construção da view.
+   *
+   * @var array
+   */
+  protected $paramsPage;
+  public function getParamsPage($param = false)
+  {
+    if ($param)
+      return $this->paramsPage[$param];
+    return $this->paramsPage;
   }
 
 
@@ -86,10 +100,10 @@ class ControllerPage
   function __construct()
   {
     // Trata o nome do controller.
-    $this->controllerName = ucfirst(Core::getUrlFinal()['file']);
+    $this->controllerName = ucfirst(Core::getinfoUrl()['file']);
 
     // Pega os atributos (parametros passados pela url).
-    $this->attr = Core::getUrlFinal()['attr'];
+    $this->attr = Core::getinfoUrl()['attr'];
 
     // Valores default de $paramsSecurity.
     $this->paramsSecurity = array(
@@ -135,6 +149,11 @@ class ControllerPage
       'refresh'           => 'default',               // Tempo para recarregar a página.
       'redirect'          => 'default',               // URL para redirecionar usuário após refresh.
       'obs'               => 'default',               // Outra qualquer observação sobre a página.
+    );
+
+    // Valores para serem inseridos no corpo da página.
+    $this->paramsPage = array(
+      'nome'          => 'Mateus',               // Exemplo
     );
   }
 
@@ -274,10 +293,23 @@ class ControllerPage
    */
   public function index()
   {
+    $this->pre();
+
     echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
     print_r($this->attr);
 
     return false;
+  }
+
+
+  /**
+   * Realiza o pré processamento da página inicial.
+   *
+   * @return void
+   */
+  public function pre()
+  {
+    
   }
 }
 
