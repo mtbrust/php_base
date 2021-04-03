@@ -6,6 +6,7 @@ class ControllerRender
 
   public function renderView($paramsTemplate, $paramsView)
   {
+    $view = '';
     return $view;
   }
 

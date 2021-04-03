@@ -15,7 +15,7 @@ define("DB2_DBNAME", "");
 define("DB2_CODIFICACAO", "");
 
 // Url raíz do site.
-define("URL_RAIZ", "");
+define("URL_RAIZ", "http://localhost/base_php/");
 
 // Define caminhos para as pastas de conteúdo html.
 define("PATH_VIEW", "v/");

@@ -295,8 +295,8 @@ class ControllerPage
   {
     $this->pre();
 
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    print_r($this->attr);
+    // echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    // print_r($this->attr);
 
     return false;
   }
@@ -309,7 +309,7 @@ class ControllerPage
    */
   public function pre()
   {
-    
+    echo '<br>Classe pai.';
   }
 }
 
