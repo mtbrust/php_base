@@ -24,35 +24,65 @@ class Core
 
 
   /**
-   * Informações de páginas que estão no diretório do projeto.
-   * ['url']      -> contém a Url do navegador.
-   * ['dir']      -> Caminho do diretório atual acessado.
-   * ['file']     -> Nome do arquivo da página atual acessada.
-   * ['path']     -> Caminho do diretório = arquivo.
-   * ['attr']     -> são os atributos após o file. var array.
+   * Informações de páginas que estão no DIRETÓRIO do projeto.
+   * ['path_dir']           -> Caminho relativo do diretório a partir da view.
+   * ['path_view']          -> Caminho relativo do arquivo html a partir da view.
+   * ['dir']                -> Nome do diretório.
+   * ['file']               -> Nome do arquivo.
+   * ['file_name']          -> Nome do arquivo com extensão (file.html).
+   * ['controller_name']    -> Nome da classe controller.
+   * ['controller_path']    -> Caminho relativo da classe controller php.
+   * ['url']                -> Url completa.
+   * ['attr']               -> Após a url do arquivo ou pasta, o resto do caminho da url vira um array de atributos.
    * 
    * Exemplo: 
    * $_GET        -> "site.com/admin/posts/create/teste"
-   * Diretório    -> "/v/admin/posts.php"
+   * Diretório    -> "/v/pages/admin/posts.php"
    * 
    * As posições irão conter:
-   * file         -> v/admin/posts.php
+   * file         -> v/pages/admin/posts.php
    * attr         -> [create, teste]
    *
    * @var [array]
    */
-  private static $infoUrl;
+  private static $infoDirUrl = false;
+  public function getInfoDirUrl($param = false)
+  {
+    if ($param)
+      return $this->infoDirUrl[$param];
+    return $this->infoDirUrl;
+  }
 
 
 
   /**
-   * Retorna $infoUrl
+   * Informações de páginas que estão no BANCO DE DADOS do projeto.
+   * ['path_dir']           -> Caminho relativo do diretório a partir da view.
+   * ['path_view']          -> Caminho relativo do arquivo html a partir da view.
+   * ['dir']                -> Nome do diretório.
+   * ['file']               -> Nome do arquivo.
+   * ['file_name']          -> Nome do arquivo com extensão (file.html).
+   * ['controller_name']    -> Nome da classe controller.
+   * ['controller_path']    -> Caminho relativo da classe controller php.
+   * ['url']                -> Url completa.
+   * ['attr']               -> Após a url do arquivo ou pasta, o resto do caminho da url vira um array de atributos.
+   * 
+   * Exemplo: 
+   * $_GET        -> "site.com/admin/posts/create/teste"
+   * Diretório    -> "/v/pages/admin/posts.php"
+   * 
+   * As posições irão conter:
+   * file         -> v/pages/admin/posts.php
+   * attr         -> [create, teste]
    *
-   * @return array
+   * @var [array]
    */
-  public static function getinfoUrl()
+  private static $infoBdUrl = false;
+  public function getInfoBdUrl($param = false)
   {
-    return Self::$infoUrl;
+    if ($param)
+      return $this->infoBdUrl[$param];
+    return $this->infoBdUrl;
   }
 
 
@@ -75,12 +105,6 @@ class Core
 
 
 
-
-
-
-
-
-
   /**
    * Executa o motor do aplicativo.
    *
@@ -93,6 +117,13 @@ class Core
      * Carrega todas as dependências iniciais do aplicativo.
      */
     $this->requireDependences();
+
+    /**
+     * Conecta com banco de dados
+     */
+    Bd::start();
+    print_r(BdUsuarios::getUsuarios());
+    BdCreate::create();
 
 
     /**
@@ -107,13 +138,24 @@ class Core
      */
     if (Self::$url && Self::$url[0] == 'api') {
       echo '<br>Solicitação de API.';
-
     } else {
 
       /**
-       * Obtém as informações das paginas no diretório atual em decorrência da url. 
+       * Obtém as informações das paginas no DIRETÓRIO em decorrência da url. 
+       * Caso VIEWS_DIR esteja ativado no arquivo config.php
        */
-      Self::$infoUrl = $this->getInfoDirUrl(Self::$url);
+      if (VIEWS_DIR)
+        Self::$infoDirUrl = $this->scanInfoDirUrl(Self::$url);
+        
+
+      /**
+       * Obtém as informações das paginas no BANCO DE DADOS em decorrência da url.
+       * Caso VIEWS_BD esteja ativado no arquivo config.php
+       */
+      if (VIEWS_BD)
+        Self::$infoBdUrl = $this->scanInfoBdUrl(Self::$url);
+
+
 
 
       /**
@@ -138,7 +180,7 @@ class Core
       $this->checkUrl('c/');
 
       echo "<br><hr>Oi?<br>";
-      print_r(Self::$infoUrl);
+      print_r(Self::$infoDirUrl);
 
       // Carrega controller da página atual e executa.
       $this->openControllerApi();
@@ -153,7 +195,7 @@ class Core
       $this->controllerPage->start();
     }
 
-    print_r(Self::$infoUrl);
+    print_r(Self::$infoDirUrl);
     */
 
     // Desenha a página para usuário.
@@ -172,9 +214,14 @@ class Core
   {
     require_once 'config.php';                      // Carrega constantes.
     require 'vendor/autoload.php';                  // Carrega todas as dependências do composer.
-    require_once 'c/class/controllerApi.php';      // Carrega classe pai controllerApi.
+    require_once 'm/bd/Bd.php';                     // Carrega classe pai banco de dados.
+    require_once 'm/bd/usuarios/BdUsuarios.php';    // Carrega classe pai banco de dados.
+    require_once 'm/bd/create/Bdcreate.php';    // Carrega classe pai banco de dados.
+    require_once 'c/class/controllerApi.php';       // Carrega classe pai controllerApi.
     require_once 'c/class/controllerPage.php';      // Carrega classe pai controllerPage.
     require_once 'c/class/controllerRender.php';    // Carrega classe pai controllerRender.
+
+    
 
     // PENDÊNCIAS
     // Carregar classes e banco de dados...
@@ -200,81 +247,8 @@ class Core
 
 
 
-  
-  // private function getInfoUrlPage($length, $url)
-  // {
-  //   // Inicia os atributos.
-  //   $infoUrl['path'] = '';
-  //   $infoUrl['dir'] = '';
-  //   $infoUrl['file'] = '';
-  //   $infoUrl['url'] = '';
-  //   $infoUrl['attr'] = array();
-
-  //   // Finaliza quando chegar na primeira posição da url.
-  //   if ($length > 0) {
-  //     // Processa da primeira posição para última.
-  //     $infoUrl =  $this->getInfoUrlPage((int)$length - 1, $url);
-
-  //     // Caso só tenha uma barra no final da url não precisa executar a verificação.
-  //     if (!empty($url[(int)$length - 1])) {
-
-  //       // Obtém url na posição recursiva atual.
-  //       $infoUrl['url'] .= $url[(int)$length - 1];
-  //       $parametro_atual = $url[(int)$length - 1];
-
-  //       // Verifica se é um arquivo e salva na variável de controle.
-  //       $isFile = file_exists(PATH_VIEW_PAGES . $infoUrl['dir'] . '/' . $parametro_atual . '.html');
-  //       if ($isFile) {
-  //         $infoUrl['file'] = $parametro_atual;
-  //         $infoUrl['path'] = PATH_VIEW_PAGES . $infoUrl['dir'] . $infoUrl['file'];
-  //       }
-
-  //       // Verifica se é uma pasta e salva na variável de controle.
-  //       $isDir = file_exists(PATH_VIEW_PAGES . $infoUrl['dir'] . '/' . $parametro_atual);
-  //       if ($isDir) {
-  //         $infoUrl['dir'] .= $parametro_atual . '/';
-  //         if (!$isFile) {
-  //           $infoUrl['path'] = PATH_VIEW_PAGES . $infoUrl['dir'];
-  //         }
-  //       }
-
-  //       // Espera proximo parâmetro.
-  //       $isDirProxima = false;
-  //       $isFileProxima = false;
-
-  //       // Verifica próximo parametro é uma página.html.
-  //       if (!empty($url[$length])) {
-  //         // Monta caminho do próximo parametro da url.
-  //         $path = PATH_VIEW_PAGES . $infoUrl['dir'] . $url[$length];
-
-  //         $isDirProxima = file_exists($path);
-  //         $isFileProxima = file_exists($path . '.html');
-  //       }
-
-  //       if (($isFile || $isDir) && !$isFileProxima && !$isDirProxima) {
-  //         $infoUrl['url'] = '';
-  //       }
-
-  //       // Verifica se existe página atual e se não existe arquivo ou pasta no próximo parametro.
-  //       if (($isFile || $isDir) && !$isFileProxima && !$isDirProxima) {
-  //         $infoUrl['attr'] = array(0 => null);
-  //         return $infoUrl;
-  //       }
-
-  //       // Monta os parametros
-  //       $infoUrl['attr']   = explode('/', $infoUrl['url']);
-  //       $infoUrl['url']   .= '/';
-  //       return  $infoUrl;
-  //     }
-  //   }
-
-  //   $infoUrl['url'] = '';
-  //   return $infoUrl;
-  // }
-
-
   /**
-   * Trabalha a URL atual e obtém as informações de arquivos e pastas do diretório view.
+   * Obtém as informações das paginas no DIRETÓRIO em decorrência da url.
    * ['path_dir']           -> Caminho relativo do diretório a partir da view.
    * ['path_view']          -> Caminho relativo do arquivo html a partir da view.
    * ['dir']                -> Nome do diretório.
@@ -288,37 +262,144 @@ class Core
    * @param array $url
    * @return array
    */
-  private function getInfoDirUrl($url)
+  private function scanInfoDirUrl($url)
   {
     // Caso seja o domínio raíz chama a index. 
     if (empty($url)) {
-      $infoUrl['path_dir'] = '';
-      $infoUrl['path_view'] = 'index.html';
-      $infoUrl['dir']  = '';
-      $infoUrl['file'] = 'index';
-      $infoUrl['file_name'] = 'index.html';
-      $infoUrl['controller_name'] = 'IndexControllerPage';
-      $infoUrl['controller_path'] = 'indexControllerPage';
-      $infoUrl['url']  = '';
-      $infoUrl['attr'] = array();
+      $infoDirUrl['path_dir'] = '';
+      $infoDirUrl['path_view'] = 'index.html';
+      $infoDirUrl['dir']  = '';
+      $infoDirUrl['file'] = 'index';
+      $infoDirUrl['file_name'] = 'index.html';
+      $infoDirUrl['controller_name'] = 'IndexControllerPage';
+      $infoDirUrl['controller_path'] = 'IndexControllerPage';
+      $infoDirUrl['url']  = '';
+      $infoDirUrl['attr'] = array();
     } else {
       // Inicia os atributos da infoUrl zerados.
-      $infoUrl['path_dir'] = '';
-      $infoUrl['path_view'] = '';
-      $infoUrl['dir']  = '';
-      $infoUrl['file'] = '';
-      $infoUrl['file_name'] = '';
-      $infoUrl['controller_name'] = '';
-      $infoUrl['controller_path'] = '';
-      $infoUrl['url']  = '';
-      $infoUrl['attr'] = array();
+      $infoDirUrl['path_dir'] = '';
+      $infoDirUrl['path_view'] = '';
+      $infoDirUrl['dir']  = '';
+      $infoDirUrl['file'] = '';
+      $infoDirUrl['file_name'] = '';
+      $infoDirUrl['controller_name'] = '';
+      $infoDirUrl['controller_path'] = '';
+      $infoDirUrl['url']  = '';
+      $infoDirUrl['attr'] = array();
 
       // Inicia variáveis de controle.
       $p_url = '';
       $p_dir_ant = '';
     }
 
-    
+    // Percorre cada posição da url em busca de uma página.
+    foreach ($url as $key => $value) {
+
+      // Verifica final da url / e finaliza (site.com/url/).
+      if (empty($value)) {
+        break;
+      }
+
+      // Variáveis de Diretório
+      $p_dir      = $value . '/';                                // Nome da pasta com / no final.
+      $p_path_dir = $infoDirUrl['url'] . $p_dir;                 // Caminho completo da pasta.
+      $isDir      = file_exists(PATH_VIEW_PAGES . $p_path_dir);  // Verifica se é uma pasta.
+
+      // Variáveis de Arquivo
+      $p_file_view = $value . '.html';                             // Nome do arquivo com extensão.
+      $p_path_view = $infoDirUrl['path_dir'] . $p_file_view;       // Caminho completo do arquivo.
+      $isFile      = file_exists(PATH_VIEW_PAGES . $p_path_view);  // Verifica se é um arquivo.
+
+      // Variáveis de Arquivo Index
+      $p_file_view_index = 'index.html';                                       // Nome do arquivo com extensão.
+      $p_path_view_index = $p_path_dir . $p_file_view_index;       // Caminho completo do arquivo.
+      $isFileIndexindex  = file_exists(PATH_VIEW_PAGES . $p_path_view_index);  // Verifica se é um arquivo.
+
+      // Variáveis de Controle
+      $p_url .= $value . '/';                                                   // Concatena caminho atual com anterior. (attr)
+      $p_dir_ant .= $infoDirUrl['url'];                                              // Salva a pasta anterior.
+      $infoDirUrl['url'] .= $p_dir;                                                  // Concatena caminho atual com anterior. (url)
+
+      // Caso seja um diretório
+      if ($isDir) {
+        $infoDirUrl['path_dir'] .= $p_dir;                                           // Caminho completo do diretório com / no final.
+        $infoDirUrl['dir']  = $value;                                                // Nome do diretório.
+      }
+
+      // Caso seja um arquivo
+      if ($isFile) {
+        $infoDirUrl['file']      = $value;        // Nome do arquivo html.
+        $infoDirUrl['file_name'] = $p_file_view;  // Nome do arquivo html com extensão.
+        $infoDirUrl['path_view'] = $p_path_view;  // Caminho completo do arquivo html.
+      } else if ($isFileIndexindex && $isDir){
+        $infoDirUrl['file']      = 'index';             // Nome do arquivo html.
+        $infoDirUrl['file_name'] = 'index.html';        // Nome do arquivo html com extensão.
+        $infoDirUrl['path_view'] = $p_path_view_index;  // Caminho completo do arquivo html.
+      }
+
+      // Caso tenha arquivo ou diretório na view.
+      if ($isFile || $isDir || $isFileIndexindex) {
+        $infoDirUrl['controller_name'] = ucfirst($value) . 'ControllerPage';                   // Cria nome da controller.
+        $infoDirUrl['controller_path'] = $p_dir_ant . ucfirst($value) . 'ControllerPage.php';  // Cria endereço do arquivo controller.
+        $p_url = '';                                                   // Zera sequencia da url para gerar attr.
+      } else {
+        $infoDirUrl['attr'] = explode('/', $p_url);     // Cria vetor com os parametros após página.
+        unset($infoDirUrl['attr'][$key]);         // Tira último parâmetro (vazio).
+      }
+    }
+    return $infoDirUrl;                                                              // Retorna array com as informações da url.
+  }
+
+
+
+
+
+  /**
+   * Obtém as informações das paginas no BANCO DE DADOS em decorrência da url.
+   * ['path_dir']           -> Caminho relativo do diretório a partir da view.
+   * ['path_view']          -> Caminho relativo do arquivo html a partir da view.
+   * ['dir']                -> Nome do diretório.
+   * ['file']               -> Nome do arquivo.
+   * ['file_name']          -> Nome do arquivo com extensão (file.html).
+   * ['controller_name']    -> Nome da classe controller.
+   * ['controller_path']    -> Caminho relativo da classe controller php.
+   * ['url']                -> Url completa.
+   * ['attr']               -> Após a url do arquivo ou pasta, o resto do caminho da url vira um array de atributos.
+   *
+   * @param array $url
+   * @return array
+   */
+  private function scanInfoBdUrl($url)
+  {
+    // Caso seja o domínio raíz chama a index. 
+    if (empty($url)) {
+      $infoDirUrl['path_dir'] = '';
+      $infoDirUrl['path_view'] = 'index.html';
+      $infoDirUrl['dir']  = '';
+      $infoDirUrl['file'] = 'index';
+      $infoDirUrl['file_name'] = 'index.html';
+      $infoDirUrl['controller_name'] = 'IndexControllerPage';
+      $infoDirUrl['controller_path'] = 'IndexControllerPage';
+      $infoDirUrl['url']  = '';
+      $infoDirUrl['attr'] = array();
+    } else {
+      // Inicia os atributos da infoUrl zerados.
+      $infoDirUrl['path_dir'] = '';
+      $infoDirUrl['path_view'] = '';
+      $infoDirUrl['dir']  = '';
+      $infoDirUrl['file'] = '';
+      $infoDirUrl['file_name'] = '';
+      $infoDirUrl['controller_name'] = '';
+      $infoDirUrl['controller_path'] = '';
+      $infoDirUrl['url']  = '';
+      $infoDirUrl['attr'] = array();
+
+      // Inicia variáveis de controle.
+      $p_url = '';
+      $p_dir_ant = '';
+    }
+
+    // Percorre cada posição da url em busca de uma página.
     foreach ($url as $key => $value) {
 
       // Verifica final da url / e finaliza (site.com/url/).
@@ -328,186 +409,141 @@ class Core
 
       // Variáveis de Diretório
       $p_dir = $value . '/';                                                      // Nome da pasta com / no final.
-      $p_path_dir = $infoUrl['url'] . $p_dir;                                     // Caminho completo da pasta.
+      $p_path_dir = $infoDirUrl['url'] . $p_dir;                                     // Caminho completo da pasta.
       $isDir = file_exists(PATH_VIEW_PAGES . $p_path_dir);                        // Verifica se é uma pasta.
 
       // Variáveis de Arquivo
       $p_file_view = $value . '.html';                                            // Nome do arquivo com extensão.
-      $p_path_view = $infoUrl['path_dir'] . $p_file_view;                         // Caminho completo do arquivo.
+      $p_path_view = $infoDirUrl['path_dir'] . $p_file_view;                         // Caminho completo do arquivo.
       $isFile = file_exists(PATH_VIEW_PAGES . $p_path_view);                      // Verifica se é um arquivo.
-      
+
       // Variáveis de Controle
       $p_url .= $value . '/';                                                     // Concatena caminho atual com anterior. (attr)
-      $p_dir_ant .= $infoUrl['url'];                                              // Salva a pasta anterior.
-      $infoUrl['url'] .= $p_dir;                                                  // Concatena caminho atual com anterior. (url)
+      $p_dir_ant .= $infoDirUrl['url'];                                              // Salva a pasta anterior.
+      $infoDirUrl['url'] .= $p_dir;                                                  // Concatena caminho atual com anterior. (url)
 
       // Caso seja um diretório
       if ($isDir) {
-        $infoUrl['path_dir'] .= $p_dir;                                           // Caminho completo do diretório com / no final.
-        $infoUrl['dir']  = $value;                                                // Nome do diretório.
+        $infoDirUrl['path_dir'] .= $p_dir;                                           // Caminho completo do diretório com / no final.
+        $infoDirUrl['dir']  = $value;                                                // Nome do diretório.
       }
 
       // Caso seja um arquivo
       if ($isFile) {
-        $infoUrl['file'] = $value;                                                // Nome do arquivo html.
-        $infoUrl['file_name'] = $p_file_view;                                     // Nome do arquivo html com extensão.
-        $infoUrl['path_view'] = $p_path_view;                                     // Caminho completo do arquivo html.
+        $infoDirUrl['file'] = $value;                                                // Nome do arquivo html.
+        $infoDirUrl['file_name'] = $p_file_view;                                     // Nome do arquivo html com extensão.
+        $infoDirUrl['path_view'] = $p_path_view;                                     // Caminho completo do arquivo html.
       }
 
       // Caso tenha arquivo ou diretório na view.
       if ($isFile || $isDir) {
-        $infoUrl['controller_name'] = ucfirst($value) . 'ControllerPage';         // Cria nome da controller.
-        $infoUrl['controller_path'] = $p_dir_ant . $value . 'ControllerPage.php'; // Cria endereço do arquivo controller.
+        $infoDirUrl['controller_name'] = ucfirst($value) . 'ControllerPage';         // Cria nome da controller.
+        $infoDirUrl['controller_path'] = $p_dir_ant . ucfirst($value) . 'ControllerPage.php'; // Cria endereço do arquivo controller.
         $p_url = '';                                                              // Zera sequencia da url para gerar attr.
-      }else{
-        $infoUrl['attr'] = explode('/', $p_url);                                  // Cria vetor com os parametros após página.
-        unset($infoUrl['attr'][$key - 1]);                                        // Tira último parâmetro (vazio).
+      } else {
+        $infoDirUrl['attr'] = explode('/', $p_url);                                  // Cria vetor com os parametros após página.
+        unset($infoDirUrl['attr'][$key - 1]);                                        // Tira último parâmetro (vazio).
       }
-
     }
-    return $infoUrl;                                                              // Retorna array com as informações da url.
+    return $infoDirUrl;                                                              // Retorna array com as informações da url.
   }
 
 
 
 
 
-
-
-  // APAGAR
-  // private function getInfoUrlDirView($length, $url)
-  // {
-  //   // Inicia os atributos.
-  //   $infoUrl['path'] = '';
-  //   $infoUrl['path_view'] = '';
-  //   $infoUrl['dir']  = '';
-  //   $infoUrl['file'] = '';
-  //   $infoUrl['file_view'] = '';
-  //   $infoUrl['controller_page'] = '';
-  //   $infoUrl['url']  = '';
-  //   $infoUrl['attr'] = array();
-
-  //   $posicao = (int)$length - 1;
-
-  //   // Finaliza quando chegar na primeira posição da url.
-  //   if ($length > 0) {
-
-  //     if (empty($url[$length - 1])) {
-  //       $posicao--;
-  //     }
-
-  //     $infoUrl =  $this->getInfoUrlDirView($posicao, $url);
-
-  //     $p_dir_ant = $infoUrl['url'];
-  //     $p_file = $url[$posicao];
-  //     $p_dir = $infoUrl['dir'] . $p_file . '/';
-  //     $p_path = $infoUrl['dir'] . $infoUrl['url'] . $p_file;
-  //     $p_path_view = $p_path . '.html';
-  //     $p_file_view = $url[$posicao] . '.html';
-  //     $p_url = $infoUrl['url'] . $url[$posicao] . '/';
-
-
-  //     //echo '<br>l: ' . $length;
-  //     //echo "indice posição: $posicao";
-  //     echo 'P: ' . $url[$posicao];
-  //     echo '<br>URL: ' . $p_url;
-  //     echo '<br>Path: ' . $p_path;
-  //     echo '<br>Path_view: ' . $p_path_view;
-  //     echo '<br>p_dir_ant: ' . $p_dir_ant;
-  //     echo '<br>p_dir: ' . $p_dir;
-
-  //     $isDir = file_exists(PATH_VIEW_PAGES . $p_dir);
-  //     if ($isDir) {
-  //       $infoUrl['dir']  = $p_dir;
-  //       $p_url = '';
-  //       echo '<br>Pasta: ' . $infoUrl['dir'];
-  //     } else {
-  //       //$p_dir = '';
-  //     }
-
-  //     $isFile = file_exists(PATH_VIEW_PAGES . $p_path_view);
-  //     if ($isFile) {
-  //       //$p_dir = $p_dir_ant;
-  //       $p_url = '';
-  //       $infoUrl['file'] = $p_file;
-  //       $infoUrl['file_view'] = $p_file_view;
-  //       $infoUrl['controller_page'] = $p_file . 'ControllerPage';
-  //       $infoUrl['path_view'] = $p_path_view;
-  //     } else {
-  //       //$p_file_view = '';
-  //       //$p_file = '';
-  //     }
-
-  //     if ($isFile || $isDir) {
-  //       $infoUrl['path'] = $p_path;
-  //     }
-
-
-
-  //     echo '<hr>';
-  //     // Inicia os atributos.
-  //     //$infoUrl['path'] = $p_path;
-
-  //     //$infoUrl['dir']  .= $p_dir;
-  //     //$infoUrl['file'] = $p_file;
-  //     //$infoUrl['file_view'] = $p_file_view;
-  //     //$infoUrl['controller_page'] = $p_file . 'ControllerPage';
-  //     $infoUrl['url']  = $p_url;
-  //     $infoUrl['attr'] = explode('/', $infoUrl['url']);
-  //     unset($infoUrl['attr'][sizeof($infoUrl['attr']) - 1]);
-
-  //     return  $infoUrl;
-  //   }
-
-  //   if (empty($url)) {
-  //     echo '<br>l: ' . $length;
-  //     echo "<br>p: $posicao";
-  //     return $infoUrl;
-  //   }
-
-  //   if ($infoUrl['path'] == '') {
-  //     // Inicia os atributos.
-  //     $infoUrl['path'] = 'index.html';
-  //     $infoUrl['path_view'] = '';
-  //     $infoUrl['dir']  = '';
-  //     $infoUrl['file'] = 'index';
-  //     $infoUrl['file_view'] = 'index.html';
-  //     $infoUrl['controller_page'] = 'indexControllerPage';
-  //     $infoUrl['url']  = '';
-  //     $infoUrl['attr'] = array();
-  //   }
-
-  //   return $infoUrl;
-  // }
-
-
-
-
-
   /**
-   * Trabalha a URL atual e divide ela em página e parâmetros.
-   * Parâmetros de 
-   * ['url']      -> contém a Url do navegador.
-   * ['dir']      -> Caminho do diretório atual acessado.
-   * ['file']     -> Nome do arquivo da página atual acessada.
-   * ['path']     -> Caminho do diretório = arquivo.
-   * ['attr']     -> são os atributos após o file. var array.
+   * Obtém as informações das paginas no BANCO DE DADOS em decorrência da url.
+   * ['path_dir']           -> Caminho relativo do diretório a partir da view.
+   * ['path_view']          -> Caminho relativo do arquivo html a partir da view.
+   * ['dir']                -> Nome do diretório.
+   * ['file']               -> Nome do arquivo.
+   * ['file_name']          -> Nome do arquivo com extensão (file.html).
+   * ['controller_name']    -> Nome da classe controller.
+   * ['controller_path']    -> Caminho relativo da classe controller php.
+   * ['url']                -> Url completa.
+   * ['attr']               -> Após a url do arquivo ou pasta, o resto do caminho da url vira um array de atributos.
    *
-   * @param [int] $length
-   * @param [string] $url
+   * @param array $url
    * @return array
    */
-  private function getInfoUrlBdPages($length, $url)
+  private function scanInfoApi($url)
   {
-    // Inicia os atributos.
-    $infoUrl['path'] = '';
-    $infoUrl['dir']  = '';
-    $infoUrl['file'] = '';
-    $infoUrl['url']  = '';
-    $infoUrl['attr'] = array();
+    // Caso seja o domínio raíz chama a index. 
+    if (empty($url)) {
+      $infoDirUrl['path_dir'] = '';
+      $infoDirUrl['path_view'] = 'index.html';
+      $infoDirUrl['dir']  = '';
+      $infoDirUrl['file'] = 'index';
+      $infoDirUrl['file_name'] = 'index.html';
+      $infoDirUrl['controller_name'] = 'IndexControllerApi';
+      $infoDirUrl['controller_path'] = 'IndexControllerApi';
+      $infoDirUrl['url']  = '';
+      $infoDirUrl['attr'] = array();
+    } else {
+      // Inicia os atributos da infoUrl zerados.
+      $infoDirUrl['path_dir'] = '';
+      $infoDirUrl['path_view'] = '';
+      $infoDirUrl['dir']  = '';
+      $infoDirUrl['file'] = '';
+      $infoDirUrl['file_name'] = '';
+      $infoDirUrl['controller_name'] = '';
+      $infoDirUrl['controller_path'] = '';
+      $infoDirUrl['url']  = '';
+      $infoDirUrl['attr'] = array();
 
-    // IMPLEMENTAR JUNTO AO BANCO DE DADOS.
+      // Inicia variáveis de controle.
+      $p_url = '';
+      $p_dir_ant = '';
+    }
 
+    // Percorre cada posição da url em busca de uma página.
+    foreach ($url as $key => $value) {
+
+      // Verifica final da url / e finaliza (site.com/url/).
+      if (empty($value)) {
+        break;
+      }
+
+      // Variáveis de Diretório
+      $p_dir = $value . '/';                                                      // Nome da pasta com / no final.
+      $p_path_dir = $infoDirUrl['url'] . $p_dir;                                     // Caminho completo da pasta.
+      $isDir = file_exists(PATH_VIEW_PAGES . $p_path_dir);                        // Verifica se é uma pasta.
+
+      // Variáveis de Arquivo
+      $p_file_view = $value . '.html';                                            // Nome do arquivo com extensão.
+      $p_path_view = $infoDirUrl['path_dir'] . $p_file_view;                         // Caminho completo do arquivo.
+      $isFile = file_exists(PATH_VIEW_PAGES . $p_path_view);                      // Verifica se é um arquivo.
+
+      // Variáveis de Controle
+      $p_url .= $value . '/';                                                     // Concatena caminho atual com anterior. (attr)
+      $p_dir_ant .= $infoDirUrl['url'];                                              // Salva a pasta anterior.
+      $infoDirUrl['url'] .= $p_dir;                                                  // Concatena caminho atual com anterior. (url)
+
+      // Caso seja um diretório
+      if ($isDir) {
+        $infoDirUrl['path_dir'] .= $p_dir;                                           // Caminho completo do diretório com / no final.
+        $infoDirUrl['dir']  = $value;                                                // Nome do diretório.
+      }
+
+      // Caso seja um arquivo
+      if ($isFile) {
+        $infoDirUrl['file'] = $value;                                                // Nome do arquivo html.
+        $infoDirUrl['file_name'] = $p_file_view;                                     // Nome do arquivo html com extensão.
+        $infoDirUrl['path_view'] = $p_path_view;                                     // Caminho completo do arquivo html.
+      }
+
+      // Caso tenha arquivo ou diretório na view.
+      if ($isFile || $isDir) {
+        $infoDirUrl['controller_name'] = ucfirst($value) . 'ControllerApi';         // Cria nome da controller.
+        $infoDirUrl['controller_path'] = $p_dir_ant . ucfirst($value) . 'ControllerApi.php'; // Cria endereço do arquivo controller.
+        $p_url = '';                                                              // Zera sequencia da url para gerar attr.
+      } else {
+        $infoDirUrl['attr'] = explode('/', $p_url);                                  // Cria vetor com os parametros após página.
+        unset($infoDirUrl['attr'][$key - 1]);                                        // Tira último parâmetro (vazio).
+      }
+    }
+    return $infoDirUrl;                                                              // Retorna array com as informações da url.
   }
 
 
@@ -525,32 +561,32 @@ class Core
     /**
      * Verifica se existe a view html.
      */
-    if (!empty(Self::$infoUrl['file'])) {
+    if (!empty(Self::$infoDirUrl['file'])) {
       $posicao = "<br>Verifica se existe a view html.";
 
-      $controller_name = Self::$infoUrl['file'] . 'ControllerPage';   // controllerPage da página atual.
-      $path = Self::$infoUrl['path'] . $controller_name . '.php';
+      $controller_name = Self::$infoDirUrl['file'] . 'ControllerPage';   // ControllerPage da página atual.
+      //$path = Self::$infoDirUrl['path'] . $controller_name . '.php';
       $path[0] = 'c';                                                 // Diretório controllerPage.
 
       /**
        * Verifica se existe pasta.
        */
-    } elseif (!empty(Self::$infoUrl['dir'])) {
+    } elseif (!empty(Self::$infoDirUrl['dir'])) {
       $posicao = "<br>Verifica se existe pasta.";
 
-      $controller_name = Self::$infoUrl['path'] . 'ControllerPage';   // controllerPage da página atual.
+      $controller_name = Self::$infoDirUrl['path'] . 'ControllerPage';   // ControllerPage da página atual.
       $controller_name[0] = 'c';                                      // Diretório controllerPage.
       $path = $controller_name . '.php';
 
       /**
        * Verifica se não tem parâmetros
        */
-    } else if (isset(Self::$infoUrl['attr'])) {
+    } else if (isset(Self::$infoDirUrl['attr'])) {
       $posicao = "<br>Verifica se não tem parâmetros.";
 
 
       // Atribui a view index.php
-      Self::$infoUrl = array(
+      Self::$infoDirUrl = array(
         'path'  => PATH_VIEW_PAGES . 'index.php',                   // Define path da view index.
         'dir'   => PATH_VIEW_PAGES,                                 // Define diretório da view index.
         'file'  => 'index',                                         // Define file index.
@@ -571,15 +607,15 @@ class Core
 
 
       // Caso tenha um parametro na url mas sem view.
-      Self::$infoUrl['path'] = PATH_VIEW_PAGES . 'Default.php';     // Define path da view default.
-      Self::$infoUrl['dir'] = PATH_VIEW_PAGES;                      // Define diretório da view default.
-      Self::$infoUrl['file'] = 'default';                           // Define file default.
+      Self::$infoDirUrl['path'] = PATH_VIEW_PAGES . 'Default.php';     // Define path da view default.
+      Self::$infoDirUrl['dir'] = PATH_VIEW_PAGES;                      // Define diretório da view default.
+      Self::$infoDirUrl['file'] = 'default';                           // Define file default.
 
       // Tira primeiro atributo, pois se refere a página.
-      unset(Self::$infoUrl['attr'][0]);
-      Self::$infoUrl['attr'] = array_values(Self::$infoUrl['attr']);
-      if (!Self::$infoUrl['attr']) {
-        Self::$infoUrl['attr'] = array(0 => null);
+      unset(Self::$infoDirUrl['attr'][0]);
+      Self::$infoDirUrl['attr'] = array_values(Self::$infoDirUrl['attr']);
+      if (!Self::$infoDirUrl['attr']) {
+        Self::$infoDirUrl['attr'] = array(0 => null);
       }
 
       // controllerPage default
@@ -587,10 +623,10 @@ class Core
     }
 
     // Verifica se existe controller.
-    if (!file_exists($path)) {
-      $controller_name = 'DefaultControllerPage';                     // Preenche com controller default.
-      $path = PATH_CONTROLLER_PAGES . 'defaultControllerPage.php';                    // Preenche com path default.
-    }
+    // if (!file_exists($path)) {
+    //   $controller_name = 'DefaultControllerPage';                     // Preenche com controller default.
+    //   $path = PATH_CONTROLLER_PAGES . 'defaultControllerPage.php';                    // Preenche com path default.
+    // }
 
     echo $posicao;
     echo '<br>';
@@ -598,15 +634,15 @@ class Core
     echo '<br>';
     print_r($path);
     echo '<br>';
-    print_r(Self::$infoUrl);
+    print_r(Self::$infoDirUrl);
     echo '<br>';
 
     // Carrega arquivo controllerPage da página autal.
-    require_once $path;
+    //require_once $path;
 
     // Instancia a classe do controllerPage e salva nos parâmetros do Core.
-    $refl = new ReflectionClass(ucfirst($controller_name));
-    return $refl->newInstanceArgs();
+    // $refl = new ReflectionClass(ucfirst($controller_name));
+    // return $refl->newInstanceArgs();
   }
 
 
@@ -636,171 +672,6 @@ class Core
 
 
 
-
-
-
-
-
-
-
-
-
-  /**
-   * Trabalha a URL amigável e parâmetros. Grava em Self::$infoUrl.
-   *
-   * @return void
-   */
-  private function checkUrl($pasta)
-  {
-    // Verifica se está na home
-    if ($_GET) {
-
-      $url = explode('/', $_GET['url']);
-      // Busca a página e retorna os attr (atributos), path do arquivo, diretorio do arquivo e nome do arquivo.
-      Self::$infoUrl = $this->verificaUrlPage(count($url), $url, $pasta);
-      // Restaura a url.
-      Self::$infoUrl['url'] = $_GET['url'];
-    } else {
-      // Caso não passe nada por URL.
-      Self::$infoUrl['attr'] = array(0 => null);
-    }
-  }
-
-
-
-
-  /**
-   * Carrega controllerPage da página atual.
-   *
-   * @return void
-   */
-  private function openControllerPage()
-  {
-
-    /**
-     * Carrega controllerPage da página atual ou controllerPage default.
-     */
-    if (isset(Self::$infoUrl['file']) && isset(Self::$infoUrl['dir'])) {
-
-      $controller_name = Self::$infoUrl['file'] . 'ControllerPage';    // controllerPage da página atual.
-      $path = Self::$infoUrl['dir'];                               // Diretório página.
-      $path[0] = 'c';                                               // Diretório controllerPage.
-      $path .= $controller_name . '.php';                           // Caminho completo controllerPage.
-
-    } else if (!isset(Self::$infoUrl['attr'])) {
-
-      // Caso não tenha parâmetro, chama a view index.php
-      Self::$infoUrl = array(
-        'file'  => 'index',                                         // Define file index.
-        'dir'   => 'v/pages',                                       // Define diretório da view index.
-        'path'  => 'v/pages/index.php',                             // Define path da view index.
-        'attr'  => array(0 => null)                                  // Define attr index.
-
-      );
-
-      $controller_name = 'IndexControllerPage';                         // Preenche com controllerPage default.
-      $path = 'c/pages/indexControllerPage.php';                        // Preenche com path default.
-
-    } else {
-
-      // Caso tenha um parametro na url mas sem view.
-      Self::$infoUrl['file'] = 'default';                          // Define file default.
-      Self::$infoUrl['dir'] = 'v/pages';                           // Define diretório da view default.
-      Self::$infoUrl['path'] = 'v/pages/default.php';              // Define path da view default.
-
-      // Tira primeiro atributo, pois se refere a página.
-      unset(Self::$infoUrl['attr'][0]);
-      Self::$infoUrl['attr'] = array_values(Self::$infoUrl['attr']);
-      if (!Self::$infoUrl['attr']) {
-        Self::$infoUrl['attr'] = array(0 => null);
-      }
-
-      // controllerPage default
-      $path = '';
-    }
-
-
-    // Verifica se existe controller.
-    if (!file_exists($path)) {
-      $controller_name = 'DefaultControllerPage';                     // Preenche com controller default.
-      $path = 'c/pages/defaultControllerPage.php';                    // Preenche com path default.
-    }
-
-    // Carrega arquivo controllerPage da página autal.
-    require_once $path;
-
-    // Instancia a classe do controllerPage e salva nos parâmetros do Core.
-    $refl = new ReflectionClass(ucfirst($controller_name));
-    $this->controllerPage = $refl->newInstanceArgs();
-  }
-
-
-
-
-  /**
-   * Carrega controllerPage da página atual.
-   *
-   * @return void
-   */
-  private function openControllerApi()
-  {
-
-    /**
-     * Carrega controllerApi da página atual ou controllerApi default.
-     */
-    if (isset(Self::$infoUrl['file']) && isset(Self::$infoUrl['dir'])) {
-
-      $controller_name = Self::$infoUrl['file'] . 'ControllerApi';    // controllerApi da página atual.
-      $path = Self::$infoUrl['dir'];                               // Diretório página.
-      //$path[0] = 'c';                                               // Diretório controllerApi.
-      $path .= $controller_name . '.php';                           // Caminho completo controllerApi.
-
-    } else if (!isset(Self::$infoUrl['attr'])) {
-
-      // Caso não tenha parâmetro, chama a view index.php
-      Self::$infoUrl = array(
-        'file'  => 'index',                                         // Define file index.
-        'dir'   => 'c/api',                                       // Define diretório da view index.
-        'path'  => 'c/api/index.php',                             // Define path da view index.
-        'attr'  => array(0 => null)                                  // Define attr index.
-
-      );
-
-      $controller_name = 'IndexControllerApi';                         // Preenche com controllerApi default.
-      $path = 'c/api/indexControllerApi.php';                        // Preenche com path default.
-
-    } else {
-
-      // Caso tenha um parametro na url mas sem view.
-      Self::$infoUrl['file'] = 'default';                          // Define file default.
-      Self::$infoUrl['dir'] = 'c/api';                           // Define diretório da view default.
-      Self::$infoUrl['path'] = 'c/api/default.php';              // Define path da view default.
-
-      // Tira primeiro atributo, pois se refere a página.
-      unset(Self::$infoUrl['attr'][0]);
-      Self::$infoUrl['attr'] = array_values(Self::$infoUrl['attr']);
-      if (!Self::$infoUrl['attr']) {
-        Self::$infoUrl['attr'] = array(0 => null);
-      }
-
-      // controllerApi default
-      $path = '';
-    }
-
-
-    // Verifica se existe controller.
-    if (!file_exists($path)) {
-      $controller_name = 'DefaultControllerPage';                     // Preenche com controller default.
-      $path = 'c/pages/defaultControllerPage.php';                    // Preenche com path default.
-    }
-
-    // Carrega arquivo controllerPage da página autal.
-    require_once $path;
-
-    // Instancia a classe do controllerPage e salva nos parâmetros do Core.
-    $refl = new ReflectionClass(ucfirst($controller_name));
-    $this->controllerPage = $refl->newInstanceArgs();
-  }
 
 
 
@@ -813,7 +684,7 @@ class Core
   private function renderPage()
   {
 
-    // Prepara o twig
+    // Puxa um template só para recarregar a página automaticamente.
     $loader = new \Twig\Loader\FilesystemLoader('v/');
     $twig = new \Twig\Environment($loader);
     $template = $twig->load('templates/default.html');
@@ -849,72 +720,5 @@ class Core
     $loader = new \Twig\Loader\ChainLoader([$vurlf, $vurlv, $html_base]);
     $twig = new \Twig\Environment($loader);
     echo $twig->render('index.html', ['name' => 'Fabien']);
-  }
-
-
-
-  /**
-   * Trabalha a URL atual e divide ela em página e parâmetros.
-   * Parâmetros de 
-   * ['url']      -> contém a Url do navegador.
-   * ['dir']      -> Caminho do diretório atual acessado.
-   * ['file']     -> Nome do arquivo da página atual acessada.
-   * ['path']     -> Caminho do diretório = arquivo.
-   * ['attr']     -> são os atributos após o file. var array.
-   *
-   * @param [int] $length
-   * @param [string] $url
-   * @return array
-   */
-  private function verificaUrlPage($length, $url, $pasta)
-  {
-    // Grava url e atributos.
-    $infoUrl['path'] = '';
-    $infoUrl['dir'] = '';
-    $infoUrl['file'] = '';
-    $infoUrl['url'] = '';
-    $infoUrl['attr'] = array();
-
-
-
-    // Finaliza na primeira posição da url.
-    if ($length > 0) {
-      $infoUrl =  $this->verificaUrlPage((int)$length - 1, $url, $pasta);
-      $infoUrl['url'] .= $url[(int)$length - 1];
-
-      // Espera proximo parâmetro.
-      $proxima = true;
-
-      // Verifica próximo parametro é uma página.
-      if (count($url) != $length) {
-        $dir = $pasta . $infoUrl['url'] . '/';
-        $file = $url[$length];
-        $path = $dir . $file . '.php';
-        $proxima = !file_exists($path);
-      }
-
-      // Monta arquivo atual.
-      $dir = $pasta;
-      $file = $infoUrl['url'];
-      $path = $dir . $file . '.php';
-
-      // Verifica se página atual existe e se não existe outra no próximo parametro.
-      if (file_exists($path) && $proxima) {
-        $infoUrl['file'] = $file;     // Grava path da página.
-        $infoUrl['url'] = '';         // Reinicia a gravação da url.
-        $infoUrl['dir'] = $dir;
-        $infoUrl['path'] = $path;
-        $infoUrl['attr'] = array(0 => null);
-        return $infoUrl;
-      }
-
-      // Monta os parametros
-      $infoUrl['attr'] = explode('/', $infoUrl['url']);
-      $infoUrl['url'] .= '/';
-      return  $infoUrl;
-    }
-
-    $infoUrl['url'] = '';
-    return $infoUrl;
   }
 }

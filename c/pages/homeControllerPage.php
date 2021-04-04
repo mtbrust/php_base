@@ -2,7 +2,7 @@
 
 class HomeControllerPage extends ControllerPage
 {
-  public function index()
+  public function pre()
   {
     echo '<br><b>view home</b></br>';
   }

@@ -1,6 +1,6 @@
 <?php
 
-class HomeControllerPage extends ControllerPage
+class ContatoControllerPage extends ControllerPage
 {
   public function pre()
   {
