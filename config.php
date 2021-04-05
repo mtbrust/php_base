@@ -62,3 +62,13 @@ define("PATH_MODEL_BD", "m/bd/");
 define("PATH_MODEL_CSS", "m/assets/css/");
 define("PATH_MODEL_IMG", "m/assets/img/");
 define("PATH_MODEL_JS", "m/assets/js/");
+
+
+
+/**
+ * PHP
+ */
+// Exibição de erros.
+// ini_set('display_errors',1);
+// ini_set('display_startup_erros',1);
+// error_reporting(E_ALL);

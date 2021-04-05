@@ -114,10 +114,10 @@ class ControllerPage
   function __construct()
   {
     // Trata o nome do controller.
-    $this->controllerName = ucfirst(Core::getInfoDirUrl()['file']);
+    $this->controllerName = Core::getInfoDirUrl('controller_name');
 
     // Pega os atributos (parametros passados pela url).
-    $this->attr = Core::getInfoDirUrl()['attr'];
+    $this->attr = Core::getInfoDirUrl('attr');
 
     // Valores default de $paramsSecurity.
     $this->paramsSecurity = array(
@@ -344,9 +344,8 @@ class ControllerPage
   public function index()
   {
     
-
-    // echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    // print_r($this->attr);
+    //echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    //print_r($this->attr);
 
     return false;
   }

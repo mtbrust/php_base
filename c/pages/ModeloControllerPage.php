@@ -79,7 +79,11 @@ class ModeloControllerPage extends ControllerPage
     $this->paramsBd = array(
       'pasta' => 'BdArquivo',   // Exemplo
     );
+
+    
   }
+
+
 
   /**
    * Quando é enviado dados via post.
@@ -90,7 +94,7 @@ class ModeloControllerPage extends ControllerPage
    */
   public function _post()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    echo '_POST - MODELO<br>';
     var_dump($_POST);
 
     return false;
@@ -106,7 +110,7 @@ class ModeloControllerPage extends ControllerPage
    */
   public function post()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    echo 'POST - MODELO<br>';
     print_r($this->attr);
 
     return false;
@@ -123,7 +127,7 @@ class ModeloControllerPage extends ControllerPage
    */
   public function put()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    echo 'PUT - MODELO<br>';
     print_r($this->attr);
 
     return false;
@@ -139,7 +143,7 @@ class ModeloControllerPage extends ControllerPage
    */
   public function get()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    echo 'GET - MODELO<br>';
     print_r($this->attr);
 
     return false;
@@ -154,8 +158,7 @@ class ModeloControllerPage extends ControllerPage
    */
   public function delete()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-
+    echo 'DELETE - MODELO<br>';
     return false;
   }
 

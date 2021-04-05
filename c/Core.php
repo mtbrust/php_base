@@ -46,11 +46,11 @@ class Core
    * @var [array]
    */
   private static $infoDirUrl = false;
-  public function getInfoDirUrl($param = false)
+  public static function getInfoDirUrl($param = null)
   {
     if ($param)
-      return $this->infoDirUrl[$param];
-    return $this->infoDirUrl;
+      return Self::$infoDirUrl[$param];
+    return Self::$infoDirUrl;
   }
 
 
@@ -119,11 +119,17 @@ class Core
     $this->requireDependences();
 
     /**
-     * Conecta com banco de dados
+     * Inicia banco de dados
+     * Cria conexão.
      */
     Bd::start();
-    print_r(BdUsuarios::getUsuarios());
-    BdCreate::create();
+    // print_r(BdUsuarios::getUsuarios());
+    // print_r(Bd::getTables('status', Bd::getConn1()));
+    // BdTablesCreate::start();
+    // BdPagesInsert::start();
+    // BdTablesDelete::start();
+    //print_r(BdPagesSelect::selectIdPage("servicos"));
+
 
 
     /**
@@ -146,14 +152,14 @@ class Core
        */
       if (VIEWS_DIR)
         Self::$infoDirUrl = $this->scanInfoDirUrl(Self::$url);
-        
+
 
       /**
        * Obtém as informações das paginas no BANCO DE DADOS em decorrência da url.
        * Caso VIEWS_BD esteja ativado no arquivo config.php
        */
       if (VIEWS_BD)
-        Self::$infoBdUrl = $this->scanInfoBdUrl(Self::$url);
+        Self::$infoBdUrl = $this->scanInfoBdUrl(Self::$url); // Pendente.
 
 
 
@@ -162,7 +168,7 @@ class Core
        * Obtém o controller da página atual. Logo após executa.
        */
       $this->controllerPage = $this->getControllerPage();
-      //$this->controllerPage->start();
+      $this->controllerPage->start();
 
 
     }
@@ -214,14 +220,19 @@ class Core
   {
     require_once 'config.php';                      // Carrega constantes.
     require 'vendor/autoload.php';                  // Carrega todas as dependências do composer.
+
     require_once 'm/bd/Bd.php';                     // Carrega classe pai banco de dados.
-    require_once 'm/bd/usuarios/BdUsuarios.php';    // Carrega classe pai banco de dados.
-    require_once 'm/bd/create/Bdcreate.php';    // Carrega classe pai banco de dados.
+    require_once 'm/bd/usuarios/BdUsuarios.php';    // Verificar se usa aqui.
+    require_once 'm/bd/tables/BdTablesCreate.php';  // Verificar se usa aqui.
+    require_once 'm/bd/tables/BdTablesDelete.php';  // Verificar se usa aqui.
+    require_once 'm/bd/pages/BdPagesInsert.php';    // Verificar se usa aqui.
+    require_once 'm/bd/pages/BdPagesSelect.php';    // Verificar se usa aqui.
+
     require_once 'c/class/controllerApi.php';       // Carrega classe pai controllerApi.
     require_once 'c/class/controllerPage.php';      // Carrega classe pai controllerPage.
     require_once 'c/class/controllerRender.php';    // Carrega classe pai controllerRender.
 
-    
+
 
     // PENDÊNCIAS
     // Carregar classes e banco de dados...
@@ -331,7 +342,7 @@ class Core
         $infoDirUrl['file']      = $value;        // Nome do arquivo html.
         $infoDirUrl['file_name'] = $p_file_view;  // Nome do arquivo html com extensão.
         $infoDirUrl['path_view'] = $p_path_view;  // Caminho completo do arquivo html.
-      } else if ($isFileIndexindex && $isDir){
+      } else if ($isFileIndexindex && $isDir) {
         $infoDirUrl['file']      = 'index';             // Nome do arquivo html.
         $infoDirUrl['file_name'] = 'index.html';        // Nome do arquivo html com extensão.
         $infoDirUrl['path_view'] = $p_path_view_index;  // Caminho completo do arquivo html.
@@ -550,13 +561,49 @@ class Core
 
 
   /**
-   * Carrega controllerPage da página atual.
+   * Obtém controllerPage da página atual.
    *
    * @return Controller
    */
   private function getControllerPage()
   {
 
+    /**
+     * Verifica controller dos diretórios.
+     */
+    if (VIEWS_DIR) {
+
+      // Seta parâmetros default para a controller da pagina.
+      $controller_name = 'DefaultControllerPage';
+      $controller_path = PATH_CONTROLLER_PAGES . 'defaultControllerPage.php';
+
+      // Verifica se controller_path não está vazio.
+      if (!empty(Self::$infoDirUrl['controller_path'])) {
+        // Verifica se controller da página existe.
+        if (file_exists(PATH_CONTROLLER_PAGES . Self::$infoDirUrl['controller_path'])) {
+          // Arquivo existe, então chama controller da página.
+          $controller_path = PATH_CONTROLLER_PAGES . Self::$infoDirUrl['controller_path'];
+          $controller_name = Self::$infoDirUrl['controller_name'];
+        }
+      }
+
+      // Carrega arquivo controllerPage da página autal.
+      require_once $controller_path;
+
+      // Instancia a classe do controllerPage e salva nos parâmetros do Core.
+      $refl = new ReflectionClass(ucfirst($controller_name));
+      return $refl->newInstanceArgs();
+    }
+
+
+    $controller_name = 'DefaultControllerPage';                       // Preenche com controller default.
+    $path_dir = PATH_CONTROLLER_PAGES . 'defaultControllerPage.php';  // Preenche com path default.
+
+    /**
+     * Verifica controller do BD.
+     */
+    if (VIEWS_BD) {
+    }
 
     /**
      * Verifica se existe a view html.
