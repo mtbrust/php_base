@@ -4,16 +4,33 @@
 /**
  * Configurações de acesso ao banco de dados.
  */
-// Acesso ao banco de dados PDO 01.
-define("DB1", true);                  // Conexão será usada?
-define("DB1_DBMANAGER", "mysql");
-define("DB1_HOST", "localhost");
-define("DB1_PORT", "3306");
-define("DB1_USER", "root");
-define("DB1_PASSWORD", "");
-define("DB1_DBNAME", "base_php");
-define("DB1_CHARSET", "utf8");
-define("DB1_PREFIX_TABLE", "db1_");
+
+// True para coopama. False para pessoal.
+$hostCoopama = true;
+
+if ($hostCoopama) {
+    // Acesso ao banco de dados PDO 01.
+    define("DB1", true);                  // Conexão será usada?
+    define("DB1_DBMANAGER", "mysql");
+    define("DB1_HOST", "localhost");
+    define("DB1_PORT", "3306");
+    define("DB1_USER", "root");
+    define("DB1_PASSWORD", "");
+    define("DB1_DBNAME", "coopama_sitecoopama");
+    define("DB1_CHARSET", "utf8");
+    define("DB1_PREFIX_TABLE", "coopama_");
+} else {
+    // Acesso ao banco de dados PDO 01.
+    define("DB1", true);                  // Conexão será usada?
+    define("DB1_DBMANAGER", "mysql");
+    define("DB1_HOST", "localhost");
+    define("DB1_PORT", "3306");
+    define("DB1_USER", "root");
+    define("DB1_PASSWORD", "");
+    define("DB1_DBNAME", "base_php");
+    define("DB1_CHARSET", "utf8");
+    define("DB1_PREFIX_TABLE", "db1_");
+}
 
 // Acesso ao banco de dados PDO 02.
 define("DB2", false);                  // Conexão será usada?
@@ -32,7 +49,11 @@ define("DB2_PREFIX_TABLE", "db2_");
  * Configurações de controle do site.
  */
 // Url raíz do site.
-define("URL_RAIZ", "http://localhost/base_php/");
+if ($hostCoopama)
+    define("URL_RAIZ", "http://sitecoopama.local/");
+else
+    define("URL_RAIZ", "http://localhost/base_php/");
+
 
 // Site vai utilizar views e controllers dos diretórios (v e c)?
 define("VIEWS_DIR", true);
@@ -63,6 +84,8 @@ define("PATH_MODEL_ASSETS", "m/assets/");
 define("PATH_MODEL_CSS", "m/assets/css/");
 define("PATH_MODEL_IMG", "m/assets/img/");
 define("PATH_MODEL_JS", "m/assets/js/");
+define("PATH_MODEL_UPLOAD", "m/assets/upload/");
+define("PATH_MODEL_ADMIN", "m/assets/admin/");
 
 
 

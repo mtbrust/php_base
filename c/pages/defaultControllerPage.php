@@ -13,7 +13,7 @@ class DefaultControllerPage extends ControllerPage
     // print_r($this->attr);
     // echo '<br>Path: ' . Core::getUrlFinal()['path'];
 
-    echo '<br>Estou na controller Default.<br>';
+    echo '<p>Estou na controller Default.<p><p>Crie uma controller.</p>';
 
     // Valores para serem inseridos no corpo da página.
     $this->paramsPage = array(

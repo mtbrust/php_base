@@ -1,24 +1,24 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
+    'pretty_version' => 'dev-main',
+    'version' => 'dev-main',
     'aliases' => 
     array (
     ),
-    'reference' => 'd6438e21819c32ae34c8ea0ff3ef0a91fc5600b6',
+    'reference' => '390a18a60ae7fc41536dd9f90f2a859acc053213',
     'name' => '__root__',
   ),
   'versions' => 
   array (
     '__root__' => 
     array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
+      'pretty_version' => 'dev-main',
+      'version' => 'dev-main',
       'aliases' => 
       array (
       ),
-      'reference' => 'd6438e21819c32ae34c8ea0ff3ef0a91fc5600b6',
+      'reference' => '390a18a60ae7fc41536dd9f90f2a859acc053213',
     ),
     'symfony/polyfill-ctype' => 
     array (

@@ -175,7 +175,6 @@ class ControllerPage
     // Exemplo: 'p_nome' => 'Mateus',
     // Exemplo uso view: <p><b>Nome: </b> {{p_nome}}</p>
     $this->paramsPage = array(
-      'PATH_MODEL_ASSETS' => URL_RAIZ . PATH_MODEL_ASSETS,   // Path assets.
       'nome'              => 'Mateus',            // Exemplo
     );
 
@@ -388,6 +387,13 @@ class ControllerPage
 
     // Carregar os outros parâmetros.
     // Mandar os parâmetros para dentro do render.
+
+    // Carrega as controllers
+    foreach ($this->paramsBd as $key => $value) {
+      echo $value;
+    }
+    //$path_dir = PATH_CONTROLLER_PAGES . 'defaultControllerPage.php';  // Preenche com path default.
+    //require_once $path_dir;
   }
 }
 
