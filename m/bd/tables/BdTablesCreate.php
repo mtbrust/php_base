@@ -18,6 +18,18 @@ class BdTablesCreate extends Bd
     Self::createUsuarios();
     Self::createPageInfo();
     Self::createPageContent();
+
+
+    // BD RAFA
+    Self::createAreas();
+    Self::createBanners();
+    Self::createEventos();
+    Self::createGaleriaFotos();
+    Self::createInnerNoticiasAreas();
+    Self::createNoticias();
+    Self::createUsuario();
+
+    
   }
 
 
@@ -141,7 +153,7 @@ class BdTablesCreate extends Bd
     return Self::createTable($tabela_name, $fields);
   }
 
-  
+
 
 
   /**
@@ -185,6 +197,183 @@ class BdTablesCreate extends Bd
       "idPage INT NULL",
       "idRest INT NULL",
       "content MEDIUMTEXT NULL",
+    ];
+    return Self::createTable($tabela_name, $fields);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // TODO: **********************************************************************************************
+  // TODO: BD RAFAEL
+
+  /**
+   * Cria tabela areas
+   * 
+   *
+   * @return void
+   */
+  private static function createAreas()
+  {
+    $tabela_name = 'areas';
+    $fields = [
+      "id INT NOT NULL AUTO_INCREMENT primary key",
+      "codArea int NOT NULL",
+      "descricao varchar(50) NOT NULL",
+    ];
+    return Self::createTable($tabela_name, $fields);
+  }
+
+
+
+
+  /**
+   * Cria tabela banners
+   *
+   * @return void
+   */
+  private static function createBanners()
+  {
+    $tabela_name = 'banners';
+    $fields = [
+      "id INT NOT NULL AUTO_INCREMENT primary key",
+      "idDestaque int NOT NULL",
+      "titulo varchar(250) NOT NULL",
+      "imagem varchar(250) NOT NULL",
+      "link varchar(250) NOT NULL",
+      "ativo int NOT NULL",
+      "dataPostagem timestamp NOT NULL",
+    ];
+    return Self::createTable($tabela_name, $fields);
+  }
+
+
+
+
+  /**
+   * Cria tabela eventos
+   *
+   * @return void
+   */
+  private static function createEventos()
+  {
+    $tabela_name = 'eventos';
+    $fields = [
+      "id INT NOT NULL AUTO_INCREMENT primary key",
+      "idEvento int NOT NULL",
+      "codEvento int NOT NULL COMMENT 'Tipo de evento que é(feiras, ago etc..)'",
+      "titulo varchar(200) NOT NULL",
+      "dataEvento date NOT NULL",
+      "infoEvento text NOT NULL COMMENT 'Info/descrição do evento'",
+      "imagemEvento varchar(200) NOT NULL COMMENT 'Imagem que vai anexada no evento'",
+      "statusEvento int NOT NULL",
+    ];
+    return Self::createTable($tabela_name, $fields);
+  }
+
+
+
+
+  /**
+   * Cria tabela galeriaFotos
+   *
+   * @return void
+   */
+  private static function createGaleriaFotos()
+  {
+    $tabela_name = 'galeriaFotos';
+    $fields = [
+      "id INT NOT NULL AUTO_INCREMENT primary key",
+      "idFoto int NOT NULL",
+      "idGaleria char(45) NOT NULL",
+      "nomeFoto varchar(50) DEFAULT NULL",
+      "ordem int DEFAULT NULL",
+      "texto varchar(300) DEFAULT NULL",
+    ];
+    return Self::createTable($tabela_name, $fields);
+  }
+
+
+
+
+  /**
+   * Cria tabela innerNoticiasAreas
+   *
+   * @return void
+   */
+  private static function createInnerNoticiasAreas()
+  {
+    $tabela_name = 'innerNoticiasAreas';
+    $fields = [
+      "id INT NOT NULL AUTO_INCREMENT primary key",
+      "codNoticia int NOT NULL",
+      "codArea int NOT NULL"
+    ];
+    return Self::createTable($tabela_name, $fields);
+  }
+
+
+
+
+  /**
+   * Cria tabela noticias
+   *
+   * @return void
+   */
+  private static function createNoticias()
+  {
+    $tabela_name = 'noticias';
+    $fields = [
+      "id INT NOT NULL AUTO_INCREMENT primary key",
+      "codNoticia int NOT NULL",
+      "titulo varchar(120) NOT NULL",
+      "previa varchar(280) DEFAULT NULL",
+      "texto longtext NULL",
+      "imagemDestaque varchar(280) NOT NULL",
+      "dataPostagem timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP",
+      "status varchar(30) NOT NULL",
+      "fixaTopo char(1) NOT NULL",
+    ];
+    return Self::createTable($tabela_name, $fields);
+  }
+
+
+
+
+  /**
+   * Cria tabela usuarios
+   *
+   * @return void
+   */
+  private static function createUsuario()
+  {
+    $tabela_name = 'usuarios';
+    $fields = [
+      "id INT NOT NULL AUTO_INCREMENT primary key",
+      "matricula int NOT NULL",
+      "senha varchar(45) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL",
+      "nome varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL",
+      "tipoCadastro char(1) NOT NULL COMMENT 'M->Master, A->Administradores\r\n'",
+      "ativo char(1) NOT NULL",
     ];
     return Self::createTable($tabela_name, $fields);
   }

@@ -49,15 +49,25 @@ class ControllerRender
       'html' => '<div id="html"><div id="head"><title>Banco de dados</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
       'head' => '{% block head %}<div value="teste">array head</div>{% endblock %}',
     ]);
-
+    
+    $base = '';
+    foreach (array_keys($paramsTemplate) as $key => $value) {
+      if (!$key == 0)
+      $base .= '{% use "'. $value .'" %}';
+    }
+    // print_r(array_keys($paramsTemplate));
+    // echo '<br>';
+    // print_r(($paramsTemplate));
+    // echo "<h1>$base</h1>";
+    // exit;
     // Base html
     $html_base = new \Twig\Loader\ArrayLoader([
-      'base' => '{% extends "html" %}{% use "head" %}{% use "top" %}{% use "header" %}{% use "body_pre" %}{% use "corpo" %}{% use "body_pos" %}{% use "footer" %}{% use "bottom" %}'
+      'base' => '{% extends "html" %}' . $base
     ]);
 
     // Sequência de prioridade. Arquivos físicos depois Virtuais.
     $loader = new \Twig\Loader\ChainLoader([$vurlf, $vurlv, $html_base]);
     $twig   = new \Twig\Environment($loader);
-    echo $twig->render('base', $paramsPage);
+    echo $twig->render('base', array_merge($paramsView, $paramsPage));
   }
 }

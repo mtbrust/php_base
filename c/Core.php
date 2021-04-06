@@ -164,47 +164,12 @@ class Core
 
 
 
-
       /**
        * Obtém o controller da página atual. Logo após executa.
        */
       $this->controllerPage = $this->getControllerPage();
       $this->controllerPage->start();
     }
-
-
-
-
-
-
-    /*
-    // Caso o usuário acesse a API. Senão procura as views.
-    if ($_GET && $_GET['url'][0] == 'a' && $_GET['url'][1] == 'p' && $_GET['url'][2] == 'i') {
-
-      // Trabalha a URL amigável e obtém a view e os parâmetros.
-      $this->checkUrl('c/');
-
-      echo "<br><hr>Oi?<br>";
-      print_r(Self::$infoDirUrl);
-
-      // Carrega controller da página atual e executa.
-      $this->openControllerApi();
-      $this->controllerApi->start();
-    } else {
-
-      // Trabalha a URL amigável e obtém a view e os parâmetros.
-      $this->checkUrl('v/pages/');
-
-      // Carrega controller da página atual e executa.
-      $this->openControllerPage();
-      $this->controllerPage->start();
-    }
-
-    print_r(Self::$infoDirUrl);
-    */
-
-    // Desenha a página para usuário. RETIRAR POIS FICA NA CONTROLLER RENDER.
-    // $this->renderPage();
   }
 
 
@@ -306,55 +271,58 @@ class Core
     foreach ($url as $key => $value) {
 
       // Verifica final da url / e finaliza (site.com/url/).
-      if (empty($value)) {
-        break;
-      }
+      if (!empty($value)) {
 
-      // Variáveis de Diretório
-      $p_dir      = $value . '/';                                // Nome da pasta com / no final.
-      $p_path_dir = $infoDirUrl['url'] . $p_dir;                 // Caminho completo da pasta.
-      $isDir      = file_exists(PATH_VIEW_PAGES . $p_path_dir);  // Verifica se é uma pasta.
 
-      // Variáveis de Arquivo
-      $p_file_view = $value . '.html';                             // Nome do arquivo com extensão.
-      $p_path_view = $infoDirUrl['path_dir'] . $p_file_view;       // Caminho completo do arquivo.
-      $isFile      = file_exists(PATH_VIEW_PAGES . $p_path_view);  // Verifica se é um arquivo.
+        // Variáveis de Diretório
+        $p_dir      = $value . '/';                                // Nome da pasta com / no final.
+        $p_path_dir = $infoDirUrl['url'] . $p_dir;                 // Caminho completo da pasta.
+        $isDir      = file_exists(PATH_VIEW_PAGES . $p_path_dir);  // Verifica se é uma pasta.
 
-      // Variáveis de Arquivo Index
-      $p_file_view_index = 'index.html';                                       // Nome do arquivo com extensão.
-      $p_path_view_index = $p_path_dir . $p_file_view_index;       // Caminho completo do arquivo.
-      $isFileIndexindex  = file_exists(PATH_VIEW_PAGES . $p_path_view_index);  // Verifica se é um arquivo.
+        // Variáveis de Arquivo
+        $p_file_view = $value . '.html';                             // Nome do arquivo com extensão.
+        $p_path_view = $infoDirUrl['path_dir'] . $p_file_view;       // Caminho completo do arquivo.
+        $isFile      = file_exists(PATH_VIEW_PAGES . $p_path_view);  // Verifica se é um arquivo.
 
-      // Variáveis de Controle
-      $p_url .= $value . '/';                                                   // Concatena caminho atual com anterior. (attr)
-      $p_dir_ant .= $infoDirUrl['url'];                                              // Salva a pasta anterior.
-      $infoDirUrl['url'] .= $p_dir;                                                  // Concatena caminho atual com anterior. (url)
+        // echo '<br>' . $p_path_view;
+        // echo '<br>' . $isFile;
 
-      // Caso seja um diretório
-      if ($isDir) {
-        $infoDirUrl['path_dir'] .= $p_dir;                                           // Caminho completo do diretório com / no final.
-        $infoDirUrl['dir']  = $value;                                                // Nome do diretório.
-      }
+        // Variáveis de Arquivo Index
+        $p_file_view_index = 'index.html';                                       // Nome do arquivo com extensão.
+        $p_path_view_index = $p_path_dir . $p_file_view_index;                   // Caminho completo do arquivo.
+        $isFileIndexindex  = file_exists(PATH_VIEW_PAGES . $p_path_view_index);  // Verifica se é um arquivo.
 
-      // Caso seja um arquivo
-      if ($isFile) {
-        $infoDirUrl['file']      = $value;        // Nome do arquivo html.
-        $infoDirUrl['file_name'] = $p_file_view;  // Nome do arquivo html com extensão.
-        $infoDirUrl['path_view'] = $p_path_view;  // Caminho completo do arquivo html.
-      } else if ($isFileIndexindex && $isDir) {
-        $infoDirUrl['file']      = 'index';             // Nome do arquivo html.
-        $infoDirUrl['file_name'] = 'index.html';        // Nome do arquivo html com extensão.
-        $infoDirUrl['path_view'] = $p_path_view_index;  // Caminho completo do arquivo html.
-      }
+        // Variáveis de Controle
+        $p_url .= $value . '/';                                                   // Concatena caminho atual com anterior. (attr)
+        $p_dir_ant .= $infoDirUrl['url'];                                              // Salva a pasta anterior.
+        $infoDirUrl['url'] .= $p_dir;                                                  // Concatena caminho atual com anterior. (url)
 
-      // Caso tenha arquivo ou diretório na view.
-      if ($isFile || $isDir || $isFileIndexindex) {
-        $infoDirUrl['controller_name'] = ucfirst($value) . 'ControllerPage';                   // Cria nome da controller.
-        $infoDirUrl['controller_path'] = $p_dir_ant . ucfirst($value) . 'ControllerPage.php';  // Cria endereço do arquivo controller.
-        $p_url = '';                                                   // Zera sequencia da url para gerar attr.
-      } else {
-        $infoDirUrl['attr'] = explode('/', $p_url);     // Cria vetor com os parametros após página.
-        unset($infoDirUrl['attr'][$key]);         // Tira último parâmetro (vazio).
+        // Caso seja um diretório
+        if ($isDir) {
+          $infoDirUrl['path_dir'] .= $p_dir;                                           // Caminho completo do diretório com / no final.
+          $infoDirUrl['dir']  = $value;                                                // Nome do diretório.
+        }
+
+        // Caso seja um arquivo
+        if ($isFile) {
+          $infoDirUrl['file']      = $value;        // Nome do arquivo html.
+          $infoDirUrl['file_name'] = $p_file_view;  // Nome do arquivo html com extensão.
+          $infoDirUrl['path_view'] = $p_path_view;  // Caminho completo do arquivo html.
+        } else if ($isFileIndexindex && $isDir) {
+          $infoDirUrl['file']      = 'index';             // Nome do arquivo html.
+          $infoDirUrl['file_name'] = 'index.html';        // Nome do arquivo html com extensão.
+          $infoDirUrl['path_view'] = $p_path_view_index;  // Caminho completo do arquivo html.
+        }
+
+        // Caso tenha arquivo ou diretório na view.
+        if ($isFile || $isDir || $isFileIndexindex) {
+          $infoDirUrl['controller_name'] = ucfirst($value) . 'ControllerPage';                   // Cria nome da controller.
+          $infoDirUrl['controller_path'] = $p_dir_ant . ucfirst($value) . 'ControllerPage.php';  // Cria endereço do arquivo controller.
+          $p_url = '';                                                   // Zera sequencia da url para gerar attr.
+        } else {
+          $infoDirUrl['attr'] = explode('/', $p_url);     // Cria vetor com os parametros após página.
+          unset($infoDirUrl['attr'][$key]);         // Tira último parâmetro (vazio).
+        }
       }
     }
     return $infoDirUrl;                                                              // Retorna array com as informações da url.
@@ -580,6 +548,7 @@ class Core
       if (!empty(Self::$infoDirUrl['controller_path'])) {
         // Verifica se controller da página existe.
         if (file_exists(PATH_CONTROLLER_PAGES . Self::$infoDirUrl['controller_path'])) {
+          
           // Arquivo existe, então chama controller da página.
           $controller_path = PATH_CONTROLLER_PAGES . Self::$infoDirUrl['controller_path'];
           $controller_name = Self::$infoDirUrl['controller_name'];
@@ -689,89 +658,5 @@ class Core
     // Instancia a classe do controllerPage e salva nos parâmetros do Core.
     // $refl = new ReflectionClass(ucfirst($controller_name));
     // return $refl->newInstanceArgs();
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /**
-   * Desenha a página para usuário.
-   *
-   * @return void
-   */
-  private function renderPage()
-  {
-
-    // Puxa um template só para recarregar a página automaticamente.
-    $loader = new \Twig\Loader\FilesystemLoader('v/');
-    $twig = new \Twig\Environment($loader);
-    $template = $twig->load('templates/default.html');
-
-    $parametros = array();
-    $parametros['nome'] = "Mateus";
-
-    $conteudo = $template->render($parametros);
-    echo $conteudo;
-    //echo $this->controllerPage->getParamsTemplate('template');
-    echo '<hr>';
-
-
-
-
-
-
-
-
-
-    // Arquivos físicos.
-    $vurlf = new \Twig\Loader\ArrayLoader([
-      'html' => '<div id="html"><div id="head"><title>Diretótio</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
-      'head' => '{% block head %}<div value="teste">Head Diretório.</div>{% endblock %}',
-    ]);
-
-    // Arquivos virtuais
-    $vurlv = new \Twig\Loader\ArrayLoader([
-      'html' => '<div id="html"><div id="head"><title>Banco de dados</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
-      'head' => '{% block head %}<div value="teste">array head</div>{% endblock %}',
-    ]);
-
-    // Base html
-    $html_base = new \Twig\Loader\ArrayLoader([
-      'index.html' => '{% extends "html" %}{% use "head" %}{% block body %}Dentro: {{ name }}{% endblock %} ',
-      //'head' => '{% block head %}<div value="teste">teste head</div>{% endblock %}',
-    ]);
-
-    // Sequência de prioridade. Arquivos físicos depois Virtuais.
-    $loader = new \Twig\Loader\ChainLoader([$vurlf, $vurlv, $html_base]);
-    $twig   = new \Twig\Environment($loader);
-    echo $twig->render('index.html', ['name' => 'Mateus']);
   }
 }
