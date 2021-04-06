@@ -59,6 +59,7 @@ define("PATH_CONTROLLER_API", "c/api/");
 // Define caminhos para as pastas de modelo.
 define("PATH_MODEL", "m/");
 define("PATH_MODEL_BD", "m/bd/");
+define("PATH_MODEL_ASSETS", "m/assets/");
 define("PATH_MODEL_CSS", "m/assets/css/");
 define("PATH_MODEL_IMG", "m/assets/img/");
 define("PATH_MODEL_JS", "m/assets/js/");

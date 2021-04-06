@@ -152,6 +152,7 @@ class Core
        */
       if (VIEWS_DIR)
         Self::$infoDirUrl = $this->scanInfoDirUrl(Self::$url);
+      //print_r(Self::$infoDirUrl);
 
 
       /**
@@ -169,8 +170,6 @@ class Core
        */
       $this->controllerPage = $this->getControllerPage();
       $this->controllerPage->start();
-
-
     }
 
 
@@ -204,8 +203,8 @@ class Core
     print_r(Self::$infoDirUrl);
     */
 
-    // Desenha a página para usuário.
-    $this->renderPage();
+    // Desenha a página para usuário. RETIRAR POIS FICA NA CONTROLLER RENDER.
+    // $this->renderPage();
   }
 
 
@@ -747,25 +746,32 @@ class Core
 
 
 
+
+
+
+
+
     // Arquivos físicos.
     $vurlf = new \Twig\Loader\ArrayLoader([
-      'base.html' => 'Físico  {% block content %}{% endblock %}',
+      'html' => '<div id="html"><div id="head"><title>Diretótio</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
+      'head' => '{% block head %}<div value="teste">Head Diretório.</div>{% endblock %}',
     ]);
 
     // Arquivos virtuais
     $vurlv = new \Twig\Loader\ArrayLoader([
-      'base.html' => 'Virtual {% block content %}{% endblock %}',
+      'html' => '<div id="html"><div id="head"><title>Banco de dados</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
+      'head' => '{% block head %}<div value="teste">array head</div>{% endblock %}',
     ]);
 
     // Base html
     $html_base = new \Twig\Loader\ArrayLoader([
-      'index.html' => '{% extends "base.html" %}{% block content %}oi: {{ name }}{% endblock %}',
-      'base.html'  => 'Default',
+      'index.html' => '{% extends "html" %}{% use "head" %}{% block body %}Dentro: {{ name }}{% endblock %} ',
+      //'head' => '{% block head %}<div value="teste">teste head</div>{% endblock %}',
     ]);
 
     // Sequência de prioridade. Arquivos físicos depois Virtuais.
     $loader = new \Twig\Loader\ChainLoader([$vurlf, $vurlv, $html_base]);
-    $twig = new \Twig\Environment($loader);
-    echo $twig->render('index.html', ['name' => 'Fabien']);
+    $twig   = new \Twig\Environment($loader);
+    echo $twig->render('index.html', ['name' => 'Mateus']);
   }
 }

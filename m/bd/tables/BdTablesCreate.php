@@ -31,6 +31,18 @@ class BdTablesCreate extends Bd
     $tabela_name = 'login';
     $fields = [
       "id INT NOT NULL AUTO_INCREMENT primary key",
+      "full_name     VARCHAR(160) NULL",
+      "first_name    VARCHAR(40) NULL",
+      "last_name     VARCHAR(40) NULL",
+      "email         VARCHAR(160) NOT NULL",
+      "user_name     VARCHAR(32) NOT NULL",
+      "senha         VARCHAR(32) NOT NULL",
+      "cpf           VARCHAR(11) NULL",
+      "telefone      INT(11) NULL",
+      "active        BOOLEAN NULL",
+      "id_status     INT NULL",
+      "obs           VARCHAR(255) NULL",
+      "dt_create     DATETIME NULL",
     ];
     return Self::createTable($tabela_name, $fields);
   }

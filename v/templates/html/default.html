@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {{head}}
+  {% block head %}{% endblock %}
 </head>
 <body>
-  {{top}}
-  {{header}}
-  {{body_pre}}
-  {{corpo}}
-  {{body_pos}}
-  {{bottom}}
-  {{footer}}
-  {{body_includes}}
+  {% block top %}{% endblock %}
+  {% block header %}{% endblock %}
+  {% block body_pre %}{% endblock %}
+  {% block corpo %}{% endblock %}
+  {% block body_pos %}{% endblock %}
+  {% block footer %}{% endblock %}
+  {% block bottom %}{% endblock %}
 </body>
 </html>

@@ -31,16 +31,16 @@ class ModeloControllerPage extends ControllerPage
 
     // Valores default de $paramsTemplate a partir da pasta template.
     $this->paramsTemplate = array(
-      'html'        => 'default',   // Template HTML
-      'head'        => 'default',   // <head> da página.
-      'top'         => 'default',   // Topo da página.
-      'header'      => 'default',   // Menu da página.
-      //'body'        => 'default',   // Reservado para arquivo html.
-      'body_pre'    => 'default',   // Antes do CORPO dentro body.
-      'body_pos'    => 'default',   // Depois do CORPO dentro body.
-      'footer'      => 'default',   // footer da página.
-      'botton'      => 'default',   // Fim da página.
-      'maintenance' => 'default',   // Página de manutenção (quando controller true).
+      'html'        => 'paper',   // Template HTML
+      'head'        => 'paper',   // <head> da página.
+      'top'         => 'paper',   // Topo da página.
+      'header'      => 'paper',   // Menu da página.
+      //'corpo'        => 'default',   // Reservado para arquivo html.
+      'body_pre'    => 'paper',   // Antes do CORPO dentro body.
+      'body_pos'    => 'paper',   // Depois do CORPO dentro body.
+      'footer'      => 'paper',   // footer da página.
+      'bottom'      => 'paper',   // Fim da página.
+      //'maintenance' => 'paper',   // Página de manutenção (quando controller true).
     );
 
     // Objetos para serem inseridos dentro de partes do template.
@@ -68,9 +68,8 @@ class ModeloControllerPage extends ControllerPage
     // Valores para serem inseridos no corpo da página.
     // Exemplo: 'p_nome' => 'Mateus',
     // Exemplo uso view: <p><b>Nome: </b> {{p_nome}}</p>
-    $this->paramsPage = array(
-      'nome' => 'Mateus',   // Exemplo
-    );
+    $this->paramsPage['nome'] = 'Mateus';   // Exemplo
+    
 
     // Otimização das funções de banco de dados que serão usadas na controller.
     // Pasta e controller.

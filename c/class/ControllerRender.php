@@ -3,64 +3,61 @@
 class ControllerRender
 {
 
-
+  // Não precisa mais.
   public function renderView($paramsTemplate, $paramsView)
   {
-    $view = '';
-    return $view;
+    // Puxa um template só para recarregar a página automaticamente.
+    // $loader = new \Twig\Loader\FilesystemLoader('v/');
+    // $twig = new \Twig\Environment($loader);
+    // $template = $twig->load('templates/default.html');
+
+    // $parametros = array();
+    // $parametros['nome'] = "Mateussssss";
+
+    // $conteudo = $template->render($parametros);
+    // echo $conteudo;
+    // //echo $this->controllerPage->getParamsTemplate('template');
+    // echo '<hr>';
   }
 
-  public function renderTemplate($template, $dados)
+  public static function render($paramsSecurity, $paramsController, $paramsTemplate, $paramsTemplateObjs, $paramsView, $paramsPage)
   {
-
-    return $template;
-  }
-
-  private function render($view, $params)
-  {
-    // Prepara o twig
-    $loader = new \Twig\Loader\FilesystemLoader('v/');
-    $twig = new \Twig\Environment($loader);
-    $template = $twig->load('templates/' . $this->controllerView->getParamsTemplate('template') . '.html');
-
-    $params = array();
-    $params['nome'] = "Mateus";
-
-    $conteudo = $template->render($params);
-    echo $conteudo;
-    echo $this->controllerView->getParamsTemplate('template');
+    
 
 
 
 
+    // // Arquivos físicos.
+    // $vurlf = new \Twig\Loader\ArrayLoader([
+    //   'html' => '<div id="html"><div id="head"><title>Diretótio</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
+    //   'head' => '{% block head %}<div value="teste">Head Diretório.</div>{% endblock %}',
+    //   'top' => '',
+    //   'header' => '',
+    //   'body_pre' => '',
+    //   'body_pos' => '',
+    //   'footer' => '',
+    //   'bottom' => '',
+    // ]);
 
-    // IMPLEMENTAR ESSE
     // Arquivos físicos.
+    $vurlf = new \Twig\Loader\ArrayLoader(
+      $paramsTemplate
+    );
 
-    // Templates Objs
-    $templateObjs = new \Twig\Loader\ArrayLoader([
-      'base.html' => 'Virtual {% block content %}{% endblock %}',
-    ]);
-
-    // Templates do diretório.
-    $templateDir = new \Twig\Loader\ArrayLoader([
-      'base.html' => 'Físico  {% block content %}{% endblock %}',
-    ]);
-
-    // Templates do banco de dados
-    $templateBd = new \Twig\Loader\ArrayLoader([
-      'base.html' => 'Virtual {% block content %}{% endblock %}',
+    // Arquivos virtuais
+    $vurlv = new \Twig\Loader\ArrayLoader([
+      'html' => '<div id="html"><div id="head"><title>Banco de dados</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
+      'head' => '{% block head %}<div value="teste">array head</div>{% endblock %}',
     ]);
 
     // Base html
-    $templateHtml = new \Twig\Loader\ArrayLoader([
-      'index.html' => '{% extends "base.html" %}{% block content %}oi: {{ name }}{% endblock %}',
-      'base.html'  => 'Default',
+    $html_base = new \Twig\Loader\ArrayLoader([
+      'base' => '{% extends "html" %}{% use "head" %}{% use "top" %}{% use "header" %}{% use "body_pre" %}{% use "corpo" %}{% use "body_pos" %}{% use "footer" %}{% use "bottom" %}'
     ]);
 
     // Sequência de prioridade. Arquivos físicos depois Virtuais.
-    $loader = new \Twig\Loader\ChainLoader([$templateDir, $templateBd, $templateHtml]);
-    $twig = new \Twig\Environment($loader);
-    echo $twig->render('index.html', ['name' => 'Fabien']);
+    $loader = new \Twig\Loader\ChainLoader([$vurlf, $vurlv, $html_base]);
+    $twig   = new \Twig\Environment($loader);
+    echo $twig->render('base', $paramsPage);
   }
 }

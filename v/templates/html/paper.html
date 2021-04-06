@@ -1,0 +1,20 @@
+<html lang="pt-br">
+<head>
+    {% block head %}{% endblock %}
+</head>
+<body>    
+    <div class="wrapper ">
+        {% block header %}{% endblock %}
+        <div class="main-panel">
+            {% block top %}{% endblock %}
+        </div>
+        
+        {% block body_pre %}{% endblock %}
+        {% block corpo %}{% endblock %}
+        {% block body_pos %}{% endblock %}
+    </div>
+    
+    {% block footer %}{% endblock %}
+    {% block bottom %}{% endblock %}
+</body>
+</html>

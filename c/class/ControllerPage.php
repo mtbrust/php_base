@@ -141,11 +141,11 @@ class ControllerPage
       'head'        => 'default',   // <head> da página.
       'top'         => 'default',   // Topo da página.
       'header'         => 'default',   // Menu da página.
-      // 'body'    => 'default',    // Reservado para CORPO.
+      // 'corpo'    => 'default',    // Reservado para CORPO.
       'body_pre'    => 'default',   // Antes do CORPO dentro body.
       'body_pos'    => 'default',   // Depois do CORPO dentro body.
       'footer'      => 'default',   // footer da página.
-      'botton'      => 'default',   // Fim da página.
+      'bottom'      => 'default',   // Fim da página.
       'maintenance' => 'default',   // Página de manutenção (quando controller true).
     );
 
@@ -175,7 +175,8 @@ class ControllerPage
     // Exemplo: 'p_nome' => 'Mateus',
     // Exemplo uso view: <p><b>Nome: </b> {{p_nome}}</p>
     $this->paramsPage = array(
-      'nome' => 'Mateus',   // Exemplo
+      'PATH_MODEL_ASSETS' => URL_RAIZ . PATH_MODEL_ASSETS,   // Path assets.
+      'nome'              => 'Mateus',            // Exemplo
     );
 
     // Otimização das funções de banco de dados que serão usadas na controller.
@@ -347,6 +348,10 @@ class ControllerPage
     //echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
     //print_r($this->attr);
 
+    
+    
+    ControllerRender::render($this->paramsSecurity, $this->paramsController, $this->paramsTemplate, $this->paramsTemplateObjs, $this->paramsView, $this->paramsPage);
+
     return false;
   }
 
@@ -372,7 +377,17 @@ class ControllerPage
    */
   public function process()
   {
-    echo '<br>Chamar as dependências.';
+    
+    
+    // Carrega os arquivos no parâmetro.
+    foreach ($this->paramsTemplate as $key => $value) {
+      $this->paramsTemplate[$key] = file_get_contents(PATH_VIEW_TEMPLATES . $key . '/' . $value . '.html');
+    }
+    $path_view = PATH_VIEW_PAGES . Core::getInfoDirUrl('path_view');
+    $this->paramsTemplate['corpo'] = file_get_contents($path_view);
+
+    // Carregar os outros parâmetros.
+    // Mandar os parâmetros para dentro do render.
   }
 }
 
