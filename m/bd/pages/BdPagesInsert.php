@@ -7,6 +7,8 @@ class BdPagesInsert extends Bd
   {
     // Popular páginas para teste;
     Self::insertTest();
+
+    return true;
   }
 
   /**

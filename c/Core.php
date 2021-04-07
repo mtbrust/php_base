@@ -170,6 +170,14 @@ class Core
       $this->controllerPage = $this->getControllerPage();
       $this->controllerPage->start();
     }
+
+    
+
+    /**
+     * Finaliza conexão com banco de dados
+     * Fecha conexão.
+     */
+    Bd::close();
   }
 
 
@@ -186,11 +194,11 @@ class Core
     require 'vendor/autoload.php';                  // Carrega todas as dependências do composer.
 
     require_once 'm/bd/Bd.php';                     // Carrega classe pai banco de dados.
-    require_once 'm/bd/usuarios/BdUsuarios.php';    // Verificar se usa aqui.
-    require_once 'm/bd/tables/BdTablesCreate.php';  // Verificar se usa aqui.
-    require_once 'm/bd/tables/BdTablesDelete.php';  // Verificar se usa aqui.
-    require_once 'm/bd/pages/BdPagesInsert.php';    // Verificar se usa aqui.
-    require_once 'm/bd/pages/BdPagesSelect.php';    // Verificar se usa aqui.
+    // require_once 'm/bd/usuarios/BdUsuarios.php';    // Verificar se usa aqui.
+    // require_once 'm/bd/tables/BdTablesCreate.php';  // Verificar se usa aqui.
+    // require_once 'm/bd/tables/BdTablesDelete.php';  // Verificar se usa aqui.
+    // require_once 'm/bd/pages/BdPagesInsert.php';    // Verificar se usa aqui.
+    require_once 'm/bd/pages/BdPagesSelect.php';    // Verificar se tem página no banco de dados.
 
     require_once 'c/class/controllerApi.php';       // Carrega classe pai controllerApi.
     require_once 'c/class/controllerPage.php';      // Carrega classe pai controllerPage.
@@ -391,9 +399,11 @@ class Core
       $isDir = file_exists(PATH_VIEW_PAGES . $p_path_dir);                        // Verifica se é uma pasta.
 
       // Variáveis de Arquivo
-      $p_file_view = $value . '.html';                                            // Nome do arquivo com extensão.
+      $p_file_view = $value;                                            // Nome do arquivo com extensão.
       $p_path_view = $infoDirUrl['path_dir'] . $p_file_view;                         // Caminho completo do arquivo.
       $isFile = file_exists(PATH_VIEW_PAGES . $p_path_view);                      // Verifica se é um arquivo.
+      //echo '<br>'.$p_path_view .'<br>';
+      $page_id = BdPagesSelect::selectIdPage($p_path_view);
 
       // Variáveis de Controle
       $p_url .= $value . '/';                                                     // Concatena caminho atual com anterior. (attr)
@@ -423,6 +433,8 @@ class Core
         unset($infoDirUrl['attr'][$key - 1]);                                        // Tira último parâmetro (vazio).
       }
     }
+
+    
     return $infoDirUrl;                                                              // Retorna array com as informações da url.
   }
 

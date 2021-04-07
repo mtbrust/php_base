@@ -6,7 +6,7 @@
  */
 
 // True para coopama. False para pessoal.
-$hostCoopama = true;
+$hostCoopama = false;
 
 if ($hostCoopama) {
     // Acesso ao banco de dados PDO 01.
@@ -29,7 +29,7 @@ if ($hostCoopama) {
     define("DB1_PASSWORD", "");
     define("DB1_DBNAME", "base_php");
     define("DB1_CHARSET", "utf8");
-    define("DB1_PREFIX_TABLE", "db1_");
+    define("DB1_PREFIX_TABLE", "coopama_");
 }
 
 // Acesso ao banco de dados PDO 02.

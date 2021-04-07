@@ -33,6 +33,23 @@ class Bd
       Self::getConn2();
   }
 
+
+  /**
+   * Inicia as conexões.
+   */
+  public static function close()
+  {
+    // Chama a conexão.
+    if (Self::$conn1){
+      Self::$conn1->query('KILL CONNECTION_ID()');
+      Self::$conn1 = null;
+    }
+    if (Self::$conn2){
+      Self::$conn2->query('KILL CONNECTION_ID()');
+      Self::$conn2 = null;
+    }
+  }
+
   /**
    * Solicita a conexão com o banco de dados 1. Padrão singleton.
    *

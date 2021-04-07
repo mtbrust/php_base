@@ -8,6 +8,8 @@
 /* global moment:false, Chart:false, Sparkline:false */
 
 $(function () {
+  if ($('#sparkline-1').length)
+  {
   'use strict'
 
   // Make the dashboard widgets sortable Using jquery UI
@@ -99,6 +101,7 @@ $(function () {
   sparkline1.draw([1000, 1200, 920, 927, 931, 1027, 819, 930, 1021])
   sparkline2.draw([515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921])
   sparkline3.draw([15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21])
+  
 
   // The Calender
   $('#calendar').datetimepicker({
@@ -264,4 +267,5 @@ $(function () {
     data: salesGraphChartData,
     options: salesGraphChartOptions
   })
+}
 })

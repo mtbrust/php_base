@@ -140,8 +140,8 @@ class ControllerPage
       'html'        => 'default',   // Template HTML
       'head'        => 'default',   // <head> da página.
       'top'         => 'default',   // Topo da página.
-      'header'         => 'default',   // Menu da página.
-      // 'corpo'    => 'default',    // Reservado para CORPO.
+      'header'      => 'default',   // Menu da página.
+      'corpo'       => 'default',   // Reservado para CORPO.
       'body_pre'    => 'default',   // Antes do CORPO dentro body.
       'body_pos'    => 'default',   // Depois do CORPO dentro body.
       'footer'      => 'default',   // footer da página.
@@ -183,7 +183,7 @@ class ControllerPage
     // Exemplo: 'usuarios' => 'BdUsuarios',
     // Exemplo uso: $var = BdUsuarios::getInfo();
     $this->paramsBd = array(
-      'pasta' => 'BdArquivo',   // Exemplo
+      //'pasta' => 'BdArquivo',   // Exemplo
     );
   }
 
@@ -197,7 +197,10 @@ class ControllerPage
   {
     // Carrega os parâmetros passados pela controller.
     $this->pre();
-  
+
+    // Carrega os parâmetros para a view.
+    $this->view();
+
     // Processa os parâmetros passados pela controller.
     $this->process();
 
@@ -218,15 +221,13 @@ class ControllerPage
           break;
         case 'get':
           $this->get();
+          $this->paramsTemplate['corpo'] = 'indexget.html';
           break;
         case 'delete':
           $this->delete();
           break;
         case 'api':
           $this->api();
-          break;
-        default:
-          $this->index();
           break;
       }
     } else {
@@ -343,15 +344,8 @@ class ControllerPage
    */
   public function index()
   {
-    
-    //echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    //print_r($this->attr);
-
-    
-    
     ControllerRender::render($this->paramsSecurity, $this->paramsController, $this->paramsTemplate, $this->paramsTemplateObjs, $this->paramsView, $this->paramsPage);
-
-    return false;
+    return true;
   }
 
 
@@ -363,7 +357,24 @@ class ControllerPage
    */
   public function pre()
   {
-    echo '<br>Classe pai.';
+    //echo '<br>Classe pai.';
+  }
+
+
+  /**
+   * View.
+   * Usado para criar os parâmetros e dados disponibilizados na view.
+   * É executado depois do preprocessamento()
+   *
+   * @return bool
+   */
+  public function view()
+  {
+    // Exemplos
+    // $this->paramsPage['nome'] = 'Mateus';
+    // $this->paramsPage['usuarios'] = BdUsuarios::getAll();
+
+    return false;
   }
 
 
@@ -376,26 +387,27 @@ class ControllerPage
    */
   public function process()
   {
-    
-    
-    // Carrega os arquivos no parâmetro.
-    foreach ($this->paramsTemplate as $key => $value) {
-      $this->paramsTemplate[$key] = file_get_contents(PATH_VIEW_TEMPLATES . $key . '/' . $value . '.html');
-    }
+
     $path_view = PATH_VIEW_PAGES . Core::getInfoDirUrl('path_view');
     $this->paramsTemplate['corpo'] = file_get_contents($path_view);
 
-    // Carregar os outros parâmetros.
+    // Carrega os arquivos no parâmetro.
+    foreach ($this->paramsTemplate as $key => $value) {
+      if ($key == 'corpo') {
+        
+      }else
+      $this->paramsTemplate[$key] = file_get_contents(PATH_VIEW_TEMPLATES . $key . '/' . $value . '.html');
+    }
+    // Carregar os outros parâmetros tipo obj (pensar como usar ele).
     // Mandar os parâmetros para dentro do render.
 
-    // Carrega as controllers
-    foreach ($this->paramsBd as $key => $value) {
-      echo $value;
+    // Carrega as controllers passadas no parâmetro BD. Para poder trabalhar com os dados na página (view).
+    foreach ($this->paramsBd as $value) {
+      $path_bd = PATH_MODEL_BD . $value . '.php';
+      // Carrega arquivo.
+      if (file_exists($path_bd)) {
+        require_once $path_bd;
+      }
     }
-    //$path_dir = PATH_CONTROLLER_PAGES . 'defaultControllerPage.php';  // Preenche com path default.
-    //require_once $path_dir;
   }
 }
-
-// $c = new controllerName;
-// $c->index();

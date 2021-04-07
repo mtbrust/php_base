@@ -29,7 +29,13 @@ class BdTablesCreate extends Bd
     Self::createNoticias();
     Self::createUsuario();
 
-    
+    return true;
+  }
+
+
+  public static function teste()
+  {
+    return '1234teste';
   }
 
 
@@ -349,7 +355,7 @@ class BdTablesCreate extends Bd
       "previa varchar(280) DEFAULT NULL",
       "texto longtext NULL",
       "imagemDestaque varchar(280) NOT NULL",
-      "dataPostagem timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP",
+      "dataPostagem timestamp NOT NULL",
       "status varchar(30) NOT NULL",
       "fixaTopo char(1) NOT NULL",
     ];
