@@ -3,48 +3,7 @@
 {# DESENHA A VIEW
 ********************************************************************************************************* #}
 {% if attr[0] == '' %}
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 my-5">
-      <p>Conteúdo INDEX</p>
-      <a href="#" class="btn btn-info" onclick="teste('BdTablesCreate')">CRIAR TABELAS</a>
-      <a href="#" class="btn btn-info" onclick="teste('BdTablesDelete')">APAGAR TABELAS</a>
-      <br><br>
-      <a href="#" class="btn btn-info" onclick="teste('BdPagesInsert')">Pages Inserts</a>
-    </div>
-  </div>
-</div>
-
-<script>
-
-  function teste(p) {
-    $.ajax({
-      url: '{{URL_RAIZ}}admin/api/' + p,
-      type: 'post',
-      dataType: 'json',
-      contentType: 'application/json',
-      success: function (data) {
-        $.notify({
-          // options
-          icon: 'glyphicon glyphicon-warning-sign',
-          title: '<b>Notificação</b>',
-          message: 'Resposta: ' + data.r,
-          url: 'https://github.com/mouse0270/bootstrap-notify',
-          target: '_blank',
-        }, {
-          type: "info",
-          allow_dismiss: true,
-          delay: 500,
-          timer: 1000,
-        });
-      },
-      error: function (data) {
-        $.notify({ message: "Resposta: " + data.r });
-      },
-    });
-  }
-
-</script>
+<div class="m-3 p-3" style="background-color: #666;">CORPO</div>
 {%endif%}
 
 
