@@ -198,10 +198,10 @@ class ControllerPage
     // Carrega os parâmetros passados pela controller.
     $this->pre();
 
-    // Carrega os parâmetros para a view.
+    // Carrega os parâmetros para a view. (carrega as classes e variáveis)
     $this->view();
 
-    // Processa os parâmetros passados pela controller.
+    // Processa os parâmetros passados pela controller. (Carrega o conteúdo html)
     $this->process();
 
     // Verifica se tem dados $_post para enviar para _post.
@@ -209,8 +209,10 @@ class ControllerPage
       $this->_post();
     }
 
-    // Verifica os atributos para ver em qual GET vai cair.
-    //$attr = Self::$urlFinal['attr'];
+    // Caso não seja api, renderiza a view.
+    $api = false;
+
+    // Verifica url para ver qual REST usou.
     if ($this->attr) {
       switch ($this->attr[0]) {
         case 'post':
@@ -221,18 +223,28 @@ class ControllerPage
           break;
         case 'get':
           $this->get();
-          $this->paramsTemplate['corpo'] = 'indexget.html';
           break;
         case 'delete':
           $this->delete();
           break;
         case 'api':
+          $api = true;
           $this->api();
           break;
+        default:
+          $this->index();
+        break;
       }
     } else {
       $this->index();
     }
+
+    // Renderiza o html.
+    if (!$api){
+      ControllerRender::render($this->paramsSecurity, $this->paramsController, $this->paramsTemplate, $this->paramsTemplateObjs, $this->paramsView, $this->paramsPage);
+    }
+    
+    
   }
 
 
@@ -245,8 +257,7 @@ class ControllerPage
    */
   public function _post()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    var_dump($_POST);
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
 
     return false;
   }
@@ -261,8 +272,7 @@ class ControllerPage
    */
   public function post()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    print_r($this->attr);
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
 
     return false;
   }
@@ -278,8 +288,7 @@ class ControllerPage
    */
   public function put()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    print_r($this->attr);
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
 
     return false;
   }
@@ -294,8 +303,8 @@ class ControllerPage
    */
   public function get()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    print_r($this->attr);
+
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
 
     return false;
   }
@@ -309,7 +318,7 @@ class ControllerPage
    */
   public function delete()
   {
-    echo 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
 
     return false;
   }
@@ -344,7 +353,7 @@ class ControllerPage
    */
   public function index()
   {
-    ControllerRender::render($this->paramsSecurity, $this->paramsController, $this->paramsTemplate, $this->paramsTemplateObjs, $this->paramsView, $this->paramsPage);
+    //ControllerRender::render($this->paramsSecurity, $this->paramsController, $this->paramsTemplate, $this->paramsTemplateObjs, $this->paramsView, $this->paramsPage);
     return true;
   }
 
@@ -391,12 +400,14 @@ class ControllerPage
     $path_view = PATH_VIEW_PAGES . Core::getInfoDirUrl('path_view');
     $this->paramsTemplate['corpo'] = file_get_contents($path_view);
 
+    // print_r(Core::getInfoDirUrl());
+    // exit;
+
     // Carrega os arquivos no parâmetro.
     foreach ($this->paramsTemplate as $key => $value) {
       if ($key == 'corpo') {
-        
-      }else
-      $this->paramsTemplate[$key] = file_get_contents(PATH_VIEW_TEMPLATES . $key . '/' . $value . '.html');
+      } else
+        $this->paramsTemplate[$key] = file_get_contents(PATH_VIEW_TEMPLATES . $key . '/' . $value . '.html');
     }
     // Carregar os outros parâmetros tipo obj (pensar como usar ele).
     // Mandar os parâmetros para dentro do render.

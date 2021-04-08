@@ -111,8 +111,8 @@ class AdminControllerPage extends ControllerPage
    */
   public function _post()
   {
-    echo '_POST - MODELO<br>';
-    var_dump($_POST);
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    $this->paramsPage['post'] = $_POST;
 
 
 
@@ -129,8 +129,7 @@ class AdminControllerPage extends ControllerPage
    */
   public function post()
   {
-    echo 'POST - MODELO<br>';
-    print_r($this->attr);
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
 
     return false;
   }
@@ -146,10 +145,7 @@ class AdminControllerPage extends ControllerPage
    */
   public function put()
   {
-    echo 'PUT - MODELO<br>';
-    print_r($this->attr);
-
-
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
 
     return false;
   }
@@ -164,8 +160,7 @@ class AdminControllerPage extends ControllerPage
    */
   public function get()
   {
-    echo 'GET - MODELO<br>';
-    print_r($this->attr);
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
 
     return false;
   }
@@ -179,7 +174,7 @@ class AdminControllerPage extends ControllerPage
    */
   public function delete()
   {
-    echo 'DELETE - MODELO<br>';
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
     return false;
   }
 
@@ -213,6 +208,19 @@ class AdminControllerPage extends ControllerPage
     // Resultado é um json
     header('Content-Type: application/json');
 
+
+
+
+
+
+
+
+
+
+    /**
+     * API Simples para executar algumas funções do BD.
+     * todo: Talvez seja melhor implementar essas funções na API geral.
+     */
     // Predefinição do resultado
     $r['r'] = 'Erro.';
 
@@ -240,6 +248,12 @@ class AdminControllerPage extends ControllerPage
         $r['r'] = 'Erro. Parâmetro não definido.';
         break;
     }
+
+
+
+
+
+
 
     // Retorna json.
     echo json_encode($r);
