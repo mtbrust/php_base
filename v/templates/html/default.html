@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   {% block head %}{% endblock %}
 </head>
+
 <body>
-  {% block top %}{% endblock %}
-  {% block header %}{% endblock %}
-  {% block body_pre %}{% endblock %}
-  {% block corpo %}{% endblock %}
-  {% block body_pos %}{% endblock %}
-  {% block footer %}{% endblock %}
-  {% block bottom %}{% endblock %}
+
+  <div id="top">
+    {% block top %}{% endblock %}
+  </div>
+
+
+  <div id="header">
+    {% block header %}{% endblock %}
+  </div>
+
+  <div id="corpo">
+    {% block body_pre %}{% endblock %}
+    {% block corpo %}{% endblock %}
+    {% block body_pos %}{% endblock %}
+  </div>
+
+  <div id="footer">
+    {% block footer %}{% endblock %}
+  </div>
+
+  <div id="bottom">
+    {% block bottom %}{% endblock %}
+  </div>
+
 </body>
+
 </html>

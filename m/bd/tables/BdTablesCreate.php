@@ -33,12 +33,6 @@ class BdTablesCreate extends Bd
   }
 
 
-  public static function teste()
-  {
-    return '1234teste';
-  }
-
-
   /**
    * Cria tabela LOGIN
    *
@@ -49,6 +43,7 @@ class BdTablesCreate extends Bd
     $tabela_name = 'login';
     $fields = [
       "id INT NOT NULL AUTO_INCREMENT primary key",
+      "matricula     INT NOT NULL",
       "full_name     VARCHAR(160) NULL",
       "first_name    VARCHAR(40) NULL",
       "last_name     VARCHAR(40) NULL",
@@ -210,6 +205,46 @@ class BdTablesCreate extends Bd
 
 
 
+  /**
+   * Cria tabela Permissions
+   *
+   * @return void
+   */
+  private static function createPermissions()
+  {
+    $tabela_name = 'Permissions';
+    $fields = [
+      "id INT NOT NULL AUTO_INCREMENT primary key",
+      "nome VARCHAR(64) NULL",
+      "desc VARCHAR(512) NULL",
+      "permissions TINYINT NULL", // Criar permissões.
+    ];
+    return Self::createTable($tabela_name, $fields);
+  }
+
+
+
+
+  /**
+   * Cria tabela Options
+   * Opções de configurações etc.
+   *
+   * @return void
+   */
+  private static function createOptions()
+  {
+    $tabela_name = 'Options';
+    $fields = [
+      "id INT NOT NULL AUTO_INCREMENT primary key",
+      "option VARCHAR(64) NULL UNIQUE",
+      "value VARCHAR(1024) NULL",
+    ];
+    return Self::createTable($tabela_name, $fields);
+  }
+
+
+
+
 
 
 
@@ -232,9 +267,11 @@ class BdTablesCreate extends Bd
   // TODO: **********************************************************************************************
   // TODO: BD RAFAEL
 
+  
   /**
+   * ! Pensar nas áreas, porém as notícias vão ter categoria livre.
    * Cria tabela areas
-   * 
+   * Área das notícias. coopama store, LOJAS AGROPECUÁRIAS, CAFÉ E CEREAIS, NUTRIÇÃO ANIMAL
    *
    * @return void
    */
@@ -262,12 +299,14 @@ class BdTablesCreate extends Bd
     $tabela_name = 'banners';
     $fields = [
       "id INT NOT NULL AUTO_INCREMENT primary key",
-      "idDestaque int NOT NULL",
-      "titulo varchar(250) NOT NULL",
-      "imagem varchar(250) NOT NULL",
-      "link varchar(250) NOT NULL",
-      "ativo int NOT NULL",
-      "dataPostagem timestamp NOT NULL",
+      "idDestaque int NULL", // banner que aparece em ordem de destaque
+      "titulo varchar(250) NULL",
+      "imagem varchar(250) NULL",
+      "link varchar(250) NULL",
+      "ativo int NULL", // Se o banner vai ser exibido ou não
+      "dataPostagem timestamp NULL",
+      "dataExibicao DATETIME NULL", // Quando o banner vai aparecer. no dia e hora aparece.
+
     ];
     return Self::createTable($tabela_name, $fields);
   }
@@ -286,12 +325,13 @@ class BdTablesCreate extends Bd
     $fields = [
       "id INT NOT NULL AUTO_INCREMENT primary key",
       "idEvento int NOT NULL",
-      "codEvento int NOT NULL COMMENT 'Tipo de evento que é(feiras, ago etc..)'",
+      "codEvento int NOT NULL COMMENT 'Tipo de evento que é(feiras, ago etc..)'", // tipo categoria
       "titulo varchar(200) NOT NULL",
       "dataEvento date NOT NULL",
-      "infoEvento text NOT NULL COMMENT 'Info/descrição do evento'",
+      "infoEvento text NOT NULL COMMENT 'Info/descrição do evento'", // a página. texto.
       "imagemEvento varchar(200) NOT NULL COMMENT 'Imagem que vai anexada no evento'",
       "statusEvento int NOT NULL",
+      "dataExibicao DATETIME NULL", // Quando o banner vai aparecer. no dia e hora aparece.
     ];
     return Self::createTable($tabela_name, $fields);
   }
@@ -309,11 +349,12 @@ class BdTablesCreate extends Bd
     $tabela_name = 'galeriaFotos';
     $fields = [
       "id INT NOT NULL AUTO_INCREMENT primary key",
-      "idFoto int NOT NULL",
-      "idGaleria char(45) NOT NULL",
+      "idFoto int NOT NULL",   // Tabela de fotos.
+      "idGaleria char(45) NOT NULL", // innerFotoGaleria criar essa tabela.
       "nomeFoto varchar(50) DEFAULT NULL",
-      "ordem int DEFAULT NULL",
-      "texto varchar(300) DEFAULT NULL",
+      "ordem int DEFAULT NULL", // ordem de exibição.
+      "titulo varchar(200) NOT NULL",
+      "texto varchar(300) DEFAULT NULL", // descrição da galeria.
     ];
     return Self::createTable($tabela_name, $fields);
   }
@@ -326,7 +367,7 @@ class BdTablesCreate extends Bd
    *
    * @return void
    */
-  private static function createInnerNoticiasAreas()
+  private static function createInnerNoticiasAreas()  // Tem que verificar se muda para catogira
   {
     $tabela_name = 'innerNoticiasAreas';
     $fields = [
@@ -351,13 +392,14 @@ class BdTablesCreate extends Bd
     $fields = [
       "id INT NOT NULL AUTO_INCREMENT primary key",
       "codNoticia int NOT NULL",
-      "titulo varchar(120) NOT NULL",
-      "previa varchar(280) DEFAULT NULL",
-      "texto longtext NULL",
-      "imagemDestaque varchar(280) NOT NULL",
-      "dataPostagem timestamp NOT NULL",
-      "status varchar(30) NOT NULL",
-      "fixaTopo char(1) NOT NULL",
+      "titulo varchar(120) NULL",
+      "previa varchar(280) DEFAULT NULL", // exibição do resumo.
+      "texto longtext NULL",  // pode ser html.
+      "idFoto int NOT NULL",   // Tabela de fotos.
+      "dataPostagem timestamp NULL ON UPDATE CURRENT_TIMESTAMP",
+      "status varchar(30) NULL", // quais status
+      "fixaTopo char(1) NULL",  // Notícia destaque.
+      "dataExibicao DATETIME NULL", // Quando o banner vai aparecer. no dia e hora aparece.
     ];
     return Self::createTable($tabela_name, $fields);
   }
@@ -367,6 +409,8 @@ class BdTablesCreate extends Bd
 
   /**
    * Cria tabela usuarios
+   * todo: usuário tem os departamentos (tabela).
+   * todo: Tabela de permissão personalizada.
    *
    * @return void
    */
@@ -375,11 +419,11 @@ class BdTablesCreate extends Bd
     $tabela_name = 'usuarios';
     $fields = [
       "id INT NOT NULL AUTO_INCREMENT primary key",
-      "matricula int NOT NULL",
+      "matricula int NOT NULL",             // id colaborador.
       "senha varchar(45) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL",
       "nome varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL",
-      "tipoCadastro char(1) NOT NULL COMMENT 'M->Master, A->Administradores\r\n'",
-      "ativo char(1) NOT NULL",
+      "tipoCadastro char(1) NOT NULL COMMENT 'M->Master, A->Administradores\r\n'", // Segurança
+      "ativo char(1) NOT NULL",   // controle se o usuário pode acessar ou não.
     ];
     return Self::createTable($tabela_name, $fields);
   }

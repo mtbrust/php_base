@@ -109,6 +109,21 @@ class ControllerPage
 
 
   /**
+   * Parâmetros para utilização do BD.
+   *
+   * @var array
+   */
+  private $paramsGlobal;
+  public function getParamsGlobal($param = false)
+  {
+    if ($param)
+      return $this->paramsGlobal[$param];
+    return $this->paramsGlobal;
+  }
+
+
+
+  /**
    * Construtor.
    */
   function __construct()
@@ -125,6 +140,7 @@ class ControllerPage
       'permission' => 0,      // Nível de acesso a página. 0 a 100.
     );
 
+
     // Valores default de $paramsController.
     $this->paramsController = array(
       '_post'       => false,   // Permitir funções $_POST.
@@ -134,6 +150,7 @@ class ControllerPage
       'index'       => false,   // Permitir funções index.
       'maintenance' => false,   // Exibir página em manutenção.
     );
+
 
     // Valores default de $paramsTemplate a partir da pasta template.
     $this->paramsTemplate = array(
@@ -149,11 +166,13 @@ class ControllerPage
       'maintenance' => 'default',   // Página de manutenção (quando controller true).
     );
 
+
     // objetos para serem inseridos dentro de partes do template.
     // O Processamento realiza a montagem. Algum template tem que conter um bloco para Obj ser incluido.
     $this->paramsTemplateObjs = array(
       'objeto_name'          => '',   // Carrega HTML do objeto e coloca no lugar indicado do corpo ou template.
     );
+
 
     // Valores default de $paramsView. Valores vazios são ignorados.
     //https://www.infowester.com/metatags.php
@@ -171,6 +190,7 @@ class ControllerPage
       'obs'              => 'default',   // Outra qualquer observação sobre a página.
     );
 
+
     // Valores para serem inseridos no corpo da página.
     // Exemplo: 'p_nome' => 'Mateus',
     // Exemplo uso view: <p><b>Nome: </b> {{p_nome}}</p>
@@ -178,12 +198,23 @@ class ControllerPage
       'nome'              => 'Mateus',            // Exemplo
     );
 
+
     // Otimização das funções de banco de dados que serão usadas na controller.
     // Pasta e controller.
     // Exemplo: 'usuarios' => 'BdUsuarios',
     // Exemplo uso: $var = BdUsuarios::getInfo();
     $this->paramsBd = array(
       //'pasta' => 'BdArquivo',   // Exemplo
+    );
+
+    
+
+    // Valores que podem ser inseridos em todas página.
+    // Exemplo: 'p_nome' => 'Mateus',
+    // Exemplo uso view: <p><b>Nome: </b> {{p_nome}}</p>
+    $this->paramsGlobal = array(
+      'empresa'              => 'COOPAMA',      // Nome da empresa.
+      'attr'              => $this->attr,      // Parâmetros passados por url.
     );
   }
 
@@ -195,14 +226,15 @@ class ControllerPage
    */
   public function start()
   {
+
     // Carrega os parâmetros passados pela controller.
     $this->pre();
 
-    // Carrega os parâmetros para a view. (carrega as classes e variáveis)
-    $this->view();
-
     // Processa os parâmetros passados pela controller. (Carrega o conteúdo html)
     $this->process();
+
+    // Verifica segurança
+    //$this->security();
 
     // Verifica se tem dados $_post para enviar para _post.
     if ($_POST) {
@@ -213,7 +245,7 @@ class ControllerPage
     $api = false;
 
     // Verifica url para ver qual REST usou.
-    if ($this->attr) {
+    if ($this->attr && isset($this->attr[0])) {
       switch ($this->attr[0]) {
         case 'post':
           $this->post();
@@ -241,7 +273,7 @@ class ControllerPage
 
     // Renderiza o html.
     if (!$api){
-      ControllerRender::render($this->paramsSecurity, $this->paramsController, $this->paramsTemplate, $this->paramsTemplateObjs, $this->paramsView, $this->paramsPage);
+      ControllerRender::render($this->paramsSecurity, $this->paramsController, $this->paramsTemplate, $this->paramsTemplateObjs, $this->paramsView, array_merge($this->paramsPage, $this->paramsGlobal));
     }
     
     
@@ -345,15 +377,15 @@ class ControllerPage
 
   /**
    * Exibe a página inicial.
-   * Usado para mostrar função da página, informações e prévias.
-   * Páginas estáticas com intuito de exibir apenas informações.
-   * Chama a view e renderiza ela no motor.
+   * Usado para criar os parâmetros e dados disponibilizados na view.
+   * É executado depois do preprocessamento()
    *
    * @return bool
    */
   public function index()
   {
-    //ControllerRender::render($this->paramsSecurity, $this->paramsController, $this->paramsTemplate, $this->paramsTemplateObjs, $this->paramsView, $this->paramsPage);
+    // $this->paramsPage['nome'] = 'Mateus';
+    // $this->paramsPage['usuarios'] = BdUsuarios::getAll();
     return true;
   }
 
@@ -367,23 +399,6 @@ class ControllerPage
   public function pre()
   {
     //echo '<br>Classe pai.';
-  }
-
-
-  /**
-   * View.
-   * Usado para criar os parâmetros e dados disponibilizados na view.
-   * É executado depois do preprocessamento()
-   *
-   * @return bool
-   */
-  public function view()
-  {
-    // Exemplos
-    // $this->paramsPage['nome'] = 'Mateus';
-    // $this->paramsPage['usuarios'] = BdUsuarios::getAll();
-
-    return false;
   }
 
 
@@ -420,5 +435,17 @@ class ControllerPage
         require_once $path_bd;
       }
     }
+  }
+
+
+  /**
+   * Realiza a segurança da página atual.
+   * Usado para definir os parâmetros de personalização da página.
+   *
+   * @return void
+   */
+  public function security()
+  {
+    //echo '<br>Classe pai.';
   }
 }

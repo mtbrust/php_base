@@ -6,31 +6,49 @@
  */
 
 // True para coopama. False para pessoal.
-$hostCoopama = false;
-
-if ($hostCoopama) {
-    // Acesso ao banco de dados PDO 01.
-    define("DB1", true);                  // Conexão será usada?
-    define("DB1_DBMANAGER", "mysql");
-    define("DB1_HOST", "localhost");
-    define("DB1_PORT", "3306");
-    define("DB1_USER", "root");
-    define("DB1_PASSWORD", "");
-    define("DB1_DBNAME", "coopama_sitecoopama");
-    define("DB1_CHARSET", "utf8");
-    define("DB1_PREFIX_TABLE", "coopama_");
-} else {
-    // Acesso ao banco de dados PDO 01.
-    define("DB1", true);                  // Conexão será usada?
-    define("DB1_DBMANAGER", "mysql");
-    define("DB1_HOST", "localhost");
-    define("DB1_PORT", "3306");
-    define("DB1_USER", "root");
-    define("DB1_PASSWORD", "");
-    define("DB1_DBNAME", "base_php");
-    define("DB1_CHARSET", "utf8");
-    define("DB1_PREFIX_TABLE", "coopama_");
+$host = 2;
+switch ($host) {
+    case '1':
+        define("URL_RAIZ", "https://novo-site.coopama.com.br/");
+        // Acesso ao banco de dados PDO 01.
+        define("DB1", true);                  // Conexão será usada?
+        define("DB1_DBMANAGER", "mysql");
+        define("DB1_HOST", "localhost");
+        define("DB1_PORT", "3306");
+        define("DB1_USER", "coopamamc_novoSiteUser");
+        define("DB1_PASSWORD", "_Q]4}8(.0IFG");
+        define("DB1_DBNAME", "coopamamc_novoSite");
+        define("DB1_CHARSET", "utf8");
+        define("DB1_PREFIX_TABLE", "coopama_");
+        break;
+    case '2':
+        define("URL_RAIZ", "http://sitecoopama.local/");
+        // Acesso ao banco de dados PDO 01.
+        define("DB1", true);                  // Conexão será usada?
+        define("DB1_DBMANAGER", "mysql");
+        define("DB1_HOST", "localhost");
+        define("DB1_PORT", "3306");
+        define("DB1_USER", "root");
+        define("DB1_PASSWORD", "");
+        define("DB1_DBNAME", "coopama_sitecoopama");
+        define("DB1_CHARSET", "utf8");
+        define("DB1_PREFIX_TABLE", "coopama_");
+        break;
+    case '3':
+        define("URL_RAIZ", "http://localhost/base_php/");
+        // Acesso ao banco de dados PDO 01.
+        define("DB1", true);                  // Conexão será usada?
+        define("DB1_DBMANAGER", "mysql");
+        define("DB1_HOST", "localhost");
+        define("DB1_PORT", "3306");
+        define("DB1_USER", "root");
+        define("DB1_PASSWORD", "");
+        define("DB1_DBNAME", "base_php");
+        define("DB1_CHARSET", "utf8");
+        define("DB1_PREFIX_TABLE", "db1_");
+        break;
 }
+
 
 // Acesso ao banco de dados PDO 02.
 define("DB2", false);                  // Conexão será usada?
@@ -43,16 +61,6 @@ define("DB2_DBNAME", "");
 define("DB2_CHARSET", "utf8");
 define("DB2_PREFIX_TABLE", "db2_");
 
-
-
-/**
- * Configurações de controle do site.
- */
-// Url raíz do site.
-if ($hostCoopama)
-    define("URL_RAIZ", "http://sitecoopama.local/");
-else
-    define("URL_RAIZ", "http://localhost/base_php/");
 
 
 // Site vai utilizar views e controllers dos diretórios (v e c)?
@@ -93,6 +101,6 @@ define("PATH_MODEL_ADMIN", "m/assets/admin/");
  * PHP
  */
 // Exibição de erros.
-// ini_set('display_errors',1);
-// ini_set('display_startup_erros',1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_erros', 1);
+error_reporting(E_ALL);

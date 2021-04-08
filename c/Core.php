@@ -261,7 +261,7 @@ class Core
     } else {
       // Inicia os atributos da infoUrl zerados.
       $infoDirUrl['path_dir'] = '';
-      $infoDirUrl['path_view'] = '';
+      $infoDirUrl['path_view'] = 'default.html';
       $infoDirUrl['dir']  = '';
       $infoDirUrl['file'] = '';
       $infoDirUrl['file_name'] = '';
@@ -554,7 +554,7 @@ class Core
 
       // Seta parâmetros default para a controller da pagina.
       $controller_name = 'DefaultControllerPage';
-      $controller_path = PATH_CONTROLLER_PAGES . 'defaultControllerPage.php';
+      $controller_path = PATH_CONTROLLER_PAGES . 'DefaultControllerPage.php';
 
       // Verifica se controller_path não está vazio.
       if (!empty(Self::$infoDirUrl['controller_path'])) {
@@ -577,7 +577,7 @@ class Core
 
 
     $controller_name = 'DefaultControllerPage';                       // Preenche com controller default.
-    $path_dir = PATH_CONTROLLER_PAGES . 'defaultControllerPage.php';  // Preenche com path default.
+    $path_dir = PATH_CONTROLLER_PAGES . 'DefaultControllerPage.php';  // Preenche com path default.
 
     /**
      * Verifica controller do BD.
@@ -652,7 +652,7 @@ class Core
     // Verifica se existe controller.
     // if (!file_exists($path)) {
     //   $controller_name = 'DefaultControllerPage';                     // Preenche com controller default.
-    //   $path = PATH_CONTROLLER_PAGES . 'defaultControllerPage.php';                    // Preenche com path default.
+    //   $path = PATH_CONTROLLER_PAGES . 'DefaultControllerPage.php';                    // Preenche com path default.
     // }
 
     echo $posicao;
