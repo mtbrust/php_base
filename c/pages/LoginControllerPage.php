@@ -31,15 +31,15 @@ class LoginControllerPage extends ControllerPage
 
     // Valores default de $paramsTemplate a partir da pasta template.
     $this->paramsTemplate = array(
-      'html'        => 'paper',   // Template HTML
-      'head'        => 'paper',   // <head> da página.
-      'top'         => 'paper',   // Topo da página.
-      'header'      => 'paper',   // Menu da página.
-      //'corpo'        => 'default',   // Reservado para arquivo html.
-      'body_pre'    => 'paper',   // Antes do CORPO dentro body.
-      'body_pos'    => 'paper',   // Depois do CORPO dentro body.
-      'footer'      => 'paper',   // footer da página.
-      'bottom'      => 'paper',   // Fim da página.
+      'html'        => 'default',   // Template HTML
+      'head'        => 'lte',   // <head> da página.
+      // 'top'         => 'default',   // Topo da página.
+      // 'header'      => 'default',   // Menu da página.
+      // 'corpo'        => 'default',   // Reservado para arquivo html.
+      // 'body_pre'    => 'default',   // Antes do CORPO dentro body.
+      // 'body_pos'    => 'default',   // Depois do CORPO dentro body.
+      // 'footer'      => 'default',   // footer da página.
+      // 'bottom'      => 'default',   // Fim da página.
       //'maintenance' => 'paper',   // Página de manutenção (quando controller true).
     );
 
