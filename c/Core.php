@@ -200,9 +200,9 @@ class Core
     // require_once 'm/bd/pages/BdPagesInsert.php';    // Verificar se usa aqui.
     require_once 'm/bd/pages/BdPagesSelect.php';    // Verificar se tem página no banco de dados.
 
-    require_once 'c/class/controllerApi.php';       // Carrega classe pai controllerApi.
-    require_once 'c/class/controllerPage.php';      // Carrega classe pai controllerPage.
-    require_once 'c/class/controllerRender.php';    // Carrega classe pai controllerRender.
+    require_once 'c/class/ControllerApi.php';       // Carrega classe pai controllerApi.
+    require_once 'c/class/ControllerPage.php';      // Carrega classe pai controllerPage.
+    require_once 'c/class/ControllerRender.php';    // Carrega classe pai controllerRender.
 
 
 
