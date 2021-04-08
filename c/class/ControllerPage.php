@@ -215,6 +215,7 @@ class ControllerPage
     $this->paramsGlobal = array(
       'empresa'              => 'COOPAMA',      // Nome da empresa.
       'attr'              => $this->attr,      // Parâmetros passados por url.
+      // Puxar informações user.
     );
   }
 
