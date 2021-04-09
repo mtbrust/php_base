@@ -6,7 +6,7 @@
  */
 
 // True para coopama. False para pessoal.
-$host = 2;
+$host = 3;
 switch ($host) {
     case '1':
         define("URL_RAIZ", "https://novo-site.coopama.com.br/");
