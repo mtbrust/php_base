@@ -181,7 +181,6 @@ class AdminControllerPage extends ControllerPage
     // $this->paramsPage['usuarios'] = BdUsuarios::getAll();
     
     $this->paramsPage['cwd'] = getcwd();
-
     
     return false;
   }

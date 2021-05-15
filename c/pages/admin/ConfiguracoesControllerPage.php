@@ -18,7 +18,7 @@ class ConfiguracoesControllerPage extends ControllerPage
 
     // Valores default de $paramsSecurity.
     $this->paramsSecurity = array(
-      'session'    => true,      // [true] Somente usuário logado. [false] Qualquer pessoa.
+      'session'    => false,      // [true] Somente usuário logado. [false] Qualquer pessoa.
       'permission' => '11111',   // [1,0,0,0,0] Menu/Início, Adicionar, Editar, Listar, Deletar.
     );
 

@@ -44,10 +44,7 @@ class ControllerSecurity
         if ($user) {
             // Cria a sessão.
             $_SESSION['user'] = $user;
-
-            // Verificar qual o nível de segurança.
-
-
+            
             // Redireciona para paindel administrativo.
             header("location: " . URL_RAIZ . "admin/");
         }

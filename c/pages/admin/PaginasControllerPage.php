@@ -528,7 +528,7 @@ class PaginasControllerPage extends ControllerPage
 
 
     // Verifica se foi o submit de adicionar.
-    if (isset($_POST['adicionar']) && explode('_', $_POST['adicionar'])[0] == "page") {
+    if (isset($_POST['adicionar']) && $_POST['adicionar'] != 'page' && explode('_', $_POST['adicionar'])[0] == "page") {
 
       // Retorno da função.
       $page = explode('_', $_POST['adicionar'])[1];

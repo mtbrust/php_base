@@ -98,15 +98,14 @@ class LoginControllerPage extends ControllerPage
    */
   public function _post()
   {
-    // $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    // print_r($_POST);
-
+    
     // Tratativa dos dados
     $login = $_POST['login'];
     $senha = md5($_POST['senha']);
     
     // Busca no banco de dados. e inicia a sessão.
-    ControllerSecurity::create(BdLogin::verificaLogin($login, $senha));
+    $user = BdLogin::verificaLogin($login, $senha);
+    ControllerSecurity::create($user);
 
 
     return true;

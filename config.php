@@ -111,7 +111,7 @@ define("PATH_MODEL_ADMIN", "m/assets/admin/");
 /**
  * PHP
  */
-// Exibição de erros.
+// Exibição de erros [1].
 ini_set('display_errors', 1);
 ini_set('display_startup_erros', 1);
 error_reporting(E_ALL);
