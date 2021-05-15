@@ -1,1 +1,83 @@
-<h1>home.php</h1>
+{% block corpo %}
+
+{# DESENHA A VIEW
+********************************************************************************************************* #}
+{% if attr[0] == '' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 my-5">
+        <p class="m-0">Home php</p>
+    </div>
+  </div>
+</div>
+{%endif%}
+
+
+{# DESENHA O POST
+********************************************************************************************************* #}
+{% if attr[0] == 'post' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="m-0">Post</p>
+    </div>
+  </div>
+</div>
+{%endif%}
+
+
+{# DESENHA O PUT
+********************************************************************************************************* #}
+{% if attr[0] == 'put' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="m-0">Put</p>
+    </div>
+  </div>
+</div>
+{%endif%}
+
+
+{# DESENHA O GET
+********************************************************************************************************* #}
+{% if attr[0] == 'get' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="m-0">Get</p>
+    </div>
+  </div>
+</div>
+{%endif%}
+
+
+{# DESENHA O DELETE
+********************************************************************************************************* #}
+{% if attr[0] == 'delete' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="m-0">Delete</p>
+    </div>
+  </div>
+</div>
+{%endif%}
+
+
+{# DESENHA O TEST
+********************************************************************************************************* #}
+{% if attr[0] == 'test' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="m-0">TEST</p>
+    </div>
+  </div>
+</div>
+{%endif%}
+
+
+
+
+{% endblock %}

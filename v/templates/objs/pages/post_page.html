@@ -1,0 +1,154 @@
+<form action="" method="POST" enctype="multipart/form-data">
+  <input name="f-formToken" type="text" value="{{params.formToken}}" hidden>
+  <div class="card">
+    <div class="card-header">
+
+      <!-- TÍTULO -->
+      <h3 class="card-title m-1">Adicionar</h3>
+
+      <div class="card-tools m-0">
+        <!-- ATUALIZAR -->
+        <button type="button" class="btn btn-tool" data-card-widget="card-refresh" data-source="widgets.html"
+          data-source-selector="#card-refresh-content" data-load-on-init="false">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+        <!-- MAXIMIZAR -->
+        <button type="button" class="btn btn-tool" data-card-widget="maximize">
+          <i class="fas fa-expand"></i>
+        </button>
+        <!-- COLAPSAR -->
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <!-- CARD CORPO -->
+      <div class="container-fluid">
+        <div class="row mt-3">
+
+          <div class="col-12">
+            <p>Cadastra uma página com permissões personalizadas.</p>
+          </div>
+
+          <!-- Nome Página -->
+          <div class="col-12 col-sm-6 col-lg-6">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Nome Página</span>
+                </div>
+                <input id="f-nome" name="f-nome" type="text" class="form-control" placeholder="">
+              </div>
+              <small class="form-text text-muted">
+                Nome da página.
+              </small>
+            </div>
+          </div>
+
+
+          <!-- Url Page -->
+          <div class="col-12 col-sm-6 col-lg-6">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Url Página</span>
+                </div>
+                <select id="f-url" name="f-url" class="custom-select">
+                  {% for page in params %}
+                  <option>{{ page.url|e }}</option>
+                  {% endfor %}
+                </select>
+                <small class="form-text text-muted">
+                  Adicione a url "início" do menu. A url fica exposta ao lado direito do título da página. Exemplo: admin/seguranca/.
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Permissão Visualização Básica-->
+          <div class="col-12 col-sm-6 col-lg-4">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <input id="f-menu" name="f-menu" value="1" type="checkbox" checked>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" value="Visualização (Menu/Início)" disabled>
+                  </div>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <input id="f-post" name="f-post" value="1" type="checkbox" checked>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" value="Adicionar" disabled>
+                  </div>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <input id="f-put" name="f-put" value="1" type="checkbox" checked>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" value="Atualizar" disabled>
+                  </div>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <input id="f-get" name="f-get" value="1" type="checkbox" checked>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" value="Listar" disabled>
+                  </div>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <input id="f-delete" name="f-delete" value="1" type="checkbox" checked>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" value="Deletar" disabled>
+                  </div>
+                  <small id="h-nome" class="form-text text-muted">Permissões para todos com login.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Descrição Permissão -->
+          <div class="col-12 col-sm-6 col-lg-8">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Descrição permissão</span>
+                </div>
+                <textarea id="f-obs" name="f-obs" class="form-control" rows="5" aria-label="f-desc"></textarea>
+              </div>
+              <small id="h-desc" class="form-text text-muted">Descrição da permissão.</small>
+            </div>
+          </div>
+
+
+
+
+        </div>
+      </div>
+      <!-- /CARD CORPO -->
+
+
+      <!-- CARD RODAPÉ -->
+      <div class="card-footer">
+        <div class="row">
+          <div class="col-12 text-right">
+            <button type="submit" name="adicionar" value="page" class="btn btn-primary">Adicionar</button>
+          </div>
+        </div>
+      </div>
+      <!-- /CARD RODAPÉ -->
+    </div>
+
+  </div>
+</form>

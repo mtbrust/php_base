@@ -1,0 +1,75 @@
+{% block corpo %}
+
+{# A view é a última "else"
+
+
+
+DESENHA O POST *********************************************************************************************************
+#}
+{% if attr[0] == 'post' %}
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Sem permissão para acessar esta página.</h3>
+        <p>Contate o administrador.</p>
+    </div>
+</div>
+
+{# DESENHA O PUT
+********************************************************************************************************* #}
+{% elseif attr[0] == 'put' %}
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Sem permissão para acessar esta página.</h3>
+        <p>Contate o administrador.</p>
+    </div>
+</div>
+
+{# DESENHA O GET
+********************************************************************************************************* #}
+{% elseif attr[0] == 'get' %}
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Sem permissão para acessar esta página.</h3>
+        <p>Contate o administrador.</p>
+    </div>
+</div>
+
+
+{# DESENHA O DELETE
+********************************************************************************************************* #}
+{% elseif attr[0] == 'delete' %}
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Sem permissão para acessar esta página.</h3>
+        <p>Contate o administrador.</p>
+    </div>
+</div>
+
+
+{# DESENHA O TEST
+********************************************************************************************************* #}
+{% elseif attr[0] == 'test' %}
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Sem permissão para acessar esta página.</h3>
+        <p>Contate o administrador.</p>
+    </div>
+</div>
+
+{# DESENHA A VIEW
+********************************************************************************************************* #}
+{% else %}
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Sem permissão para acessar esta página.</h3>
+        <p>Contate o administrador.</p>
+    </div>
+</div>
+
+
+
+{%endif%}
+{% endblock %}

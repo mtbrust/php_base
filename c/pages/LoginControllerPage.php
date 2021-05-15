@@ -15,8 +15,8 @@ class LoginControllerPage extends ControllerPage
 
     // Valores default de $paramsSecurity.
     $this->paramsSecurity = array(
-      'session'    => true,   // Página guarda sessão.
-      'permission' => 0,      // Nível de acesso a página. 0 a 100.
+      'session'    => false,     // Página guarda sessão.
+      'permission' => '10000',   // [1,0,0,0,0] Menu/Início, Adicionar, Editar, Listar, Deletar.
     );
 
     // Valores default de $paramsController.
@@ -31,8 +31,8 @@ class LoginControllerPage extends ControllerPage
 
     // Valores default de $paramsTemplate a partir da pasta template.
     $this->paramsTemplate = array(
-      'html'        => 'default',   // Template HTML
-      'head'        => 'lte',   // <head> da página.
+      'html'        => 'login',   // Template HTML
+      'head'        => 'login',   // <head> da página.
       // 'top'         => 'default',   // Topo da página.
       // 'header'      => 'default',   // Menu da página.
       // 'corpo'        => 'default',   // Reservado para arquivo html.
@@ -52,26 +52,17 @@ class LoginControllerPage extends ControllerPage
     // Valores default de $paramsView. Valores vazios são ignorados.
     //https://www.infowester.com/metatags.php
     $this->paramsView = array(
-      'title'             => 'Página Modelo',                                                         // Título da página exibido na aba/janela navegador.
-      'author'            => 'Mateus Brust',                                                          // Autor do desenvolvimento da página ou responsável.
-      'description'       => 'Página criada para mostrar como é a criação de controllers e views.',   // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
-      'keywords'          => 'modelo, página, controllers, views',                                    // palavras minúsculas separadas por "," referente ao conteúdo da página em até 150 caracteres.
-      'content-language'  => 'pt-br',                                                                 // Linguagem primária da página (pt-br).
-      'content-type'      => 'utf-8',                                                                 // Tipo de codificação da página.
-      'reply-to'          => 'mateus.brust@coopama.com.br',                                           // E-mail do responsável da página.
-      'generator'         => 'vscode',                                                                // Programa usado para gerar página.
-      'refresh'           => '',                                                                      // Tempo para recarregar a página.
-      'redirect'          => '',                                                                      // URL para redirecionar usuário após refresh.
-      'obs'               => 'Cria um meta obs.',                                                     // Outra qualquer observação sobre a página.
-      'PATH_MODEL_ASSETS' => URL_RAIZ . PATH_MODEL_ASSETS,                                            // Path.
-      'PATH_MODEL_CSS'    => URL_RAIZ . PATH_MODEL_CSS,                                               // Path.
-      'PATH_MODEL_IMG'    => URL_RAIZ . PATH_MODEL_IMG,                                               // Path.
-      'PATH_MODEL_JS'     => URL_RAIZ . PATH_MODEL_JS,                                                // Path.
-      'PATH_MODEL_UPLOAD' => URL_RAIZ . PATH_MODEL_UPLOAD,                                            // Path.
-      'PATH_MODEL_ADMIN'  => URL_RAIZ . PATH_MODEL_ADMIN,                                             // Path.
-      'favicon'           => URL_RAIZ . PATH_MODEL_IMG . 'favicon_coopama.png',                       // Imagem favicon.
-      'apple-touch-icon'  => URL_RAIZ . PATH_MODEL_IMG . 'favicon_coopama.png',                       // Imagem aple.
-      'logo'              => URL_RAIZ . PATH_MODEL_IMG . 'logo_coopama.png',                          // Imagem Logo.
+      'title'            => 'Login',                    // Título da página exibido na aba/janela navegador.
+      'author'           => 'COOPAMA',         // Autor do desenvolvimento da página ou responsável.
+      'description'      => '',                         // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
+      'keywords'         => '',                         // palavras minúsculas separadas por "," referente ao conteúdo da página em até 150 caracteres.
+      'content-language' => 'pt-br',                    // Linguagem primária da página (pt-br).
+      'content-type'     => 'utf-8',                    // Tipo de codificação da página.
+      'reply-to'         => 'suporte@coopama.com.br',   // E-mail do responsável da página.
+      'generator'        => 'vscode',                   // Programa usado para gerar página.
+      'refresh'          => '',                         // Tempo para recarregar a página.
+      'redirect'         => '',                         // URL para redirecionar usuário após refresh.
+      'obs'              => '',                         // Outra qualquer observação sobre a página.
     );
 
     
@@ -87,12 +78,10 @@ class LoginControllerPage extends ControllerPage
 
     // Otimização das funções de banco de dados que serão usadas na controller.
     // Pasta e controller.
-    // Exemplo: 'usuarios' => 'BdUsuarios',
+    // Exemplo: 'pasta/BdArquivo',
     // Exemplo uso controller: $var = BdUsuarios::getInfo();
     $this->paramsBd = array(
-      'tables/BdTablesCreate',   // Criação de tabelas.
-      'tables/BdTablesDelete',   // Criação de tabelas.
-      'pages/BdPagesInsert',   // Criação de tabelas.
+      'login/BdLogin',   // Criação de tabelas.
     );
 
     
@@ -109,8 +98,18 @@ class LoginControllerPage extends ControllerPage
    */
   public function _post()
   {
-    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    return false;
+    // $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    // print_r($_POST);
+
+    // Tratativa dos dados
+    $login = $_POST['login'];
+    $senha = md5($_POST['senha']);
+    
+    // Busca no banco de dados. e inicia a sessão.
+    ControllerSecurity::create(BdLogin::verificaLogin($login, $senha));
+
+
+    return true;
   }
 
 
@@ -181,6 +180,12 @@ class LoginControllerPage extends ControllerPage
   {
     // $this->paramsPage['nome'] = 'Mateus';
     // $this->paramsPage['usuarios'] = BdUsuarios::getAll();
+
+    // Verifica se foi passado parametro de sair na url.
+    if ($this->attr && isset($this->attr[0]) && $this->attr[0] == 'sair') {
+      ControllerSecurity::sair();
+    }
+
     return true;
   }
 

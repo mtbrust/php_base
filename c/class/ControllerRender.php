@@ -5,6 +5,25 @@
  */
 class ControllerRender
 {
+
+  /**
+   * Renderiza objetos da pasta v/templates/objs/.
+   * Renderiza um objeto html passando parâmetros.
+   *
+   * @param string $objName
+   * @param array $params
+   * @return HTML
+   */
+  public static function renderObj($objName, $params = null)
+  {
+    // Inicia a construção do objeto HTML
+    $loader   = new \Twig\Loader\FilesystemLoader('v/templates/objs/');  // Verifica a pasta objs.
+    $twig     = new \Twig\Environment($loader);                          // Instancia objeto twig.
+    $template = $twig->load($objName . '.html');                         // Retorna template html.
+    return $template->render(['params' => $params]);    // Junta parametros com template.
+  }
+
+
   /**
    * Renderiza a parte gráfica (html) do site.
    * Recebe os arquivos modelos HTML e o seu conteúdo.
@@ -31,6 +50,7 @@ class ControllerRender
       'html' => '<div id="html"><div id="head"><title>Banco de dados</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
       'head' => '{% block head %}<div value="teste">array head</div>{% endblock %}',
     ]);
+
     
     // Monta quais são as partes pastas que se usa modelo no template.
     $base = '';
@@ -49,6 +69,6 @@ class ControllerRender
     $twig   = new \Twig\Environment($loader);
 
     // Após carregar os templates HTML, e passar os parmâmetros, desenha página na tela.
-    echo $twig->render('base', array_merge($paramsView, $paramsPage));
+    echo $twig->render('base', array_merge($paramsView, $paramsPage, $paramsTemplateObjs));
   }
 }

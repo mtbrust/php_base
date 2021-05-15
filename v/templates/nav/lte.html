@@ -3,31 +3,206 @@
 <!-- Sidebar -->
 <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-            <img src="{{PATH_MODEL_ADMIN}}dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-            <a href="#" class="d-block">Alexander Pierce</a>
-        </div>
-    </div>
+    <a href="{{URL_RAIZ}}admin/meusdados/" class="d-block meusdados">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img class="img-circle elevation-2" src="{{userInfo.urlFoto}}" alt="User Image" />
+                <i class="fas fa-user-edit nav-icon img-circle elevation-2"></i>
+            </div>
+            <div class="info">
+                {{userInfo.firstName}}
+            </div>
 
-    <!-- SidebarSearch Form -->
-    <div class="form-inline">
+        </div>
+    </a>
+
+    <!-- SidebarSearch Form/ RETIRADO POR ENQUANTO SEM NECESSIDADE -->
+    <!--<div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
-            <input class="form-control form-control-sidebar" type="search" placeholder="Search"
-                aria-label="Search">
+            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
                 <button class="btn btn-sidebar">
                     <i class="fas fa-search fa-fw"></i>
                 </button>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+            <!-- DASHBOARD -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/" class="nav-link {% if url_atual == 'admin' %}active{%endif %}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>
+                        Dashboard
+                    </p>
+                </a>
+            </li>
+
+            <!-- NOTÍCIAS -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/noticias/" class="nav-link {% if url_atual == 'admin/noticias' %}active{%endif %}">
+                    <i class="nav-icon fas fa-newspaper"></i>
+                    <p>
+                        Notícias
+                    </p>
+                </a>
+            </li>
+
+            <!-- BANERS -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/banners/" class="nav-link {% if url_atual == 'admin/banners' %}active{%endif %}">
+                    <i class="nav-icon fas fa-image"></i>
+                    <p>
+                        Banners
+                    </p>
+                </a>
+            </li>
+
+            <!-- MÍDIAS -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/midias/" class="nav-link {% if url_atual == 'admin/midias' %}active{%endif %}">
+                    <i class="nav-icon fas fa-archive"></i>
+                    <p>
+                        Mídias
+                    </p>
+                </a>
+            </li>
+
+            <!-- CALENDÁRIO -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/calendario/" class="nav-link {% if url_atual == 'admin/calendario' %}active{%endif %}">
+                    <i class="nav-icon fas fa-calendar"></i>
+                    <p>
+                        Calendário
+                    </p>
+                </a>
+            </li>
+
+            <hr style="width: 100%;">
+
+
+            <!-- Login -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/login/" class="nav-link {% if url_atual == 'admin/login' %}active{%endif %}">
+                    <i class="fas fa-sign-in-alt nav-icon"></i>
+                    <p>
+                        Login
+                    </p>
+                </a>
+            </li>
+
+
+            <!-- Login -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/usuarios/" class="nav-link {% if url_atual == 'admin/usuarios' %}active{%endif %}">
+                    <i class="fas fa-users nav-icon"></i>
+                    <p>
+                        Usuários
+                    </p>
+                </a>
+            </li>
+
+
+
+            <!-- Segurança -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/seguranca/" class="nav-link {% if url_atual == 'admin/seguranca' %}active{%endif %}">
+                    <i class="fas fa-shield-alt nav-icon"></i>
+                    <p>
+                        Segurança
+                    </p>
+                </a>
+            </li>
+
+
+
+            <!-- Status -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/status/" class="nav-link {% if url_atual == 'admin/status' %}active{%endif %}">
+                    <i class="fas fa-star nav-icon"></i>
+                    <p>
+                        Status
+                    </p>
+                </a>
+            </li>
+
+
+            <!-- Login -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/paginas/" class="nav-link {% if url_atual == 'admin/paginas' %}active{%endif %}">
+                    <i class="fas fa-copy nav-icon"></i>
+                    <p>
+                        Páginas
+                    </p>
+                </a>
+            </li>
+
+
+            <!-- Configurações -->
+            <li class="nav-item">
+                <a href="{{URL_RAIZ}}admin/configuracoes/" class="nav-link {% if url_atual == 'admin/configuracoes' %}active{%endif %}">
+                    <i class="fas fa-cog nav-icon"></i>
+                    <p>
+                        Configurações
+                    </p>
+                </a>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- ANTIGOS -->
+            <!-- 
+            <hr style="width: 100%;">
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -120,6 +295,7 @@
                         </ul>
                     </li>
                 </ul>
+            </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon far fa-calendar-alt"></i>
@@ -148,14 +324,9 @@
                             <p>Concurso de Café</p>
                         </a>
                     </li>
-                    <!--<li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Calendário</p>
-                      </a>
-                    </li>-->
                 </ul>
             </li>
+
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-columns"></i>
@@ -163,6 +334,7 @@
                         Banners
                     </p>
                 </a>
+            </li>
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -206,6 +378,11 @@
                     </p>
                 </a>
             </li>
+            -->
+
+
+
+
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

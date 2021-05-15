@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Configurações controller para página.
+ */
 class ConfiguracoesControllerPage extends ControllerPage
 {
 
@@ -15,8 +18,8 @@ class ConfiguracoesControllerPage extends ControllerPage
 
     // Valores default de $paramsSecurity.
     $this->paramsSecurity = array(
-      'session'    => true,   // Página guarda sessão.
-      'permission' => 0,      // Nível de acesso a página. 0 a 100.
+      'session'    => true,      // [true] Somente usuário logado. [false] Qualquer pessoa.
+      'permission' => '11111',   // [1,0,0,0,0] Menu/Início, Adicionar, Editar, Listar, Deletar.
     );
 
     // Valores default de $paramsController.
@@ -31,17 +34,17 @@ class ConfiguracoesControllerPage extends ControllerPage
 
     // Valores default de $paramsTemplate a partir da pasta template.
     $this->paramsTemplate = array(
-      'html'        => 'lte',   // Template HTML
-      'head'        => 'lte',   // <head> da página.
-      'top'         => 'lte',   // Topo da página.
-      'header'      => 'lte',   // Menu da página.
-      'nav'      => 'lte',   // Menu da página.
-      //'corpo'        => 'default',   // Reservado para arquivo html.
-      'body_pre'    => 'lte',   // Antes do CORPO dentro body.
-      'body_pos'    => 'lte',   // Depois do CORPO dentro body.
-      'footer'      => 'lte',   // footer da página.
-      'bottom'      => 'lte',   // Fim da página.
-      //'maintenance' => 'paper',   // Página de manutenção (quando controller true).
+      'html'     => 'lte',   // Template HTML
+      'head'     => 'lte',   // <head> da página.
+      'top'      => 'lte',   // Topo da página.
+      'header'   => 'lte',   // Menu da página.
+      'nav'      => 'lte',       // Menu da página.
+      // 'corpo'    => 'default',   // Reservado para arquivo html.
+      'body_pre' => 'lte',   // Antes do CORPO dentro body.
+      'body_pos' => 'lte',   // Depois do CORPO dentro body.
+      'footer'   => 'lte',   // footer da página.
+      'bottom'   => 'lte',   // Fim da página.
+      //'maintenance' => 'manutencao',   // Página de manutenção (quando controller true).
     );
 
     // Objetos para serem inseridos dentro de partes do template.
@@ -53,49 +56,53 @@ class ConfiguracoesControllerPage extends ControllerPage
     // Valores default de $paramsView. Valores vazios são ignorados.
     //https://www.infowester.com/metatags.php
     $this->paramsView = array(
-      'title'             => 'Configurações',                                                         // Título da página exibido na aba/janela navegador.
-      'author'            => 'Mateus Brust',                                                          // Autor do desenvolvimento da página ou responsável.
-      'description'       => 'Página criada para mostrar como é a criação de controllers e views.',   // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
-      'keywords'          => 'modelo, página, controllers, views',                                    // palavras minúsculas separadas por "," referente ao conteúdo da página em até 150 caracteres.
-      'content-language'  => 'pt-br',                                                                 // Linguagem primária da página (pt-br).
-      'content-type'      => 'utf-8',                                                                 // Tipo de codificação da página.
-      'reply-to'          => 'mateus.brust@coopama.com.br',                                           // E-mail do responsável da página.
-      'generator'         => 'vscode',                                                                // Programa usado para gerar página.
-      'refresh'           => '',                                                                      // Tempo para recarregar a página.
-      'redirect'          => '',                                                                      // URL para redirecionar usuário após refresh.
-      'obs'               => 'Cria um meta obs.',                                                     // Outra qualquer observação sobre a página.
-      'PATH_MODEL_ASSETS' => URL_RAIZ . PATH_MODEL_ASSETS,                                            // Path.
-      'PATH_MODEL_CSS'    => URL_RAIZ . PATH_MODEL_CSS,                                               // Path.
-      'PATH_MODEL_IMG'    => URL_RAIZ . PATH_MODEL_IMG,                                               // Path.
-      'PATH_MODEL_JS'     => URL_RAIZ . PATH_MODEL_JS,                                                // Path.
-      'PATH_MODEL_UPLOAD' => URL_RAIZ . PATH_MODEL_UPLOAD,                                            // Path.
-      'PATH_MODEL_ADMIN'  => URL_RAIZ . PATH_MODEL_ADMIN,                                             // Path.
-      'favicon'           => URL_RAIZ . PATH_MODEL_IMG . 'favicon_coopama.png',                       // Imagem favicon.
-      'apple-touch-icon'  => URL_RAIZ . PATH_MODEL_IMG . 'favicon_coopama.png',                       // Imagem aple.
-      'logo'              => URL_RAIZ . PATH_MODEL_IMG . 'logo_coopama.png',                          // Imagem Logo.
-      'anoAtual'          => date('Y'),                                                               // Imagem Logo.
+      'title'            => 'Configurações',            // Título da página exibido na aba/janela navegador.
+      'author'           => 'Coopama',                  // Autor do desenvolvimento da página ou responsável.
+      'description'      => '',                         // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
+      'keywords'         => '',                         // palavras minúsculas separadas por "," referente ao conteúdo da página em até 150 caracteres.
+      'content-language' => 'pt-br',                    // Linguagem primária da página (pt-br).
+      'content-type'     => 'utf-8',                    // Tipo de codificação da página.
+      'reply-to'         => 'suporte@coopama.com.br',   // E-mail do responsável da página.
+      'generator'        => 'vscode',                   // Programa usado para gerar página.
+      'refresh'          => '',                         // Tempo para recarregar a página.
+      'redirect'         => '',                         // URL para redirecionar usuário após refresh.
+      'obs'              => '',                         // Outra qualquer observação sobre a página.
     );
 
-    
-    
+
+
 
     // Valores para serem inseridos no corpo da página.
     // Exemplo: 'p_nome' => 'Mateus',
     // Exemplo uso view: <p><b>Nome: </b> {{p_nome}}</p>
     $this->paramsPage = array(
-      'nome'              => 'Mateus',            // Exemplo
+      'versão'              => 'v1.0',            // Exemplo
     );
-    
+
 
     // Otimização das funções de banco de dados que serão usadas na controller.
     // Pasta e controller.
-    // Exemplo: 'usuarios' => 'BdUsuarios',
+    // Exemplo: 'users/BdUsers',
     // Exemplo uso controller: $var = BdUsuarios::getInfo();
     $this->paramsBd = array(
-      'tables' => 'BdTablesCreate',   // Exemplo
+      'tables/BdTablesCreate',
+      'tables/BdTablesDelete',
+      'login/BdLogin',
+      'login/BdLoginInsert',
+      'users/BdUsers',
+      'midia/BdMidia',
+      'status/BdStatusInsert',
+      'permissions/BdPermissionsInsert',
     );
 
-    
+
+    // Otimização das funções que serão usadas na controller.
+    // Pasta classes.
+    // Exemplo: 'Noticias',
+    // Exemplo uso controller: $var = Noticias::getInfo();
+    $this->paramsClasses = array(
+      'Midia',   // Exemplo
+    );
   }
 
 
@@ -109,9 +116,12 @@ class ConfiguracoesControllerPage extends ControllerPage
    */
   public function _post()
   {
-    echo '_POST - MODELO<br>';
-    var_dump($_POST);
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    $this->paramsPage['post'] = $_POST;
 
+
+    //print_r($_FILES);
+    Midia::armazenar($_FILES['file'], null, null, true);
     return false;
   }
 
@@ -125,9 +135,7 @@ class ConfiguracoesControllerPage extends ControllerPage
    */
   public function post()
   {
-    echo 'POST - MODELO<br>';
-    print_r($this->attr);
-
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
     return false;
   }
 
@@ -142,9 +150,7 @@ class ConfiguracoesControllerPage extends ControllerPage
    */
   public function put()
   {
-    echo 'PUT - MODELO<br>';
-    print_r($this->attr);
-
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
     return false;
   }
 
@@ -158,9 +164,7 @@ class ConfiguracoesControllerPage extends ControllerPage
    */
   public function get()
   {
-    echo 'GET - MODELO<br>';
-    print_r($this->attr);
-
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
     return false;
   }
 
@@ -173,8 +177,28 @@ class ConfiguracoesControllerPage extends ControllerPage
    */
   public function delete()
   {
-    echo 'DELETE - MODELO<br>';
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
     return false;
+  }
+
+
+  /**
+   * Exibe a página inicial.
+   * Usado para criar os parâmetros e dados disponibilizados na view.
+   * É executado depois do preprocessamento()
+   *
+   * @return bool
+   */
+  public function index()
+  {
+    // $this->paramsPage['nome'] = 'Mateus';
+    //$this->paramsPage['users'] = BdUsers::selecionaTudo();
+
+    // Como cadastrar midia.
+    // $idmidia = Midia::add($_POST['imagem'], 'noticias', 'foto');
+    // $urlFoto = Midia::get($idmidia);
+
+    return true;
   }
 
 
@@ -187,11 +211,72 @@ class ConfiguracoesControllerPage extends ControllerPage
    */
   public function api()
   {
-    header('Content-Type: application/json');
-    echo json_encode(array(
-      'status' => 'OK',
-      'msg' => 'Implementar a api da ' . $this->controllerName . __CLASS__ . '.'
-    ));
+    header('Content-Type: application/json; charset=utf-8;');
+
+    /**
+     * API Simples para executar algumas funções do BD.
+     * todo: Talvez seja melhor implementar essas funções na API geral.
+     */
+    // Predefinição do resultado
+    $r['r'] = 'Erro.';
+
+    // Parametro.
+    $parametro = $this->attr[1];
+
+
+    // Primeiro parâmetro passado pela url após api.
+    switch ($parametro) {
+      case 'BdTablesCreate':
+        if (class_exists("BdTablesCreate"))
+          $r['r'] = BdTablesCreate::start();
+        else
+          $r['r'] = "Classe não instanciada.";
+        break;
+      case 'BdTablesDelete':
+        if (class_exists("BdTablesDelete"))
+          $r['r'] = BdTablesDelete::start();
+        else
+          $r['r'] = "Classe não instanciada.";
+        break;
+      case 'BdLoginInsert':
+        if (class_exists("BdLoginInsert"))
+          $r['r'] = BdLoginInsert::start();
+        else
+          $r['r'] = "Classe não instanciada.";
+        break;
+      case 'BdStatusInsert':
+        if (class_exists("BdStatusInsert"))
+          $r['r'] =  BdStatusInsert::start();
+        else
+          $r['r'] = "Classe não instanciada.";
+        break;
+      case 'BdPermissionsInsert':
+        if (class_exists("BdStatusInsert"))
+          $r['r'] =  BdPermissionsInsert::start();
+        else
+          $r['r'] = "Classe não instanciada.";
+        break;
+      default:
+        $r['r'] = 'Erro. Parâmetro não definido.';
+        break;
+    }
+    // Retorna json.
+    echo json_encode($r);
+
+    return false;
+  }
+
+
+  /**
+   * Inicia a página de teste. 
+   * Usada para realizar testes sem afetar a produção.
+   *
+   * @return bool
+   */
+  public function test()
+  {
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+
 
     return false;
   }

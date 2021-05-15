@@ -1,0 +1,116 @@
+{% block corpo %}
+
+{# A view é a última "else"
+
+
+
+DESENHA O POST *********************************************************************************************************
+#}
+{% if attr[0] == 'post' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="m-0">Post</p>
+    </div>
+  </div>
+</div>
+
+{# DESENHA O PUT
+********************************************************************************************************* #}
+{% elseif attr[0] == 'put' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+
+      <!-- ignorar -->
+      <p class="m-0">{{rest|raw}}</p>
+
+
+      <!-- Exemplo edição notícia -->
+      <p>formulário: {{noticia.titulo}}</p>
+      <input type="text" name="titulo" id="" value="{{noticia.titulo}}">
+      <p>id: {{noticia_id}}</p>
+
+
+
+    </div>
+  </div>
+</div>
+
+{# DESENHA O GET
+********************************************************************************************************* #}
+{% elseif attr[0] == 'get' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="m-0">Get</p>
+    </div>
+  </div>
+</div>
+
+
+{# DESENHA O DELETE
+********************************************************************************************************* #}
+{% elseif attr[0] == 'delete' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="m-0">Delete</p>
+    </div>
+  </div>
+</div>
+
+
+{# DESENHA O TEST
+********************************************************************************************************* #}
+{% elseif attr[0] == 'test' %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="m-0">TEST</p>
+    </div>
+  </div>
+</div>
+
+{# DESENHA A VIEW
+********************************************************************************************************* #}
+{% else %}
+
+{{obj_formulario|raw}}
+
+
+<script src="{{PATH_MODEL_ADMIN}}plugins/moment/moment.min.js"></script>
+<script src="{{PATH_MODEL_ADMIN}}plugins/inputmask/jquery.inputmask.min.js"></script>
+
+<script>
+  $("#f-dtNascimento").inputmask("datetime", {
+    inputFormat: "dd/mm/yyyy",
+    outputFormat: "yyyy-mm-dd",
+    inputEventOnly: true,
+  });
+
+
+  $(".mask-email").inputmask("email");
+
+  $(".mask-data").inputmask("datetime", {
+    inputFormat: "dd/mm/yyyy",
+    outputFormat: "yyyy-mm-dd",
+    inputEventOnly: true,
+  });
+
+  $(".mask-cpf").inputmask({
+    mask: ['999.999.999-99'],
+    outputFormat: "99999999999",
+    keepStatic: true
+  });
+
+  $(".mask-tel").inputmask({
+    mask: ['(99) 9999-9999', '(99) 9 9999-9999'],
+    outputFormat: "99999999999",
+    keepStatic: true
+  });
+</script>
+
+
+{%endif%}
+{% endblock %}

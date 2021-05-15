@@ -118,17 +118,17 @@ class Core
      */
     $this->requireDependences();
 
+
+    /**
+     * Inicia a segurança da página.
+     */
+    ControllerSecurity::start();
+
     /**
      * Inicia banco de dados
      * Cria conexão.
      */
     Bd::start();
-    // print_r(BdUsuarios::getUsuarios());
-    // print_r(Bd::getTables('status', Bd::getConn1()));
-    // BdTablesCreate::start();
-    // BdPagesInsert::start();
-    // BdTablesDelete::start();
-    //print_r(BdPagesSelect::selectIdPage("servicos"));
 
 
 
@@ -153,6 +153,7 @@ class Core
       if (VIEWS_DIR)
         Self::$infoDirUrl = $this->scanInfoDirUrl(Self::$url);
       //print_r(Self::$infoDirUrl);
+      
 
 
       /**
@@ -160,10 +161,8 @@ class Core
        * Caso VIEWS_BD esteja ativado no arquivo config.php
        */
       if (VIEWS_BD)
-        Self::$infoBdUrl = $this->scanInfoBdUrl(Self::$url); // Pendente.
-
-
-
+        Self::$infoBdUrl = $this->scanInfoBdUrl(Self::$url);
+      
       /**
        * Obtém o controller da página atual. Logo após executa.
        */
@@ -171,7 +170,7 @@ class Core
       $this->controllerPage->start();
     }
 
-    
+
 
     /**
      * Finaliza conexão com banco de dados
@@ -190,26 +189,24 @@ class Core
    */
   private function requireDependences()
   {
-    require_once 'config.php';                      // Carrega constantes.
-    require 'vendor/autoload.php';                  // Carrega todas as dependências do composer.
 
-    require_once 'm/bd/Bd.php';                     // Carrega classe pai banco de dados.
-    // require_once 'm/bd/usuarios/BdUsuarios.php';    // Verificar se usa aqui.
-    // require_once 'm/bd/tables/BdTablesCreate.php';  // Verificar se usa aqui.
-    // require_once 'm/bd/tables/BdTablesDelete.php';  // Verificar se usa aqui.
-    // require_once 'm/bd/pages/BdPagesInsert.php';    // Verificar se usa aqui.
-    require_once 'm/bd/pages/BdPagesSelect.php';    // Verificar se tem página no banco de dados.
+    require_once 'config.php';                            // Carrega constantes.
+    require 'vendor/autoload.php';                        // Carrega todas as dependências do composer.
 
-    require_once 'c/class/ControllerApi.php';       // Carrega classe pai controllerApi.
-    require_once 'c/class/ControllerPage.php';      // Carrega classe pai controllerPage.
-    require_once 'c/class/ControllerRender.php';    // Carrega classe pai controllerRender.
+    require_once 'm/bd/Bd.php';                           // Carrega classe pai banco de dados.
+    require_once 'm/bd/pages/BdPagesSelect.php';          // Verificar se tem página no banco de dados. // Não implementado.
+    require_once 'm/bd/login/BdLogin.php';                // Controle tabela Midia.
+    require_once 'm/bd/midia/BdMidia.php';                // Controle tabela Midia.
+    require_once 'm/bd/users/BdUsers.php';                // Controle tabela Users.
+    require_once 'm/bd/permissions/BdPermissions.php';    // Controle tabela Users.
+    require_once 'm/bd/pages/BdPages.php';                // Controle tabela Users.
 
-
-
+    require_once PATH_CONTROLLER_CLASS . 'ControllerApi.php';       // Carrega classe pai controllerApi.
+    require_once PATH_CONTROLLER_CLASS . 'ControllerPage.php';      // Carrega classe pai controllerPage.
+    require_once PATH_CONTROLLER_CLASS . 'ControllerRender.php';    // Carrega classe pai controllerRender.
+    require_once PATH_CONTROLLER_CLASS . 'ControllerSecurity.php';  // Carrega classe pai controllerSecurity.
+    
     // PENDÊNCIAS
-    // Carregar classes e banco de dados...
-    // Carregar segurança
-    // Variáveis globais
     // Config
   }
 
@@ -255,7 +252,7 @@ class Core
       $infoDirUrl['file'] = 'index';
       $infoDirUrl['file_name'] = 'index.html';
       $infoDirUrl['controller_name'] = 'IndexControllerPage';
-      $infoDirUrl['controller_path'] = 'IndexControllerPage';
+      $infoDirUrl['controller_path'] = 'IndexControllerPage.php';
       $infoDirUrl['url']  = '';
       $infoDirUrl['attr'] = array();
     } else {
@@ -560,7 +557,7 @@ class Core
       if (!empty(Self::$infoDirUrl['controller_path'])) {
         // Verifica se controller da página existe.
         if (file_exists(PATH_CONTROLLER_PAGES . Self::$infoDirUrl['controller_path'])) {
-          
+
           // Arquivo existe, então chama controller da página.
           $controller_path = PATH_CONTROLLER_PAGES . Self::$infoDirUrl['controller_path'];
           $controller_name = Self::$infoDirUrl['controller_name'];
@@ -571,8 +568,12 @@ class Core
       require_once $controller_path;
 
       // Instancia a classe do controllerPage e salva nos parâmetros do Core.
-      $refl = new ReflectionClass(ucfirst($controller_name));
-      return $refl->newInstanceArgs();
+      try {
+        $refl = new ReflectionClass(ucfirst($controller_name));
+        return $refl->newInstanceArgs();
+      } catch (\Throwable $th) {
+        throw new Exception('Verifique se a controller ' . $controller_name . ' está com nome correto, e se ela existe em ' . $controller_path . '.');
+      }
     }
 
 
@@ -655,14 +656,15 @@ class Core
     //   $path = PATH_CONTROLLER_PAGES . 'DefaultControllerPage.php';                    // Preenche com path default.
     // }
 
-    echo $posicao;
-    echo '<br>';
-    print_r($controller_name);
-    echo '<br>';
-    print_r($path);
-    echo '<br>';
-    print_r(Self::$infoDirUrl);
-    echo '<br>';
+    // echo $posicao;
+    // echo '<br>';
+    // print_r($controller_name);
+    // echo '<br>';
+    // print_r($path);
+    // echo '<br>';
+    // print_r(Self::$infoDirUrl);
+    // echo '<br>';
+    // exit;
 
     // Carrega arquivo controllerPage da página autal.
     //require_once $path;

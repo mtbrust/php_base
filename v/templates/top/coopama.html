@@ -1,0 +1,109 @@
+{% block top %}
+
+<style>
+    .texto-topo {
+        font-size: 14px;
+        padding: 18px 0;
+        margin: 0;
+        font-weight: 400;
+        color: #666;
+    }
+
+    .texto-topo>a {
+        color: inherit;
+    }
+
+    .item-topo {
+        text-align: center;
+    }
+
+    .item-topo>i,
+    .item-topo>div {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 20px;
+        padding: 5px;
+    }
+
+    .item-topo>div {
+        text-align: left;
+        font-size: 16px;
+        line-height: 16px;
+    }
+
+    .btn-topo {
+        border-radius: 50px;
+        background-image: linear-gradient(0deg, #006d9e, #0084C2);
+        font-weight: 700;
+        font-size: 14px;
+        padding: 10px 0;
+        width: 200px;
+        border: none;
+        margin: 4px 0;
+    }
+
+    .btn-topo>img {
+        width: 25px;
+        vertical-align: middle;
+    }
+
+    @media (max-width: 768px) {
+        .texto-topo {
+            font-size: 14px;
+            padding: 2px 0;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .item-topo>div {
+            text-align: left;
+            font-size: 11px;
+            line-height: 12px;
+        }
+
+        .btn-topo {
+            font-size: 12px;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="row my-2">
+        <div class="col-12 col-sm-4 text-center">
+            <p class="texto-topo">
+                COOPERATICA AGRÁRIA DE MACHADO LDTA. <a href="tel:3532950160"><b>(35) 3295-0160</b></a>
+            </p>
+        </div>
+        <div class="col-4 col-sm-2 text-center py-2">
+            <a href="" class="hvr-icon-pulse-shrink">
+                <div class="item-topo" style="color: #5C8827;">
+                    <i class="fas fa-star hvr-icon"></i>
+                    <div>BENEFÍCIOS DO<br><b>COOPERADO</b></div>
+                </div>
+            </a>
+        </div>
+        <div class="col-4 col-sm-2 text-center py-2">
+            <a href="" class="hvr-icon-pulse-shrink">
+                <div class="item-topo" style="color: #006FA1;">
+                    <i class="fas fa-graduation-cap hvr-icon"></i>
+                    <div>UNIVERSIDADE<br><b>COOPAMA</b></div>
+                </div>
+            </a>
+        </div>
+        <div class="col-4 col-sm-2 text-center py-2">
+            <a href="" class="hvr-icon-pulse-shrink">
+                <div class="item-topo" style="color: #006FA1;">
+                    <i class="fas fa-cog hvr-icon"></i>
+                    <div>ÁREA DO<br><b>COLABORADOR</b></div>
+                </div>
+            </a>
+
+        </div>
+        <div class="col-12 col-sm-2 text-center">
+            <a href="" class="btn btn-block btn-primary btn-lg btn-topo hvr-underline-from-left hvr-grow-shadow"><img
+                    src="{{favicon}}"> PORTAL DO
+                COOPERADO</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Modelo de controller para páginas.
+ */
 class ModeloControllerPage extends ControllerPage
 {
 
@@ -15,8 +18,8 @@ class ModeloControllerPage extends ControllerPage
 
     // Valores default de $paramsSecurity.
     $this->paramsSecurity = array(
-      'session'    => true,   // Página guarda sessão.
-      'permission' => 0,      // Nível de acesso a página. 0 a 100.
+      'session'    => true,      // [true] Somente usuário logado. [false] Qualquer pessoa.
+      'permission' => '11111',   // [1,0,0,0,0] Menu/Início, Adicionar, Editar, Listar, Deletar.
     );
 
     // Valores default de $paramsController.
@@ -31,15 +34,16 @@ class ModeloControllerPage extends ControllerPage
 
     // Valores default de $paramsTemplate a partir da pasta template.
     $this->paramsTemplate = array(
-      'html'        => 'default',   // Template HTML
-      'head'        => 'default',   // <head> da página.
-      'top'         => 'default',   // Topo da página.
-      'header'      => 'default',   // Menu da página.
-      //'corpo'        => 'default',   // Reservado para arquivo html.
-      'body_pre'    => 'default',   // Antes do CORPO dentro body.
-      'body_pos'    => 'default',   // Depois do CORPO dentro body.
-      'footer'      => 'default',   // footer da página.
-      'bottom'      => 'default',   // Fim da página.
+      'html'     => 'lte',   // Template HTML
+      'head'     => 'lte',   // <head> da página.
+      'top'      => 'lte',   // Topo da página.
+      'header'   => 'lte',   // Menu da página.
+      'nav'      => 'lte',   // Menu da página.
+      // 'corpo'    => 'default',   // Reservado para arquivo html.
+      'body_pre' => 'lte',   // Antes do CORPO dentro body.
+      'body_pos' => 'lte',   // Depois do CORPO dentro body.
+      'footer'   => 'lte',   // footer da página.
+      'bottom'   => 'lte',   // Fim da página.
       //'maintenance' => 'manutencao',   // Página de manutenção (quando controller true).
     );
 
@@ -52,26 +56,17 @@ class ModeloControllerPage extends ControllerPage
     // Valores default de $paramsView. Valores vazios são ignorados.
     //https://www.infowester.com/metatags.php
     $this->paramsView = array(
-      'title'             => 'Página Modelo',                                                         // Título da página exibido na aba/janela navegador.
-      'author'            => 'Mateus Brust',                                                          // Autor do desenvolvimento da página ou responsável.
-      'description'       => 'Página criada para mostrar como é a criação de controllers e views.',   // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
-      'keywords'          => 'modelo, página, controllers, views',                                    // palavras minúsculas separadas por "," referente ao conteúdo da página em até 150 caracteres.
-      'content-language'  => 'pt-br',                                                                 // Linguagem primária da página (pt-br).
-      'content-type'      => 'utf-8',                                                                 // Tipo de codificação da página.
-      'reply-to'          => 'mateus.brust@coopama.com.br',                                           // E-mail do responsável da página.
-      'generator'         => 'vscode',                                                                // Programa usado para gerar página.
-      'refresh'           => '',                                                                      // Tempo para recarregar a página.
-      'redirect'          => '',                                                                      // URL para redirecionar usuário após refresh.
-      'obs'               => 'Cria um meta obs.',                                                     // Outra qualquer observação sobre a página.
-      'PATH_MODEL_ASSETS' => URL_RAIZ . PATH_MODEL_ASSETS,                                            // Path.
-      'PATH_MODEL_CSS'    => URL_RAIZ . PATH_MODEL_CSS,                                               // Path.
-      'PATH_MODEL_IMG'    => URL_RAIZ . PATH_MODEL_IMG,                                               // Path.
-      'PATH_MODEL_JS'     => URL_RAIZ . PATH_MODEL_JS,                                                // Path.
-      'PATH_MODEL_UPLOAD' => URL_RAIZ . PATH_MODEL_UPLOAD,                                            // Path.
-      'PATH_MODEL_ADMIN'  => URL_RAIZ . PATH_MODEL_ADMIN,                                             // Path.
-      'favicon'           => URL_RAIZ . PATH_MODEL_IMG . 'favicon_coopama.png',                       // Imagem favicon.
-      'apple-touch-icon'  => URL_RAIZ . PATH_MODEL_IMG . 'favicon_coopama.png',                       // Imagem aple.
-      'logo'              => URL_RAIZ . PATH_MODEL_IMG . 'logo_coopama.png',                          // Imagem Logo.
+      'title'            => 'Página Modelo',            // Título da página exibido na aba/janela navegador.
+      'author'           => 'Coopama',                  // Autor do desenvolvimento da página ou responsável.
+      'description'      => '',                         // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
+      'keywords'         => '',                         // palavras minúsculas separadas por "," referente ao conteúdo da página em até 150 caracteres.
+      'content-language' => 'pt-br',                    // Linguagem primária da página (pt-br).
+      'content-type'     => 'utf-8',                    // Tipo de codificação da página.
+      'reply-to'         => 'suporte@coopama.com.br',   // E-mail do responsável da página.
+      'generator'        => 'vscode',                   // Programa usado para gerar página.
+      'refresh'          => '',                         // Tempo para recarregar a página.
+      'redirect'         => '',                         // URL para redirecionar usuário após refresh.
+      'obs'              => '',                         // Outra qualquer observação sobre a página.
     );
 
     
@@ -81,16 +76,25 @@ class ModeloControllerPage extends ControllerPage
     // Exemplo: 'p_nome' => 'Mateus',
     // Exemplo uso view: <p><b>Nome: </b> {{p_nome}}</p>
     $this->paramsPage = array(
-      'nome'              => 'Mateus',            // Exemplo
+      'versão'              => 'v1.0',            // Exemplo
     );
     
 
     // Otimização das funções de banco de dados que serão usadas na controller.
     // Pasta e controller.
-    // Exemplo: 'usuarios' => 'BdUsuarios',
+    // Exemplo: 'users/BdUsers',
     // Exemplo uso controller: $var = BdUsuarios::getInfo();
     $this->paramsBd = array(
       'pasta/BdArquivo',   // Exemplo
+    );
+    
+
+    // Otimização das funções que serão usadas na controller.
+    // Pasta classes.
+    // Exemplo: 'classes/Noticias',
+    // Exemplo uso controller: $var = Noticias::getInfo();
+    $this->paramsClasses = array(
+      'classes/Noticias',   // Exemplo
     );
 
     
@@ -107,9 +111,11 @@ class ModeloControllerPage extends ControllerPage
    */
   public function _post()
   {
-    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    $this->paramsPage['post'] = $_POST;
-    return false;
+    // $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+  
+    $params['formToken'] = $this->paramsPage['formToken'];
+
+    return true;
   }
 
 
@@ -123,7 +129,10 @@ class ModeloControllerPage extends ControllerPage
   public function post()
   {
     $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    return false;
+    
+    $params['formToken'] = $this->paramsPage['formToken'];
+    
+    return true;
   }
 
 
@@ -138,7 +147,10 @@ class ModeloControllerPage extends ControllerPage
   public function put()
   {
     $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    return false;
+    
+    $params['formToken'] = $this->paramsPage['formToken'];
+    
+    return true;
   }
 
 
@@ -151,8 +163,20 @@ class ModeloControllerPage extends ControllerPage
    */
   public function get()
   {
-    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    return false;
+    
+    /**
+     * Data Table
+     */
+    // Obtém os registros da tabela.
+    //$params['dados'] = BdModelo::selecionaTudo();
+    // Monta as colunas.
+    //$params['colunas'] = ['ID', 'Matricula', 'ID_Usuário', 'ID_Grupo', 'Nome_Completo', 'Primeiro_Nome', 'Último_Nome', 'E-Mail', 'Usuário', 'CPF', 'Telefone', 'Ativo', 'Status', 'Observações']; // Caso precise ajustar os nomes das colunas.
+    // Obtém a datatable html.
+    //$dataTable = ControllerRender::renderObj('modeloDataTable', $params);
+    // Passa o html para página.
+    //$this->paramsPage['datatable'] = $dataTable;
+
+    return true;
   }
 
 
@@ -165,7 +189,10 @@ class ModeloControllerPage extends ControllerPage
   public function delete()
   {
     $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    return false;
+    
+    $params['formToken'] = $this->paramsPage['formToken'];
+    
+    return true;
   }
 
 
@@ -193,12 +220,30 @@ class ModeloControllerPage extends ControllerPage
    */
   public function api()
   {
+    // Cabeçalho para visualizar em JSON no caso de acesso direto.
     header('Content-Type: application/json');
+
+    // Retorno exemplo para Json.
     echo json_encode(array(
       'status' => 'OK',
       'msg' => 'Implementar a api da ' . $this->controllerName . __CLASS__ . '.'
     ));
 
-    return false;
+    // Retorna true após a execução de todo o comando.
+    return true;
+  }
+
+
+  /**
+   * Inicia a página de teste. 
+   * Usada para realizar testes sem afetar a produção.
+   *
+   * @return bool
+   */
+  public function test()
+  {
+
+    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
+    return true;
   }
 }

@@ -1,0 +1,67 @@
+{% block corpo %}
+
+{# A view é a última "else"
+
+
+
+    DESENHA O POST    ********************************************************************************************************* #}
+{% if attr[0] == 'post' %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="m-0">Post</p>
+        </div>
+    </div>
+</div>
+
+{# DESENHA O PUT    ********************************************************************************************************* #}
+{% elseif attr[0] == 'put' %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="m-0">Put</p>
+        </div>
+    </div>
+</div>
+
+{# DESENHA O GET    ********************************************************************************************************* #}
+{% elseif attr[0] == 'get' %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="m-0">Get</p>
+        </div>
+    </div>
+</div>
+
+
+{# DESENHA O DELETE    ********************************************************************************************************* #}
+{% elseif attr[0] == 'delete' %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="m-0">Delete</p>
+        </div>
+    </div>
+</div>
+
+
+{# DESENHA O TEST    ********************************************************************************************************* #}
+{% elseif attr[0] == 'test' %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="m-0">TEST</p>
+        </div>
+    </div>
+</div>
+
+{# DESENHA A VIEW    ********************************************************************************************************* #}
+{% else %}
+<div class="m-3 p-3" style="background-color: #bb3;">Noticias</div>
+
+{{p_lista | raw}}
+
+
+{%endif%}
+{% endblock %}

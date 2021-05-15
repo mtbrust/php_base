@@ -1,0 +1,159 @@
+<div class="col s12 l12">
+    <div class="card">
+        <div class="card-header">
+            <!--<div class="card-title">
+                <h2 style="color: #f3eeee"><b><strong>{{params.titulo}}</strong></b></h2>
+                <h3 style="color: #f3eeee;">Editar Notícia</h3>-->
+            <h4 class="card-title" style="color: #f3eeee">Editar Notícia ▷ <b><strong style="color: #0e5b44">{{ params.titulo }}</strong></b></h4>
+            <!--</div>-->
+        </div>
+        <br style="clear: both">
+        <form name="novaNoticia" action="" id="novaNoticia" method="post" enctype="multipart/form-data" style="text-align: center">
+            <input type="hidden" name="acao" id="acao" value="novaNoticia">
+            <div class="form-row">
+                <div class="form-group col-lg-6">
+                    <label for="titulo">Titulo</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" value="{{ params.titulo }}">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="previa">Prévia</label>
+                    <input type="text" class="form-control" id="previa" name="previa" value="{{ params.previa }}">
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="texto">Texto</label>
+                    <textarea class="form-control" id="texto" name="texto">{{params.texto}}</textarea>
+                </div>
+                <!--<div class="form-row">-->
+                <div class="file-field input-field col s12 l5">
+                    <label for="imagemDestaque" >Imagem Destaque</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" accept="image/*" class="custom-file-input" name="imagemDestaque" id="imagemDestaque" style="margin: 0">
+                                <label class="custom-file-label" type="file" style="margin: 0">{{params.nomeMidia}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <label for="dataPostagem">Data Postagem</label>
+                    <input type="date" value="{{params.dataPostagem}}" maxlength="10" class="form-control" name="dataPostagem" id="dataPostagem"  >
+                </div>
+
+                <div class="form-group col-sm-2">
+                    <label for="fixaTopo">
+                        <span>Topo?</span>
+                    </label><br>
+                    <input type="checkbox" id="fixaTopo" name="fixaTopo" style="padding-top: 30px" {% if params.fixaTopo == 1 %}checked{% endif %} />
+                </div>
+
+                <div class="form-group col-sm-1">
+                    <label for="idStatus">
+                        <span>Ativar?</span>
+                    </label><br>
+                    <input type="checkbox" id="idStatus" name="idStatus"  style="padding-top: 30px" {% if params.idStatus == 1 %}checked{% endif %} />
+                </div>
+
+                <div class="form-group col-sm-3" style="text-align: center; margin-top: 30px; padding-top: 50px; size: 30px">
+                    <button type="submit" id="btnSubmit" name="editar" class="btn btn-group-lg" value="{{params.id}}" style="color: white; background-color: #0f9d58">Editar</button>
+                </div>
+                <!--</div>-->
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+<script src="{{PATH_MODEL_ADMIN}}vendor/ckeditor/build/ckeditor.js"></script>
+<script>
+    $(function () {
+        // Summernote
+        $('#texto').summernote()
+        });
+    ClassicEditor
+
+    .create( document.querySelector( '' ), {
+
+        toolbar: {
+            items: [
+                'heading',
+                '|',
+                'bold',
+                'italic',
+                'link',
+                'bulletedList',
+                'numberedList',
+                '|',
+                'outdent',
+                'indent',
+                '|',
+                'imageUpload',
+                'blockQuote',
+                'insertTable',
+                'mediaEmbed',
+                'undo',
+                'redo'
+            ]
+        },
+        language: 'pt-br',
+        image: {
+            toolbar: [
+                'imageTextAlternative',
+                'imageStyle:full',
+                'imageStyle:side'
+            ]
+        },
+        table: {
+            contentToolbar: [
+                'tableColumn',
+                'tableRow',
+                'mergeTableCells'
+            ]
+        },
+        licenseKey: '',
+
+
+    } )
+    .then( editor => {
+        window.editor = editor;
+
+
+
+
+
+
+
+
+    } )
+    .catch( error => {
+        console.error( 'Oops, something went wrong!' );
+        console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+        console.warn( 'Build id: yjoge4qp1foh-nohdljl880ze' );
+        console.error( error );
+    } );
+
+</script>
+</section>
+<style>
+    .form-control{
+        padding: 0.2em;
+        padding-right: 2px;
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+        display: block;
+    }
+    .custom-file-input:lang(pt-br)~.custom-file-label::after {
+        content: "Carregar";
+    }
+
+    .ck.ck-editor__editable_inline>:last-child {
+        min-height: 200px;
+    }
+    /*.note-toolbar card-header {
+        background-color: white;
+        color: #6c757d;
+    }*/
+
+
+
+</style>

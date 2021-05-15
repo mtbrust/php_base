@@ -1,0 +1,64 @@
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="width: 100%; padding-top: 0">
+                    <div class="card-header">
+                        <h3 class="card-title">Lista de Banners</h3>
+                    </div>
+                            <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Título</th>
+                                        <th>Link</th>
+                                        <th>Banner</th>
+                                        <th>Status</th>
+                                        <th>Editar</th>
+                                        <th>Excluir</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key, banner in params.banners %}
+                                    <tr>
+
+                                        <td>{{banner.id}}</td>
+                                        <td>{{banner.titulo}}</td>
+                                        <td>{{banner.link}}</td>
+                                        <td><img src="{{banner.urlMidia}}" width="70px" height="70px"></td>
+                                        <td>{{banner.idStatus}}</td>
+                                        <td>
+                                            <a href="{{params.URL_RAIZ}}admin/banners/put/{{banner.id}}" class="btn btn-warning">Editar</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{params.URL_RAIZ}}admin/banners/delete/{{banner.id}}" class="btn btn-danger">Excluir</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    table > *{
+        text-align: center;
+        font-size: 1rem;
+    }
+</style>
+
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    });
+</script>

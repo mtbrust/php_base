@@ -1,0 +1,211 @@
+<div class="row">
+	<!-- CARD -->
+	<form action="" method="POST" enctype="multipart/form-data">
+		<input name="f-formToken" type="text" value="{{params.formToken}}" hidden>
+		<div class="card">
+			<div class="card-header">
+
+				<!-- TÍTULO -->
+				<h3 class="card-title">Adicionar permissões para usuário</h3>
+
+				<div class="card-tools m-0">
+					<!-- ATUALIZAR -->
+					<button type="button" class="btn btn-tool" data-card-widget="card-refresh"
+						data-source="widgets.html" data-source-selector="#card-refresh-content"
+						data-load-on-init="false">
+						<i class="fas fa-sync-alt"></i>
+					</button>
+					<!-- MAXIMIZAR -->
+					<button type="button" class="btn btn-tool" data-card-widget="maximize">
+						<i class="fas fa-expand"></i>
+					</button>
+					<!-- COLAPSAR -->
+					<button type="button" class="btn btn-tool" data-card-widget="collapse">
+						<i class="fas fa-minus"></i>
+					</button>
+				</div>
+			</div>
+
+
+
+			<div class="card-body p-0">
+				<!-- Card Corpo -->
+				<div class="container-fluid">
+					<div class="row mt-3">
+
+
+						<!-- Nome -->
+						<div class="col-12 col-sm-6 col-lg-4">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Nome</span>
+									</div>
+									<input type="text" class="form-control" value="{{params.nome}}" disabled />
+								</div>
+							</div>
+						</div>
+
+						<!-- Matricula -->
+						<div class="col-12 col-sm-6 col-lg-3">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Matricula</span>
+									</div>
+									<input type="text" class="form-control" placeholder="" value="{{params.matricula}}"
+										disabled>
+								</div>
+							</div>
+						</div>
+
+						<!-- Status -->
+						<div class="col-12 col-sm-6 col-lg-3">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Status</span>
+									</div>
+									<input type="text" class="form-control" value="{{params.idStatus}}" disabled>
+								</div>
+							</div>
+						</div>
+
+						<!-- Id Login -->
+						<div class="col-12 col-sm-6 col-lg-2">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">idLogin</span>
+									</div>
+									<input type="text" class="form-control" value="{{params.idLogin}}" disabled>
+									<input id="f-idLogin" name="f-idLogin" type="text" class="form-control"
+										value="{{params.idLogin}}" hidden>
+								</div>
+							</div>
+						</div>
+
+						<!-- Nome Permissão -->
+						<div class="col-12 col-sm-6 col-lg-6">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Nome permissão</span>
+									</div>
+									<input id="f-nome" name="f-nome" type="text" class="form-control" placeholder=""
+										aria-label="Username">
+								</div>
+								<small id="h-npermissao" class="form-text text-muted">Nome descritivo da
+									permissão.</small>
+							</div>
+						</div>
+
+						<!-- Url Page -->
+						<div class="col-12 col-sm-6 col-lg-6">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Url Página</span>
+									</div>
+									<select id="f-urlPage" name="f-urlPage" class="custom-select">
+										{% for page in params.paginas %}
+										<option value="{{ page.id|e }}">{{ page.url|e }}</option>
+										{% endfor %}
+									</select>
+
+									<small class="form-text text-muted">Adicione a url "início" do menu. A url fica
+										exposta
+										ao lado direito do título da página. Exemplo: admin/seguranca/.</small>
+								</div>
+							</div>
+						</div>
+
+						<!-- Permissão Visualização Básica-->
+						<div class="col-12 col-sm-6 col-lg-4">
+							<div class="row">
+								<div class="col-12">
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<input id="f-menu" name="f-menu" value="1" type="checkbox">
+												</span>
+											</div>
+											<input type="text" class="form-control" value="Visualização (Menu/Início)"
+												disabled>
+										</div>
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<input id="f-post" name="f-post" value="1" type="checkbox">
+												</span>
+											</div>
+											<input type="text" class="form-control" value="Adicionar" disabled>
+										</div>
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<input id="f-put" name="f-put" value="1" type="checkbox">
+												</span>
+											</div>
+											<input type="text" class="form-control" value="Atualizar" disabled>
+										</div>
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<input id="f-get" name="f-get" value="1" type="checkbox">
+												</span>
+											</div>
+											<input type="text" class="form-control" value="Listar" disabled>
+										</div>
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<input id="f-delete" name="f-delete" value="1" type="checkbox">
+												</span>
+											</div>
+											<input type="text" class="form-control" value="Deletar" disabled>
+										</div>
+										<small id="h-nome" class="form-text text-muted">Ative as permissões para liberar
+											funcionalidades.</small>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!--Descrição Permissão -->
+						<div class="col-12 col-sm-6 col-lg-8">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Descrição permissão</span>
+									</div>
+									<textarea id="f-obs" name="f-obs" class="form-control" rows="5"
+										aria-label="f-desc"></textarea>
+								</div>
+								<small id="h-desc" class="form-text text-muted">Descrição da permissão.</small>
+							</div>
+						</div>
+
+
+
+					</div>
+				</div>
+				<!-- /Card Corpo -->
+
+
+				<!-- Card Rodapé -->
+				<div class="card-footer">
+					<div class="row">
+						<div class="col-12 text-right">
+							<button type="submit" name="adicionar" value="login"
+								class="btn btn-primary">Adicionar</button>
+						</div>
+					</div>
+				</div>
+				<!-- /Card Rodapé -->
+			</div>
+			</section>
+	</form>
+	<!-- / CARD -->
+</div>

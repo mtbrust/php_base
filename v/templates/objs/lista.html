@@ -1,0 +1,8 @@
+{% for row in params %}
+<ul>
+    {% for key,item in row %}
+    <li>[<b>{{ key }}</b>]: {{ item }}</li>
+    {% endfor %}
+    <hr>
+</ul>
+{% endfor %}

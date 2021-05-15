@@ -1,0 +1,66 @@
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="width: 100%; padding-top: 0">
+                    <div class="card-header">
+                        <h3 class="card-title">Lista de Notícias</h3>
+                    </div>
+                            <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Título</th>
+                                        <th>Prévia</th>
+                                        <th>Texto</th>
+                                        <th>Status</th>
+                                        <th>Editar</th>
+                                        <th>Excluir</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key, noticia in params.noticias %}
+                                    <tr>
+
+                                    <td>{{noticia.id}}</td>
+                                    <td>{{noticia.titulo}}</td>
+                                    <td>{{noticia.previa}}</td>
+                                    <td>{{noticia.texto}}</td>
+                                    <td>{{noticia.idStatus}}</td>
+                                    <td>
+                                        <a href="{{params.URL_RAIZ}}admin/noticias/put/{{noticia.id}}"
+                                            class="btn btn-warning">Editar</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{params.URL_RAIZ}}admin/noticias/delete/{{noticia.id}}"
+                                            class="btn btn-danger">Excluir</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    table > *{
+        text-align: center;
+        font-size: 1rem;
+    }
+</style>
+
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    });
+</script>

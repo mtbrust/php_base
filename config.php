@@ -49,6 +49,9 @@ switch ($host) {
         break;
 }
 
+// Definição do horário padrão.
+date_default_timezone_set('America/Sao_Paulo');
+
 
 // Acesso ao banco de dados PDO 02.
 define("DB2", false);                  // Conexão será usada?
@@ -73,6 +76,12 @@ define("VIEWS_BD", true);
  * Caminho padrão para modelo MVC.
  * É possível personalizar a pasta para se adequar a estrutura de costume.
  */
+
+
+// Caminho desde pasta raiz. (c:, var, etc.)
+define("DIR_RAIZ", str_replace('\\', '/', getcwd()) . '/');
+
+
 // Define caminhos para as pastas de conteúdo html.
 define("PATH_VIEW", "v/");
 define("PATH_VIEW_API", "v/api/");
@@ -88,11 +97,13 @@ define("PATH_CONTROLLER_API", "c/api/");
 // Define caminhos para as pastas de modelo.
 define("PATH_MODEL", "m/");
 define("PATH_MODEL_BD", "m/bd/");
+define("PATH_MODEL_UPLOAD", 'm/midia/upload/');
+define("PATH_MODEL_MIDIA", "m/midia/");
+define("PATH_MODEL_CLASSES", "m/classes/");
 define("PATH_MODEL_ASSETS", "m/assets/");
 define("PATH_MODEL_CSS", "m/assets/css/");
 define("PATH_MODEL_IMG", "m/assets/img/");
 define("PATH_MODEL_JS", "m/assets/js/");
-define("PATH_MODEL_UPLOAD", "m/assets/upload/");
 define("PATH_MODEL_ADMIN", "m/assets/admin/");
 
 

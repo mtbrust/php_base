@@ -1,0 +1,80 @@
+{% block corpo %}
+
+{# A view é a última "else"
+
+
+
+DESENHA O POST *********************************************************************************************************
+#}
+{% if attr[0] == 'post' and permissions['post'] %}
+
+<div class="row">
+    <div class="col-12">
+        {{obj_post | raw}}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-sm-12">
+        {{obj_post_dir | raw}}
+    </div>
+</div>
+
+{# DESENHA O PUT
+********************************************************************************************************* #}
+{% elseif attr[0] == 'put' and permissions['put'] %}
+<div class="row">
+    <div class="col-12">
+        <p class="m-0">Put</p>
+    </div>
+</div>
+
+{# DESENHA O GET
+********************************************************************************************************* #}
+{% elseif attr[0] == 'get' and permissions['get'] %}
+
+{{datatable | raw}}
+
+
+{# DESENHA O DELETE
+********************************************************************************************************* #}
+{% elseif attr[0] == 'delete' and permissions['delete'] %}
+<div class="row">
+    <div class="col-12">
+        <p class="m-0">Delete</p>
+    </div>
+</div>
+
+
+{# DESENHA O TEST
+********************************************************************************************************* #}
+{% elseif attr[0] == 'test' %}
+<div class="row">
+    <div class="col-12">
+        <p class="m-0">TEST</p>
+    </div>
+</div>
+
+{# DESENHA A VIEW
+********************************************************************************************************* #}
+{% elseif permissions['menu'] %}
+
+
+
+<div class="row">
+    <div class="col-12">
+        <p>Página responsável para administrar as páginas do site. Tanto ADMIN quanto páginas públicas.</p>
+        <p>Ao adicionar uma página pelo "Diretório de páginas" a mesma tem as permissões zeradas (Sem acesso nenhum). Então não é adequado cadastrar páginas que não sejam de ADMIN.</p>
+    </div>
+</div>
+
+
+{% else %}
+<div class="row">
+    <div class="col-12">
+        <h3>Sem permissão para acessar esta página.</h3>
+        <p>Contate o administrador.</p>
+    </div>
+</div>
+{%endif%}
+{% endblock %}
