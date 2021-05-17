@@ -52,7 +52,24 @@ class BdLogin extends Bd
 
         if (!$r)
             return false;
-        return $r[0];
+
+        $r = $r[0];
+        // Caso seja acrescentado login direto pelo banco de dados.
+        // Verifica se login já tem user cadastrado.
+        if (empty($r['idUser'])) {
+            $fields = [
+                'idLogin' => $r['id'],
+                'nome' => $r['fullName'],
+                'telefone1' => $r['telefone'],
+                'emailProfissional' => $r['email'],
+                'cpf' => $r['cpf'],
+            ];
+            $idUser = BdUsers::Adicionar($fields); // Adiciona no banco.
+            Self::atualiza($r['id'], ['idUser' => $idUser]);
+            $r['idUser'] = $idUser;
+        }
+
+        return $r;
     }
 
 

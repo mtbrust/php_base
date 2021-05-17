@@ -6,39 +6,49 @@
         <li class="nav-item">
             <a class="nav-link px-2" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        {% if permissions['menu'] %}
+
+        {% if global.permissions.index %}
         <li class="nav-item d-none d-lg-inline-block">
-            <a href="{{URL_RAIZ}}{{url_atual}}" class="nav-link py-1 {% if attr[0] == '' %}active{%endif %}">Início</a>
+            <a href="{{global.URL_RAIZ}}{{global.urlAtual}}"
+                class="nav-link py-1 {% if global.attr[0] == '' %}active{%endif %}">Início</a>
         </li>
         {% endif %}
-        {% if permissions['post'] %}
+        {% if global.permissions.post %}
         <li class="nav-item d-none d-lg-inline-block">
-            <a href="{{URL_RAIZ}}{{url_atual}}/post/"
-                class="nav-link py-1 {% if attr[0] == 'post' %}active{%endif %}">Adicionar</a>
+            <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/post/"
+                class="nav-link py-1 {% if global.attr[0] == 'post' %}active{%endif %}">Adicionar</a>
         </li>
         {% endif %}
-        {% if permissions['put'] %}
+        {% if global.permissions.put %}
         <li class="nav-item d-none d-lg-inline-block">
-            <a href="{{URL_RAIZ}}{{url_atual}}/put/"
-                class="nav-link py-1 {% if attr[0] == 'put' %}active{%endif %}">Atualizar</a>
+            <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/put/"
+                class="nav-link py-1 {% if global.attr[0] == 'put' %}active{%endif %}">Atualizar</a>
         </li>
         {% endif %}
-        {% if permissions['get'] %}
+        {% if global.permissions.get %}
         <li class="nav-item d-none d-lg-inline-block">
-            <a href="{{URL_RAIZ}}{{url_atual}}/get/"
-                class="nav-link py-1 {% if attr[0] == 'get' %}active{%endif %}">Listar</a>
+            <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/get/"
+                class="nav-link py-1 {% if global.attr[0] == 'get' %}active{%endif %}">Listar</a>
         </li>
         {% endif %}
-        {% if permissions['delete'] %}
+        {% if global.permissions.getFull %}
         <li class="nav-item d-none d-lg-inline-block">
-            <a href="{{URL_RAIZ}}{{url_atual}}/delete/"
-                class="nav-link py-1 {% if attr[0] == 'delete' %}active{%endif %}">Deletar</a>
+            <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/getfull/"
+                class="nav-link py-1 {% if global.attr[0] == 'getfull' %}active{%endif %}">Listar Completo</a>
         </li>
         {% endif %}
+        {% if global.permissions.delete %}
         <li class="nav-item d-none d-lg-inline-block">
-            <a href="{{URL_RAIZ}}{{url_atual}}/test/"
-                class="nav-link py-1 {% if attr[0] == 'test' %}active{%endif %}">Testes</a>
+            <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/delete/"
+                class="nav-link py-1 {% if global.attr[0] == 'delete' %}active{%endif %}">Deletar</a>
         </li>
+        {% endif %}
+        {% if global.permissions.test %}
+        <li class="nav-item d-none d-lg-inline-block">
+            <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/test/"
+                class="nav-link py-1 {% if global.attr[0] == 'test' %}active{%endif %}">Testes</a>
+        </li>
+        {% endif %}
 
     </ul>
 
@@ -56,44 +66,55 @@
                 <span class="dropdown-item dropdown-header"><i class="fas fa-wrench"></i> Ações</span>
                 <div class="dropdown-divider"></div>
 
-                {% if permissions['menu'] %}
-                <a href="{{URL_RAIZ}}{{url_atual}}"
-                    class="dropdown-item nav-link py-1 {% if attr[0] %}text-muted{%endif %}">
+                {% if global.permissions.index %}
+                <a href="{{global.URL_RAIZ}}{{global.urlAtual}}"
+                    class="dropdown-item nav-link py-1 {% if global.attr[0] %}text-muted{%endif %}">
                     <i class="fas fa-home mr-2"></i> Início
                 </a>
                 {% endif %}
-                {% if permissions['post'] %}
+                {% if global.permissions.post %}
                 <div class="dropdown-divider"></div>
-                <a href="{{URL_RAIZ}}{{url_atual}}/post/"
-                    class="dropdown-item nav-link py-1 {% if attr[0] != 'post' %}text-muted{%endif %}">
+                <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/post/"
+                    class="dropdown-item nav-link py-1 {% if global.attr[0] != 'post' %}text-muted{%endif %}">
                     <i class="fas fa-plus-circle mr-2"></i> Adicionar
                 </a>
                 {% endif %}
-                {% if permissions['put'] %}
+                {% if global.permissions.put %}
                 <div class="dropdown-divider"></div>
-                <a href="{{URL_RAIZ}}{{url_atual}}/put/"
-                    class="dropdown-item nav-link py-1 {% if attr[0] != 'put' %}text-muted{%endif %}">
+                <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/put/"
+                    class="dropdown-item nav-link py-1 {% if global.attr[0] != 'put' %}text-muted{%endif %}">
                     <i class="fas fa-sync-alt mr-2"></i> Atualizar
                 </a>
                 {% endif %}
-                {% if permissions['get'] %}
+                {% if global.permissions.get %}
                 <div class="dropdown-divider"></div>
-                <a href="{{URL_RAIZ}}{{url_atual}}/get/"
-                    class="dropdown-item nav-link py-1 {% if attr[0] != 'get' %}text-muted{%endif %}">
+                <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/get/"
+                    class="dropdown-item nav-link py-1 {% if global.attr[0] != 'get' %}text-muted{%endif %}">
                     <i class="fas fa-list mr-2"></i> Listar
                 </a>
                 {% endif %}
-                {% if permissions['delete'] %}
+                {% if global.permissions.getFull %}
                 <div class="dropdown-divider"></div>
-                <a href="{{URL_RAIZ}}{{url_atual}}/delete/"
-                    class="dropdown-item nav-link py-1 {% if attr[0] != 'delete' %}text-muted{%endif %}">
+                <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/getfull/"
+                    class="dropdown-item nav-link py-1 {% if global.attr[0] != 'getfull' %}text-muted{%endif %}">
+                    <i class="fas fa-list mr-2"></i> Listar
+                </a>
+                {% endif %}
+                {% if global.permissions.delete %}
+                <div class="dropdown-divider"></div>
+                <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/delete/"
+                    class="dropdown-item nav-link py-1 {% if global.attr[0] != 'delete' %}text-muted{%endif %}">
                     <i class="fas fa-trash-alt mr-2"></i> Deletar
                 </a>
                 {% endif %}
 
 
+                {% if global.permissions.test %}
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item dropdown-footer">Testes da página</a>
+                <a href="{{global.URL_RAIZ}}{{global.urlAtual}}/test/"
+                    class="dropdown-item nav-link py-1 {% if global.attr[0] != 'test' %}text-muted{%endif %} text-center">Testes</a>
+                {% endif %}
+
             </div>
         </li>
     </ul>
@@ -235,7 +256,7 @@
         </li>
 
         <li class="nav-item">
-            <a href="{{URL_RAIZ}}login/sair" class="nav-link p-1">Sair</a>
+            <a href="{{global.URL_RAIZ}}login/sair" class="nav-link p-1">Sair</a>
         </li>
     </ul>
 </nav>

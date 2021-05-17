@@ -21,7 +21,7 @@ class DefaultControllerPage extends ControllerPage
     // Valores default de $paramsSecurity.
     $this->paramsSecurity = array(
       'session'    => true,   // Página guarda sessão.
-      'permission' => '00000',      // Nível de acesso a página. 0 a 100.
+      'permission' => '111111111',      // Nível de acesso a página. 0 a 100.
     );
 
     // Valores default de $paramsController.

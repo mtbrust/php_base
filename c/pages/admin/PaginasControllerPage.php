@@ -299,7 +299,7 @@ class PaginasControllerPage extends ControllerPage
    *
    * @param integer $i
    * @param array $list
-   * @param [type] $path
+   * @param string $path
    * @param string $dir
    * @return array
    */

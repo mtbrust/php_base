@@ -25,21 +25,22 @@ class ModeloControllerPage extends ControllerPage
 
     // Valores default de $paramsTemplate a partir da pasta template.
     $this->params['template'] = array(
-      'html'     => 'default',   // Template HTML
-      'head'     => 'default',   // <head> da página.
-      'top'      => 'default',   // Topo da página.
-      'header'   => 'default',   // Cabeçalho da página.
-      'body_pre' => 'default',   // Antes do CORPO dentro body.
-      'body_pos' => 'default',   // Depois do CORPO dentro body.
-      'footer'   => 'default',   // footer da página.
-      'bottom'   => 'default',   // Fim da página.
+      'html'     => 'lte',   // Template HTML
+      'head'     => 'lte',   // <head> da página.
+      'top'      => 'lte',   // Topo da página.
+      'header'   => 'lte',   // Menu da página.
+      'nav'      => 'lte',   // Menu da página.
+      'body_pre' => 'lte',   // Antes do CORPO dentro body.
+      'body_pos' => 'lte',   // Depois do CORPO dentro body.
+      'footer'   => 'lte',   // footer da página.
+      'bottom'   => 'lte',   // Fim da página.
       //'maintenance' => 'manutencao',   // Página de manutenção (quando controller true).
     );
 
     // Valores para configurações da página html.
     // https://www.infowester.com/metatags.php
     $this->params['view'] = array(
-      'title'            => 'Página Modelo Pública',    // Título da página exibido na aba/janela navegador.
+      'title'            => 'Página Modelo Admin',            // Título da página exibido na aba/janela navegador.
       'author'           => 'Coopama',                  // Autor do desenvolvimento da página ou responsável.
       'description'      => '',                         // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
       'keywords'         => '',                         // palavras minúsculas separadas por "," referente ao conteúdo da página em até 150 caracteres.

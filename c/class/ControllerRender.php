@@ -8,19 +8,20 @@ class ControllerRender
 
   /**
    * Renderiza objetos da pasta v/templates/objs/.
-   * Renderiza um objeto html passando parâmetros.
+   * Renderiza um objeto html passando parâmetros (pasta/nomeobj - sem mencionar a extenção .html).
+   * Retorna uma string HTML.
    *
    * @param string $objName
    * @param array $params
-   * @return HTML
+   * @return string
    */
   public static function renderObj($objName, $params = null)
   {
     // Inicia a construção do objeto HTML
-    $loader   = new \Twig\Loader\FilesystemLoader('v/templates/objs/');  // Verifica a pasta objs.
-    $twig     = new \Twig\Environment($loader);                          // Instancia objeto twig.
-    $template = $twig->load($objName . '.html');                         // Retorna template html.
-    return $template->render(['params' => $params]);    // Junta parametros com template.
+    $loader   = new \Twig\Loader\FilesystemLoader('v/templates/objs/');   // Verifica a pasta objs.
+    $twig     = new \Twig\Environment($loader);                           // Instancia objeto twig.
+    $template = $twig->load($objName . '.html');                          // Retorna template html.
+    return $template->render($params);                                    // Junta parametros com template. (array associativo)
   }
 
 
@@ -29,32 +30,28 @@ class ControllerRender
    * Recebe os arquivos modelos HTML e o seu conteúdo.
    * Recebe parâmetros de variáveis para serem usados dentros dos modelos.
    *
-   * @param array $paramsSecurity
-   * @param array $paramsController
-   * @param array $paramsTemplate
-   * @param array $paramsTemplateObjs
-   * @param array $paramsView
-   * @param array $paramsPage
+   * @param array $params
    * @return void
    */
-  public static function render($paramsSecurity, $paramsController, $paramsTemplate, $paramsTemplateObjs, $paramsView, $paramsPage)
+  public static function render($params)
   {
 
     // Arquivos físicos.
     $vurlf = new \Twig\Loader\ArrayLoader(
-      $paramsTemplate
+      $params['template']
     );
 
-    // Arquivos virtuais
+    // Arquivos virtuais.
+    // Todo: Não implementado. Apenas exemplo.
     $vurlv = new \Twig\Loader\ArrayLoader([
       'html' => '<div id="html"><div id="head"><title>Banco de dados</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
       'head' => '{% block head %}<div value="teste">array head</div>{% endblock %}',
     ]);
 
     
-    // Monta quais são as partes pastas que se usa modelo no template.
+    // Monta quais são as partes (pastas) que se usa no template da página atual.
     $base = '';
-    foreach (array_keys($paramsTemplate) as $key => $value) {
+    foreach (array_keys($params['template']) as $key => $value) {
       if (!$key == 0)
       $base .= '{% use "'. $value .'" %}';
     }
@@ -68,7 +65,12 @@ class ControllerRender
     $loader = new \Twig\Loader\ChainLoader([$vurlf, $vurlv, $html_base]);
     $twig   = new \Twig\Environment($loader);
 
+    // Limpa os parâmetros antes de mandar para renderização.
+    unset($params['template']);
+    unset($params['bd']);
+    unset($params['classes']);
+
     // Após carregar os templates HTML, e passar os parmâmetros, desenha página na tela.
-    echo $twig->render('base', array_merge($paramsView, $paramsPage, $paramsTemplateObjs));
+    return $twig->render('base', $params);
   }
 }

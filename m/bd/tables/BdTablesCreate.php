@@ -283,7 +283,7 @@ class BdTablesCreate extends Bd
       "nome               VARCHAR(128) NULL",
       "urlPagina          VARCHAR(128) NULL",
       "obs                VARCHAR(512) NULL",
-      "permissions        VARCHAR(5) NULL",        // [1,0,0,0,0] Visualização básica, visualização total, Criação, Edição, Exclusão.
+      "permissions        VARCHAR(9) NULL",        // [1,0,0,0,0] Visualização básica, visualização total, Criação, Edição, Exclusão.
 
       // Controle
       "dtCreate           DATETIME NULL",

@@ -110,9 +110,9 @@ class BdPermissions extends Bd
 
         $r =  Self::executeQuery($sql);
         if (!$r)
-            $r = (string)"00000";
+            $r = (string)"000000000";
         if (isset($r[0]) && isset($r[0]['permissions']))
-            $r = $r[0]['permissions'];
+            $r = (string)$r[0]['permissions'];
         return $r;
     }
 
@@ -131,9 +131,9 @@ class BdPermissions extends Bd
 
         $r =  Self::executeQuery($sql);
         if (!$r)
-            $r = (string)"00000";
+            $r = (string)"000000000";
         if (isset($r[0]) && isset($r[0]['permissions']))
-            $r = $r[0]['permissions'];
+            $r = (string)$r[0]['permissions'];
         return $r;
     }
 }

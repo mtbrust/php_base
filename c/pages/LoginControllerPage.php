@@ -14,23 +14,14 @@ class LoginControllerPage extends ControllerPage
   {
 
     // Valores default de $paramsSecurity.
-    $this->paramsSecurity = array(
-      'session'    => false,     // Página guarda sessão.
-      'permission' => '10000',   // [1,0,0,0,0] Menu/Início, Adicionar, Editar, Listar, Deletar.
-    );
-
-    // Valores default de $paramsController.
-    $this->paramsController = array(
-      '_post'       => false,   // Permitir funções $_POST.
-      'put'         => false,   // Permitir funções put.
-      'get'         => false,   // Permitir funções get.
-      'delete'      => false,   // Permitir funções delete.
-      'index'       => false,   // Permitir funções index.
-      'maintenance' => false,   // Exibir página em manutenção.
+    $this->params['security'] = array(
+      'session'    => false,          // [true] Somente usuário logado. [false] Qualquer usuário.
+      'permission' => '100000000',   // [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
+      'formToken'  => false,         // Ativa necessidade de token para transações de formulários via post. usar parametro:($this->paramsPage['formToken']) input text: (<input name="f-formToken" type="text" value="{{formToken}}" hidden>').
     );
 
     // Valores default de $paramsTemplate a partir da pasta template.
-    $this->paramsTemplate = array(
+    $this->params['template'] = array(
       'html'        => 'login',   // Template HTML
       'head'        => 'login',   // <head> da página.
       // 'top'         => 'default',   // Topo da página.
@@ -43,15 +34,9 @@ class LoginControllerPage extends ControllerPage
       //'maintenance' => 'paper',   // Página de manutenção (quando controller true).
     );
 
-    // Objetos para serem inseridos dentro de partes do template.
-    // O Processamento realiza a montagem. Algum template tem que conter um bloco para Obj ser incluido.
-    $this->paramsTemplateObjs = array(
-      'objeto_apelido'          => 'pasta/arquivo.php',   // Carrega HTML do objeto e coloca no lugar indicado do corpo ou template.
-    );
-
-    // Valores default de $paramsView. Valores vazios são ignorados.
-    //https://www.infowester.com/metatags.php
-    $this->paramsView = array(
+    // Valores para configurações da página html.
+    // https://www.infowester.com/metatags.php
+    $this->params['view'] = array(
       'title'            => 'Login',                    // Título da página exibido na aba/janela navegador.
       'author'           => 'COOPAMA',         // Autor do desenvolvimento da página ou responsável.
       'description'      => '',                         // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
@@ -65,108 +50,41 @@ class LoginControllerPage extends ControllerPage
       'obs'              => '',                         // Outra qualquer observação sobre a página.
     );
 
-    
-    
 
-    // Valores para serem inseridos no corpo da página.
+
+    // Valores default para scripts. Quais scripts a página atual necessita.
+    $this->params['scripts'] = array(
+      'js/jquery.min.js',   // TESTE.
+    );
+
+    // Valores default para estilos. Quais estilos a página atual necessita.
+    $this->params['styles'] = array(
+      'css/jquery.min.css',   // TESTE.
+    );
+
+    // Valores de conteúdo para serem inseridos no corpo da página.
     // Exemplo: 'p_nome' => 'Mateus',
     // Exemplo uso view: <p><b>Nome: </b> {{p_nome}}</p>
-    $this->paramsPage = array(
-      'nome'              => 'Mateus',            // Exemplo
+    $this->params['page'] = array(
+      'versão'              => 'v1.0',            // Exemplo
     );
-    
 
     // Otimização das funções de banco de dados que serão usadas na controller.
     // Pasta e controller.
-    // Exemplo: 'pasta/BdArquivo',
+    // Exemplo: 'users/BdUsers',
     // Exemplo uso controller: $var = BdUsuarios::getInfo();
-    $this->paramsBd = array(
-      'login/BdLogin',   // Criação de tabelas.
+    $this->params['bd'] = array(
+      'pasta/BdNome',   // Exemplo
     );
 
-    
+    // Otimização das funções que serão usadas na controller.
+    // Pasta classes.
+    // Exemplo: 'classes/Midia',
+    // Exemplo uso controller: $var = Noticias::getInfo();
+    $this->params['classes'] = array(
+      'classes/Midia',   // Exemplo
+    );
   }
-
-
-
-  /**
-   * Quando é enviado dados via post.
-   * Executa as ações necessárias com os dados repassados via &_POST.
-   * Dados para serem cadastrados, alterados, ou para simplesmente dinâmica da página.
-   *
-   * @return bool
-   */
-  public function _post()
-  {
-    
-    // Tratativa dos dados
-    $login = $_POST['login'];
-    $senha = md5($_POST['senha']);
-    
-    // Busca no banco de dados. e inicia a sessão.
-    $user = BdLogin::verificaLogin($login, $senha);
-    ControllerSecurity::create($user);
-
-
-    return true;
-  }
-
-
-  /**
-   * Cria um registro
-   * Exibe página para criação de registros.
-   * Leve pois não busca dados no banco de dados para preencher o formulário.
-   *
-   * @return bool
-   */
-  public function post()
-  {
-    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    return false;
-  }
-
-
-  /**
-   * Atualiza registros.
-   * Exibe uma página com formulário para atualização de registros.
-   * Caso passe parâmetros na url, já realiza essas alterações.
-   * Caso chame a página sem parâmetros é exibido formulário com os dados de referência para atualização.
-   *
-   * @return bool
-   */
-  public function put()
-  {
-    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    return false;
-  }
-
-
-  /**
-   * Exibe registros.
-   * Usado para retornar muitos registros em uma página separada.
-   * Pode ser escolhido algum template (objs) para exibir os dados.
-   *
-   * @return void
-   */
-  public function get()
-  {
-    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    return false;
-  }
-
-
-  /**
-   * Deleta um registro.
-   * Usado para deletar um usuário ou classificá-lo como excluido.
-   *
-   * @return bool
-   */
-  public function delete()
-  {
-    $this->paramsPage['rest'] = 'Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . $this->controllerName . __CLASS__ . '</b>.<br>';
-    return false;
-  }
-
 
   /**
    * Exibe a página inicial.
@@ -177,8 +95,18 @@ class LoginControllerPage extends ControllerPage
    */
   public function index()
   {
-    // $this->paramsPage['nome'] = 'Mateus';
-    // $this->paramsPage['usuarios'] = BdUsuarios::getAll();
+
+    // Verifica se teve post.
+    if ($_POST) {
+      // Tratativa dos dados
+      $login = $_POST['login'];
+      $senha = md5($_POST['senha']);
+
+      // Busca no banco de dados. e inicia a sessão.
+      $user = BdLogin::verificaLogin($login, $senha);
+      ControllerSecurity::create($user);
+    }
+
 
     // Verifica se foi passado parametro de sair na url.
     if ($this->attr && isset($this->attr[0]) && $this->attr[0] == 'sair') {
@@ -186,24 +114,5 @@ class LoginControllerPage extends ControllerPage
     }
 
     return true;
-  }
-
-
-  /**
-   * Inicia a api da página. 
-   * Usada para carregar especificidades da página.
-   * Alivia o carregamento da página e ajuda no dinamismo.
-   *
-   * @return bool
-   */
-  public function api()
-  {
-    header('Content-Type: application/json');
-    echo json_encode(array(
-      'status' => 'OK',
-      'msg' => 'Implementar a api da ' . $this->controllerName . __CLASS__ . '.'
-    ));
-
-    return false;
   }
 }

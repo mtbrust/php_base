@@ -124,12 +124,12 @@ class Core
      */
     ControllerSecurity::start();
 
+
     /**
      * Inicia banco de dados
      * Cria conexão.
      */
     Bd::start();
-
 
 
     /**
@@ -169,7 +169,6 @@ class Core
       $this->controllerPage = $this->getControllerPage();
       $this->controllerPage->start();
     }
-
 
 
     /**
@@ -649,28 +648,5 @@ class Core
       // controllerPage default
       $path = '';
     }
-
-    // Verifica se existe controller.
-    // if (!file_exists($path)) {
-    //   $controller_name = 'DefaultControllerPage';                     // Preenche com controller default.
-    //   $path = PATH_CONTROLLER_PAGES . 'DefaultControllerPage.php';                    // Preenche com path default.
-    // }
-
-    // echo $posicao;
-    // echo '<br>';
-    // print_r($controller_name);
-    // echo '<br>';
-    // print_r($path);
-    // echo '<br>';
-    // print_r(Self::$infoDirUrl);
-    // echo '<br>';
-    // exit;
-
-    // Carrega arquivo controllerPage da página autal.
-    //require_once $path;
-
-    // Instancia a classe do controllerPage e salva nos parâmetros do Core.
-    // $refl = new ReflectionClass(ucfirst($controller_name));
-    // return $refl->newInstanceArgs();
   }
 }
