@@ -34,7 +34,7 @@ class ControllerSecurity
 
         // Carrega as permissões.
         if (Self::upPermissions($parmissionsPage, $urlPage))
-            return Self::$permissions;
+            return true;
 
         return false;
     }
@@ -134,8 +134,11 @@ class ControllerSecurity
      * @param int $idUser
      * @return boolean
      */
-    public static function upPermissions($parmissionsPage, $urlPage)
+    public static function upPermissions($parmissionsPage, $urlPage, $publico = false)
     {
+
+        if ($publico)
+        {
         // Pega os dados da sessão.
         $idUser = Self::getSession('idUser');
         $idGrupo = Self::getSession('idGrupo');
@@ -145,6 +148,11 @@ class ControllerSecurity
 
         // Carrega as permissões de grupo.
         $temp_permissions_grupo = BdPermissions::grupo($idGrupo, $urlPage);
+        }else
+        {
+            $temp_permissions_user = '000000000';
+            $temp_permissions_grupo = '000000000';
+        }
 
         /**
          * Salva as permissões.

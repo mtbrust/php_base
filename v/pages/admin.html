@@ -1,72 +1,71 @@
 {% block corpo %}
-
 {# A view é a última "else"
-
-
-
-DESENHA O POST *********************************************************************************************************
-#}
-{% if attr[0] == 'post' and permissions['post'] %}
+DESENHA O POST 
+********************************************************************************************************* #}
+{% if global.attr[0] == 'post' and global.permissions.post %}
 <div class="row">
     <div class="col-12">
-        <p class="m-0">Post</p>
+        <p class="m-0">{{page.rest|raw}}</p>
     </div>
 </div>
 
 {# DESENHA O PUT
 ********************************************************************************************************* #}
-{% elseif attr[0] == 'put' and permissions['put'] %}
+{% elseif global.attr[0] == 'put' and global.permissions.put %}
 <div class="row">
     <div class="col-12">
-        <p class="m-0">Put</p>
+        <p class="m-0">{{page.rest|raw}}</p>
     </div>
 </div>
 
 {# DESENHA O GET
 ********************************************************************************************************* #}
-{% elseif attr[0] == 'get' and permissions['get'] %}
+{% elseif global.attr[0] == 'get' and global.permissions.get %}
+
+
+{{page.datatable | raw}}
+
+
+{# DESENHA O GETFULL
+********************************************************************************************************* #}
+{% elseif global.attr[0] == 'getfull' and global.permissions.getFull %}
+
 <div class="row">
     <div class="col-12">
-        <p class="m-0">Get</p>
+        <p class="m-0">{{page.rest|raw}}</p>
     </div>
 </div>
 
 
 {# DESENHA O DELETE
 ********************************************************************************************************* #}
-{% elseif attr[0] == 'delete' and permissions['delete'] %}
+{% elseif global.attr[0] == 'delete' and global.permissions.delete %}
 <div class="row">
     <div class="col-12">
-        <p class="m-0">Delete</p>
+        <p class="m-0">{{page.rest|raw}}</p>
     </div>
 </div>
 
 
 {# DESENHA O TEST
 ********************************************************************************************************* #}
-{% elseif attr[0] == 'test' %}
+{% elseif global.attr[0] == 'test' %}
 <div class="row">
     <div class="col-12">
-        <p class="m-0">TEST</p>
+        <p class="m-0">{{page.rest|raw}}</p>
     </div>
 </div>
 
 {# DESENHA A VIEW
 ********************************************************************************************************* #}
-{% elseif permissions['menu'] %}
-
-
+{% elseif global.permissions.index %}
 
 <div class="row ">
     <div class="col-12 text-center mt-4">
-
-        <img src="{{icon}}" alt="">
-
+        <img src="{{global.icon}}" alt="">
         <h4 class="mt-5">Área de Tecnologia da Informação.</h4>
-
     </div>
 </div>
-
 
 {% else %}
 <div class="row">

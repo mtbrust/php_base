@@ -522,7 +522,8 @@ class ControllerPage
     if ($this->params['security']['session']) {
 
       // Controle de sessão e permissões.
-      $this->params['global']['permissions'] = ControllerSecurity::on($this->params['security']['permission'], $this->urlAtual);
+      ControllerSecurity::on($this->params['security']['permission'], $this->urlAtual);
+      $this->params['global']['permissions'] = ControllerSecurity::getPermissions();
 
       // Carrega informações de usuário.
       // Obtém os dados da tabela login na sessão [LOGIN]
@@ -536,6 +537,10 @@ class ControllerPage
         $user['urlFoto'] = URL_RAIZ . PATH_MODEL_IMG . 'default_perfil.png';
       // Joga para os parâmetros da página {{page.login}} informações da tabela Login e Usuário.
       $this->params['page']['userInfo'] = array_merge($login, $user);
+    } else {
+      // Seta permissões para visualização
+      ControllerSecurity::upPermissions($this->params['security']['permission'], $this->urlAtual, true);
+      $this->params['global']['permissions'] = ControllerSecurity::getPermissions();
     } // Fim sessão.
 
     // Carrega o template html definido na controller atual.
@@ -572,7 +577,6 @@ class ControllerPage
       $path_view = PATH_VIEW_PAGES . 'modeloSemPermissao.html';
     // Parâmetro corpo recebe o conteúdo HTML. (irá ser renderizado junto com todos os parâmetros de template.)
     $this->params['template']['corpo'] = file_get_contents($path_view);
-
   }
 
 

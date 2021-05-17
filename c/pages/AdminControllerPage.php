@@ -7,7 +7,6 @@ class AdminControllerPage extends ControllerPage
   /**
    * Realiza o pré processamento da página inicial.
    * Usado para definir os parâmetros de personalização da página.
-   * Inicia as variáveis no pre processamento.
    *
    * @return void
    */
@@ -15,34 +14,24 @@ class AdminControllerPage extends ControllerPage
   {
 
     // Valores default de $paramsSecurity.
-    $this->paramsSecurity = array(
-      'session'    => true,      // Página guarda sessão.
-      'permission' => '10000',   // [1,0,0,0,0] Menu/Início, Adicionar, Editar, Listar, Deletar.
-    );
-
-    // Valores default de $paramsController.
-    $this->paramsController = array(
-      '_post'       => false,   // Permitir funções $_POST.
-      'put'         => false,   // Permitir funções put.
-      'get'         => false,   // Permitir funções get.
-      'delete'      => false,   // Permitir funções delete.
-      'index'       => false,   // Permitir funções index.
-      'maintenance' => false,   // Exibir página em manutenção.
+    $this->params['security'] = array(
+      'session'    => true,          // [true] Somente usuário logado. [false] Qualquer usuário.
+      'permission' => '110000000',   // [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
+      'formToken'  => true,         // Ativa necessidade de token para transações de formulários via post. usar parametro:($this->params['page']['formToken']) input text: (<input name="f-formToken" type="text" value="{{formToken}}" hidden>').
     );
 
     // Valores default de $paramsTemplate a partir da pasta template.
-    $this->paramsTemplate = array(
-      'html'     => 'lte',       // Template HTML
-      'head'     => 'lte',       // <head> da página.
-      'top'      => 'lte',       // Topo da página.
-      'header'   => 'lte',       // Menu da página.
-      'nav'      => 'lte',       // Menu da página.
-      // 'corpo'    => 'default',   // Reservado para arquivo html.
-      'body_pre' => 'lte',       // Antes do CORPO dentro body.
-      'body_pos' => 'lte',       // Depois do CORPO dentro body.
-      'footer'   => 'lte',       // footer da página.
-      'bottom'   => 'lte',       // Fim da página.
-      //'maintenance' => 'paper',   // Página de manutenção (quando controller true).
+    $this->params['template'] = array(
+      'html'     => 'lte',   // Template HTML
+      'head'     => 'lte',   // <head> da página.
+      'top'      => 'lte',   // Topo da página.
+      'header'   => 'lte',   // Menu da página.
+      'nav'      => 'lte',   // Menu da página.
+      'body_pre' => 'lte',   // Antes do CORPO dentro body.
+      'body_pos' => 'lte',   // Depois do CORPO dentro body.
+      'footer'   => 'lte',   // footer da página.
+      'bottom'   => 'lte',   // Fim da página.
+      //'maintenance' => 'manutencao',   // Página de manutenção (quando controller true).
     );
 
     // Objetos para serem inseridos dentro de partes do template.
@@ -51,42 +40,59 @@ class AdminControllerPage extends ControllerPage
       'objeto_apelido'          => 'pasta/arquivo.php',   // Carrega HTML do objeto e coloca no lugar indicado do corpo ou template.
     );
 
-    // Valores default de $paramsView. Valores vazios são ignorados.
-    //https://www.infowester.com/metatags.php
-    $this->paramsView = array(
-      'title'             => 'Dashboard',                                         // Título da página exibido na aba/janela navegador.
-      'author'            => 'COOPAMA',                                      // Autor do desenvolvimento da página ou responsável.
-      'description'       => 'Administração',                                     // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
-      'keywords'          => 'modelo, página, controllers, views',                // palavras minúsculas separadas por "," referente ao conteúdo da página em até 150 caracteres.
-      'content-language'  => 'pt-br',                                             // Linguagem primária da página (pt-br).
-      'content-type'      => 'utf-8',                                             // Tipo de codificação da página.
-      'reply-to'          => 'suporte@coopama.com.br',                       // E-mail do responsável da página.
-      'generator'         => 'vscode',                                            // Programa usado para gerar página.
-      'refresh'           => '',                                                  // Tempo para recarregar a página.
-      'redirect'          => '',                                                  // URL para redirecionar usuário após refresh.
-      'obs'               => 'Cria um meta obs.',                                 // Outra qualquer observação sobre a página.
+    // Valores para configurações da página html.
+    // https://www.infowester.com/metatags.php
+    $this->params['view'] = array(
+      'title'            => 'DashBoard',            // Título da página exibido na aba/janela navegador.
+      'author'           => 'Coopama',                  // Autor do desenvolvimento da página ou responsável.
+      'description'      => '',                         // Resumo do conteúdo do site apresentado nas prévias das buscas em até 90 carecteres.
+      'keywords'         => '',                         // palavras minúsculas separadas por "," referente ao conteúdo da página em até 150 caracteres.
+      'content-language' => 'pt-br',                    // Linguagem primária da página (pt-br).
+      'content-type'     => 'utf-8',                    // Tipo de codificação da página.
+      'reply-to'         => 'suporte@coopama.com.br',   // E-mail do responsável da página.
+      'generator'        => 'vscode',                   // Programa usado para gerar página.
+      'refresh'          => '',                         // Tempo para recarregar a página.
+      'redirect'         => '',                         // URL para redirecionar usuário após refresh.
+      'obs'              => '',                         // Outra qualquer observação sobre a página.
+      'scriptHead'       => '',                         // Escreve dentro de uma tag <script></script> antes da </head>.
+      'scriptBody'       => '',                         // Escreve dentro de uma tag <script></script> antes da </body>.
+      'styleHead'        => '',                         // Escreve dentro de uma tag <script></script> antes da </head>.
+      'styleBody'        => '',                         // Escreve dentro de uma tag <script></script> antes da </body>.
     );
 
+    // Valores default para scripts. Quais scripts a página atual necessita.
+    $this->params['scripts'] = array(
+      'js/jquery.min.js',   // TESTE.
+    );
 
+    // Valores default para estilos. Quais estilos a página atual necessita.
+    $this->params['styles'] = array(
+      'css/jquery.min.css',   // TESTE.
+    );
 
-
-    // Valores para serem inseridos no corpo da página.
+    // Valores de conteúdo para serem inseridos no corpo da página.
     // Exemplo: 'p_nome' => 'Mateus',
     // Exemplo uso view: <p><b>Nome: </b> {{p_nome}}</p>
-    $this->paramsPage = array(
-      'nome'              => 'Mateus',            // Exemplo
+    $this->params['page'] = array(
+      'versao'              => 'v1.0',            // Exemplo
     );
-
 
     // Otimização das funções de banco de dados que serão usadas na controller.
-    // Sintaxe: 'Pasta/controller', (sem o .php)
-    // Exemplo: 'usuarios/BdUsuarios',
+    // Pasta e controller.
+    // Exemplo: 'users/BdUsers',
     // Exemplo uso controller: $var = BdUsuarios::getInfo();
-    $this->paramsBd = array(
-      'tables/BdTablesCreate',   // Criação de tabelas.
-      'tables/BdTablesDelete',   // Criação de tabelas.
-      'pages/BdPagesInsert',   // Criação de tabelas.
+    $this->params['bd'] = array(
+      'pasta/BdNome',   // Exemplo
     );
+
+    // Otimização das funções que serão usadas na controller.
+    // Pasta classes.
+    // Exemplo: 'classes/Midia',
+    // Exemplo uso controller: $var = Noticias::getInfo();
+    $this->params['classes'] = array(
+      'classes/Midia',   // Exemplo
+    );
+
   } // pre.
 
 
@@ -179,9 +185,9 @@ class AdminControllerPage extends ControllerPage
     // Exemplos
     // $this->paramsPage['nome'] = 'Mateus';
     // $this->paramsPage['usuarios'] = BdUsuarios::getAll();
-    
+
     $this->paramsPage['cwd'] = getcwd();
-    
+
     return false;
   }
 
