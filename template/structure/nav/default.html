@@ -1,0 +1,14 @@
+{% block nav %}
+<div class="default">
+    <h4>nav</h4>
+    <div>
+        {% for key,item in menus %}
+        {% if key == 'index' %}
+        <a href="{{paths.RAIZ_URL}}{{paths.DIR_BASE}}{{infoUrl.url_array.0}}/">{{item.title}}</a>
+        {% else %}
+        <a href="{{paths.RAIZ_URL}}{{paths.DIR_BASE}}{{infoUrl.url_array.0}}/{{key}}">{{item.title}}</a>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

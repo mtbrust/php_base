@@ -1,0 +1,71 @@
+{% block head %}
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/x-icon" href="/{{paths.DIR_BASE}}{{info.favicon}}">
+
+<title>{{info.title}}</title>
+
+{# Metas #}
+<meta charset="{{info.charset}}" />
+<meta name="language" content="{{info.content_language}}" />
+<meta name="description" content="{{info.description}}" />
+<meta name="robots" content="all" />
+<meta name="author" content="{{info.author}}" />
+<meta name="keywords" content="{{info.keywords}}" />
+<meta name="reply_to" content="{{info.reply_to}}" />
+
+<meta property="og:type" content="page" />
+<meta property="og:url" content="{{info.url}}" />
+<meta property="og:title" content="{{info.title}}" />
+<meta property="og:image" content="{{info.image}}" />
+<meta property="og:description" content="{{info.description}}" />
+
+<meta property="article:author" content="{{info.author_article}}" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@{{info.site}}" />
+<meta name="twitter:title" content="{{info.title}}" />
+<meta name="twitter:creator" content="@{{info.creator}}" />
+<meta name="twitter:description" content="{{info.description}}" />
+
+
+
+<!-- CÓDIGOS JAVASCRIPTS -->
+{# Jquery #}
+<script src="{{base.dir_relative}}template/assets/libs/jquery/jquery.min.js"></script>
+
+
+
+
+<!-- ESTILOS CSS -->
+
+{# Bootstrap #}
+<link href="{{base.dir_relative}}template/assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+{# SweetAlert #}
+<link href="{{base.dir_relative}}template/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet">
+{# FontAwesome #}
+<link href="{{base.dir_relative}}template/assets/libs/fontawesome/css/all.min.css" rel="stylesheet">
+{# Personalizado #}
+<link href="{{base.dir_relative}}template/assets/css/default-min.css" rel="stylesheet">
+
+
+<!-- ESTILOS CSS DA PÁGINA -->
+{% for item in styles.css %}
+<link href="{{base.dir_relative}}template/assets/css/{{item}}">
+{% endfor %}
+{% for item in styles.libs %}
+<link href="{{base.dir_relative}}template/assets/libs/{{item}}">
+{% endfor %}
+
+
+<style>
+    /* Retirar depois da base pronta. */
+    .default,
+    #content_page {
+        margin: 10px;
+        padding: 10px;
+        box-shadow: #000 0 0 7px -4px;
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}

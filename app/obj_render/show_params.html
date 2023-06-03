@@ -1,0 +1,56 @@
+<p>{{info.empresa}}</p>
+
+<h4>Abaixo todas as variáveis de security:</h4>
+<pre style="overflow: hidden;">
+    {# Percorre todas as variáveis #}
+    {% for key, row in _context.security            %}
+        {# Verifica se é um array #}
+        {% if row is iterable and key != '_parent' %}
+            {# Percorre todas as linhas #}
+            {% for c, col in row %}
+                {# Verifica se é um array #}
+                {% if col is iterable %}
+                    {% for c2, col2 in col %}
+                        <br> <b>[{{key}}.{{c}}.{{c2}}]</b>={{col2}}
+                    {% endfor %}
+                {% else %}
+                    {# Não é um array, então imprimi o valor. #}
+                    <br> <b>[{{key}}.{{c}}]</b>={{col}}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {# Não é um array, então imprimi o valor. #}
+            {% if key != '_parent' %}
+                <br><b>[{{key}}]</b>={{row}} 
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</pre>
+
+<hr>
+<h4>Abaixo todas as variáveis disponíveis para esta página:</h4>
+<pre style="overflow: hidden;">
+    {# Percorre todas as variáveis #}
+    {% for key, row in _context %}
+        {# Verifica se é um array #}
+        {% if row is iterable and key != '_parent' %}
+            {# Percorre todas as linhas #}
+            {% for c, col in row %}
+                {# Verifica se é um array #}
+                {% if col is iterable %}
+                    {% for c2, col2 in col %}
+                        <br> <b>[{{key}}.{{c}}.{{c2}}]</b>={{col2}}
+                    {% endfor %}
+                {% else %}
+                    {# Não é um array, então imprimi o valor. #}
+                    <br> <b>[{{key}}.{{c}}]</b>={{col}}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {# Não é um array, então imprimi o valor. #}
+            {% if key != '_parent' %}
+                <br><b>[{{key}}]</b>={{row}} 
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</pre>
