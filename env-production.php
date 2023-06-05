@@ -1,0 +1,5 @@
+<?php
+
+/**
+ * AMBIENTE DE PRODUÇÃO
+ */

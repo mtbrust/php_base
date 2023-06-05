@@ -96,11 +96,11 @@ class Engine
     require_once(BASE_DIR . 'app/controllers/Security.php');      // Controller de Segurança.
     require_once(BASE_DIR . 'app/controllers/Render.php');        // Controller de Renderização.
     
-    // Carrega Bds
-    self::loadAppDirClasses(BASE_DIR . 'app/bds/');
+    // Carrega Bds padrão do app.
+    self::loadAppDirClasses(BASE_DIR . 'template/bds/app/');
     
-    // Carrega Classes
-    self::loadAppDirClasses(BASE_DIR . 'app/classes/');
+    // Carrega Classes padrão do app.
+    self::loadAppDirClasses(BASE_DIR . 'template/classes/app/');
     
     // Finaliza função checkin.
     return self::$checkIn = true;

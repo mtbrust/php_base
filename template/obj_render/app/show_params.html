@@ -39,7 +39,15 @@
                 {# Verifica se é um array #}
                 {% if col is iterable %}
                     {% for c2, col2 in col %}
-                        <br> <b>[{{key}}.{{c}}.{{c2}}]</b>={{col2}}
+                        {# Verifica se é um array #}
+                        {% if col is iterable %}
+                            {% for c3, col3 in col2 %}
+                                <br> <b>[{{key}}.{{c}}.{{c2}}.{{c3}}]</b>={{col3}}
+                            {% endfor %}
+                        {% else %}
+                            {# Não é um array, então imprimi o valor. #}
+                            <br> <b>[{{key}}.{{c}}.{{c2}}]</b>={{col2}}
+                        {% endif %}
                     {% endfor %}
                 {% else %}
                     {# Não é um array, então imprimi o valor. #}

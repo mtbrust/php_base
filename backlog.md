@@ -17,6 +17,7 @@ Arrumar config.
 
 Arrumar criação de classes
 arrumar criação de Bds
+  selecionar BD por key e não por index no array (criar key)
 arrumar criação de obj render
 
 
@@ -31,3 +32,7 @@ colocar a opção de definir informações por banco de dados.
 para não precisar ficar preenchendo arquivo.
 criar BD options
 criar os bds necessários
+
+
+RENDER
+  pegar url atual para passar no cache. (sera q url vem na flag????????????)

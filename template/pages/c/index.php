@@ -97,52 +97,52 @@ class index extends \controllers\EndPoint
 		];
 
 		// Opções de segurança.
-    self::$params['security']    = [
+		self::$params['security']    = [
 
-      // // Controller usará controller de segurança.
-      // 'ativo'             => true,
+			// // Controller usará controller de segurança.
+			// 'ativo'             => true,
 
-      // // Usuário só acessa logado.
-      // 'session'           => true,
+			// // Usuário só acessa logado.
+			// 'session'           => true,
 
-      // // Tempo para sessão acabar nesta página.
-      // 'sessionTimeOut'    => (60 * 30), // 30 min.
+			// // Tempo para sessão acabar nesta página.
+			// 'sessionTimeOut'    => (60 * 30), // 30 min.
 
-      // // Segurança por autorização no cabeçalho.
-      // 'headers'            => [
-      //     'key'   => 'Authorization',        // Tipo de autorização (Bearer Token, API Key, JWT Bearer Basic Auth, etc.).
-      //     'value' => 'Bearer valor_token',   // Valor da autorização (Bearer valor_token, Basic e3t1c3VhcmlvfX06e3tzZW5oYX19, etc)
-      // ],
+			// // Segurança por autorização no cabeçalho.
+			// 'headers'            => [
+			//     'key'   => 'Authorization',        // Tipo de autorização (Bearer Token, API Key, JWT Bearer Basic Auth, etc.).
+			//     'value' => 'Bearer valor_token',   // Valor da autorização (Bearer valor_token, Basic e3t1c3VhcmlvfX06e3tzZW5oYX19, etc)
+			// ],
 
-      // // Caminho para página de login.
-      // 'loginPage'         => "api/login/", // Page login dentro do modelo.
+			// // Caminho para página de login.
+			// 'loginPage'         => "api/login/", // Page login dentro do modelo.
 
-      // // Permissões personalizadas da página atual. 
-      // // [1] Menu, [2] Início, [3] Adicionar, [4] Editar, [5] Listar (Básico), [6] Listar Completo, [7] Deletar, [8] API, [9] Testes.
-      // 'permission'        => '111111111', // [1] Necessita de permissão, [0] Não necessita permissão.
+			// // Permissões personalizadas da página atual. 
+			// // [1] Menu, [2] Início, [3] Adicionar, [4] Editar, [5] Listar (Básico), [6] Listar Completo, [7] Deletar, [8] API, [9] Testes.
+			// 'permission'        => '111111111', // [1] Necessita de permissão, [0] Não necessita permissão.
 
-      // // Transações de dados (GET - POST) apenas com token. Usar classe Tokens. Exemplo: (<input name="token" type="text" value="{{token}}" hidden>').
-      // 'token'             => true, // Só aceitar com token (definido na config "BASE_AUTH['token']").
+			// // Transações de dados (GET - POST) apenas com token. Usar classe Tokens. Exemplo: (<input name="token" type="text" value="{{token}}" hidden>').
+			// 'token'             => true, // Só aceitar com token (definido na config "BASE_AUTH['token']").
 
-      // // FeedBack padrão de nível de acesso.
-      // 'feedback'          => false,
+			// // FeedBack padrão de nível de acesso.
+			// 'feedback'          => false,
 
-      // // Receber transações externas. Dados de outras origens.
-      // 'origin'            => [
-      //     '*',                        // Permitir tudas as origens.
-      //     'http://www.site.com.br/',  // URL teste.
-      // ],
+			// // Receber transações externas. Dados de outras origens.
+			// 'origin'            => [
+			//     '*',                        // Permitir tudas as origens.
+			//     'http://www.site.com.br/',  // URL teste.
+			// ],
 
-      // // Grupos que tem permissão TOTAL a esta controller. Usar apenas para teste.
-      // 'groups'            => [
-      //     // 1, // Grupo ID: 1.
-      // ],
+			// // Grupos que tem permissão TOTAL a esta controller. Usar apenas para teste.
+			// 'groups'            => [
+			//     // 1, // Grupo ID: 1.
+			// ],
 
-      // // IDs que tem permissão TOTAL a esta controller. Usar apenas para teste.
-      // 'ids'            => [
-      //     // 1, // Login ID: 1.
-      // ],
-    ];
+			// // IDs que tem permissão TOTAL a esta controller. Usar apenas para teste.
+			// 'ids'            => [
+			//     // 1, // Login ID: 1.
+			// ],
+		];
 
 		// Carrega controllers de bancos de dados.
 		self::$params['bds']         = [
@@ -151,22 +151,22 @@ class index extends \controllers\EndPoint
 
 		// Carrega classes de apoio.
 		self::$params['classes']     = [
-      // 'Midia',
+			// 'Midia',
 		];
 
 		// Carrega controllers para reutilizar funções.
 		self::$params['controllers'] = [
-      // // Controllers de API
-      // 'api' => [
-      //     'pasta/controller', // Sintax.
-      //     'modellimpo',
-      // ],
+			// // Controllers de API
+			// 'api' => [
+			//     'pasta/controller', // Sintax.
+			//     'modellimpo',
+			// ],
 
-      // // Controllers de Páginas
-      // 'pages' => [
-      //     'pasta/controller', // Sintax.
-      //     'modulo/controller',
-      // ],
+			// // Controllers de Páginas
+			// 'pages' => [
+			//     'pasta/controller', // Sintax.
+			//     'modulo/controller',
+			// ],
 		];
 
 		// Monta estrutura de parâmetros passados na url.
@@ -287,7 +287,7 @@ class index extends \controllers\EndPoint
 	public function get($params)
 	{
 		// Informações para montar a página.
-		self::$params['html'] = 'Função: ' . __FUNCTION__;
+		self::$params['html'] = \controllers\Render::obj('app/show_params.html', $params, 20);
 	}
 
 	/**

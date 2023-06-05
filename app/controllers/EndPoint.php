@@ -40,8 +40,6 @@ abstract class EndPoint
     if (self::$params['infoUrl']['namespace'] == 'pages' && $menu != 'api') {
       // Carrega e monta toda a estrutura
       $this->carregaEstrutura();
-
-      // todo - Carrega informações da página como scripts, styles, etc
     }
 
     // Chama a função personalizada e envia todos os parâmetros tratados.
@@ -92,7 +90,7 @@ abstract class EndPoint
     $params_default['structure']   = BASE_PARAMS_STRUCTURE;    // Carrega estrutura html. Somente pages.
     $params_default['scripts']     = BASE_PARAMS_SCRIPTS;      // Carrega na página scripts (template/assets/js/) Somente pages.
     $params_default['styles']      = BASE_PARAMS_STYLES;       // Carrega na página estilos (template/assets/css/) Somente pages.
-    $params_default['plugins']     = BASE_PARAMS_PLUGINS;      // Carrega na página plugins (template/assets/css/) Somente pages.
+    $params_default['plugins']     = BASE_PARAMS_PLUGINS;      // Carrega na página plugins (template/plugins/) Somente pages.
 
     // Mescla valores default com os valores definidos no endpoint.
     self::$params = array_replace_recursive($params_default, self::$params);

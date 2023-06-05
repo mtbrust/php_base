@@ -77,29 +77,33 @@ define('BASE_PATH_API', 'template/api/');
  */
 switch (BASE_URL) {
 
-    // Ambiente de Homologação.
+    // * Ambiente de HOMOLOGAÇÃO.
   case 'HOMOLOG':   // Para forçar valor no Switch.
-  case 'http://basephp.desv.com.br/':   // basephp.com.br
-  case 'https://basephp.desv.com.br/':   // basephp.com.br
+  case 'http://basephp.desv.com.br/':   // basephp.com.br (Mateus Brust)
+  case 'https://basephp.desv.com.br/':   // basephp.com.br (Mateus Brust)
+
     // Define nome do ambiente.
     define("BASE_ENV", "HOMOLOG");
     // Carrega configurações personalizadas.
     require_once('env-homolog.php');
     break;
 
-    // Ambiente de Produção.
+    // * Ambiente de DESENVOLVIMENTO.
   case 'DEV':   // Para forçar valor no Switch.
-  case 'http://basephp.local/':   
-  case 'https://basephp.local/':   
+  case 'http://basephp.local/':   // vhost local. (Mateus Brust)
+  case 'https://basephp.local/':   // vhost local. (Mateus Brust)
+  case 'http://localhost/desv/base_php/':   // vhost local. (Mateus Brust)
+  case 'https://localhost/desv/base_php/':   // vhost local. (Mateus Brust)
+
     // Define nome do ambiente.
     define("BASE_ENV", "DEV");
     // Carrega configurações personalizadas.
     require_once('env-development.php');
     break;
 
-    // Ambiente de Desenvolvimento.
+    // * Ambiente de PRODUÇÃO.
   default:
-  // Define nome do ambiente.
+    // Define nome do ambiente.
     define("BASE_ENV", "PROD");
     // Carrega configurações personalizadas.
     require_once('env-production.php');
@@ -337,28 +341,28 @@ define("BASE_PARAMS_CONFIG", [
   // PAGES - INFORMAÇÕES DE SEO HTML
   // *********************
   // Informações que vão ser usadas para SEO na página.
-  'title'            => 'Vindi',   // Título da página exibido na aba/janela navegador.
+  'title'            => 'BASE PHP V4',   // Título da página exibido na aba/janela navegador.
 
-  'author'           => 'Mateus Brust',  // Autor do desenvolvimento da página ou responsável.
-  'description'      => '',              // Resumo do conteúdo do site em até 90 carecteres.
-  'keywords'         => '',              // palavras minúsculas separadas por "," em até 150 caracteres.
-  'content_language' => 'pt-BR',         // Linguagem primária da página (pt-br).
-  'content_type'     => 'text/html',     // Tipo de codificação da página.
-  'reply_to'         => '',              // E-mail do responsável da página.
-  'charset'          => 'utf-8',         // Charset da página.
-  'image'            => 'logo.png',      // Imagem redes sociais.
-  'url'              => '',              // Url para instagram.
-  'site'             => '',              // Site para twitter.
-  'creator'          => '',              // Perfil criador twitter.
-  'author_article'   => '',              // Autor do artigo da página atual.
-  'generator'        => 'vscode',        // Programa usado para gerar página.
-  'refresh'          => false,           // Tempo para recarregar a página em segundos.
-  'redirect'         => false,           // URL para redirecionar usuário após refresh.
-  'favicon'          => 'favicon.ico',   // Imagem do favicon na página.
-  'icon'             => 'favicon.ico',   // Imagem ícone da empresa na página.
-  'appletouchicon'   => 'favicon.ico',   // Imagem da logo na página.
+  'author'           => 'Mateus Brust',          // Autor do desenvolvimento da página ou responsável.
+  'description'      => 'BASE PHP Versão 4',     // Resumo do conteúdo do site em até 90 carecteres.
+  'keywords'         => 'base, php',             // palavras minúsculas separadas por "," em até 150 caracteres.
+  'content_language' => 'pt-BR',                 // Linguagem primária da página (pt-br).
+  'content_type'     => 'text/html',             // Tipo de codificação da página.
+  'reply_to'         => 'contato@desv.com.br',   // E-mail do responsável da página.
+  'charset'          => 'utf-8',                 // Charset da página.
+  'image'            => 'logo.png',              // Imagem redes sociais.
+  'url'              => 'desv.com.br',                      // Url para instagram.
+  'site'             => 'desv.com.br',           // Site para twitter.
+  'creator'          => '',                      // Perfil criador twitter.
+  'author_article'   => '',                      // Autor do artigo da página atual.
+  'generator'        => 'vscode',                // Programa usado para gerar página.
+  'refresh'          => false,                   // Tempo para recarregar a página em segundos.
+  'redirect'         => false,                   // URL para redirecionar usuário após refresh.
+  'favicon'          => 'favicon.ico',           // Imagem do favicon na página.
+  'icon'             => 'favicon.ico',           // Imagem ícone da empresa na página.
+  'appletouchicon'   => 'favicon.ico',           // Imagem da logo na página.
 
-  // INFORMAÇÕES ADICIONAIS
+  // INFORMAÇÕES ADICIONAIS PERSONALIZADAS
   // *********************
   'campo'            => 'valor',         // Personalização
 ]);
@@ -426,22 +430,25 @@ define("BASE_PARAMS_INFO", [
 
   // INFORMAÇÕES GERAIS
   // *********************
-  'empresa'         => 'CETRUS',
-  'slogan'          => 'CETRUS',
-  'nomeFantasia'    => 'CETRUS',
-  'razaoSocial'     => 'CETRUS',
+  'empresa'         => 'DESV',
+  'slogan'          => 'DESV',
+  'nomeFantasia'    => 'DESV - DESENVOLVIMENTO',
+  'razaoSocial'     => 'DESV',
   'cnpj'            => '123456789',
   'ie'              => '123456789',
   'endereco'        => 'São Paulo/SP',
-  'email'           => 'contato@CETRUS.com.br',
-  'emailSuporte'    => 'contato@CETRUS.com.br',
-  'telefoneSuporte' => '35 9 1234-1234',
-  'telefone'        => '35 9 1234-1234',
-  'whatsapp'        => '35 9 1234-1234',
-  'since'           => '2019',                     // 10/04/2019
+  'email'           => 'contato@desv.com.br',
+  'emailSuporte'    => 'contato@desv.com.br',
+  'telefoneSuporte' => '',
+  'telefone'        => '',
+  'whatsapp'        => '',
+  'since'           => '2019',                     // 10/04/2019 - DESV
   'dataAtual'       => date('d/m/Y H:i:s'),
   'anoAtual'        => date('Y'),
   'logo'            => 'logo.png',
+
+  // INFORMAÇÕES ADICIONAIS PERSONALIZADAS
+  // *********************
   'campo' => 'valor', // Adicional.
 ]);
 
@@ -467,7 +474,7 @@ define("BASE_PARAMS_BDS", [
 
 /**
  * * PARÂMETROS DEFAULT - CLASSES
- * Carrega classes de apoio.
+ * Carrega classes de apoio para todos os endpoints.
  */
 define("BASE_PARAMS_CLASSES", [
   'Logs',
@@ -524,7 +531,7 @@ define("BASE_PARAMS_STRUCTURE", [
   // Origem
   'html'        => 'default',   // Estrutura HTML geral.
 
-  // Complementos
+  // Complementos (opcionais da estrutura)
   'head'         => 'default',   // <head> da página.
   'top'          => 'default',   // Logo após a tag <body>.
   'header'       => 'default',   // Após a estrutura "top".
@@ -539,68 +546,46 @@ define("BASE_PARAMS_STRUCTURE", [
 
 /**
  * * PARÂMETROS DEFAULT - SCRIPTS
- * Carrega na página scripts (template/assets/js/) Somente pages.
+ * Carrega os scripts para todos os endpoints de pages.
+ * Local js: "template/assets/js/".
+ * Local libs: "template/assets/libs/".
  */
 define("BASE_PARAMS_SCRIPTS", [
   'js' => [
-    // 'jquery.min.js',   		// Exemplo.
+    'default-min.js', // Default.
   ],
   'libs' => [
-    // 'lib/jquery.min.js',   		// Exemplo.
+    'jquery/jquery.min.js', // JQuery.
+    'bootstrap/js/bootstrap.bundle.min.js', // bootstrap.
+    'sweetalert2/sweetalert2.min.js', // sweetalert2.
   ],
 ]);
 
 
 /**
  * * PARÂMETROS DEFAULT - STYLES
- * Carrega na página estilos (template/assets/css/) Somente pages.
+ * Carrega os estilos para todos os endpoints de pages.
+ * Local css: "template/assets/css/"
+ * Local libs: "template/assets/libs/".
  */
 define("BASE_PARAMS_STYLES", [
-  // 'endpoint-min.css',   // Exemplo.
+  'css' => [
+    'default-min.css', // Default.
+    'simple.css', // demostração.
+  ],
+  'libs' => [
+    'bootstrap/css/bootstrap.min.css', //
+    'sweetalert2/sweetalert2.min.css', //
+    'fontawesome/css/all.min.css', //
+  ],
 ]);
 
 
 /**
  * * PARÂMETROS DEFAULT - PLUGINS
- * Carrega na página plugins (template/assets/css/) Somente pages.
+ * Carrega os plugins para todos os endpoints de pages.
+ * Local: "template/plugins/"
  */
 define("BASE_PARAMS_PLUGINS", [
   // 'modelo',   // Exemplo.
 ]);
-
-
-
-
-
-/**
- * * TESTES
- * Parte para verificação dos valores.
- */
-// echo 'BASE_NAME: ' . BASE_NAME;
-// echo '<br>';
-// echo 'BASE_DOMAIN: ' . BASE_DOMAIN;
-// echo '<br>';
-// echo 'BASE_URL: ' . BASE_URL;
-// echo '<br>';
-// echo 'BASE_DIR: ' . BASE_DIR;
-// echo '<br>';
-// echo 'BASE_IP: ' . BASE_IP;
-// echo '<br>';
-// echo 'BASE_ENV: ' . BASE_ENV;
-// echo '<br>';
-// echo 'BASE_BDS: ';
-// echo '<pre>';
-// print_r(BASE_BDS);
-// echo '</pre>';
-// echo '<br>';
-// echo 'BASE_CONFIG: ';
-// echo '<pre>';
-// print_r(BASE_CONFIG);
-// echo '</pre>';
-// echo '<br>';
-// echo 'BASE_INFO: ';
-// echo '<pre>';
-// print_r(BASE_INFO);
-// echo '</pre>';
-// echo '<br>';
-// exit;
