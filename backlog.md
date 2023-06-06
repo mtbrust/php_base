@@ -34,5 +34,6 @@ criar BD options
 criar os bds necessários
 
 
-RENDER
+RENDER cache
+  html cache
   pegar url atual para passar no cache. (sera q url vem na flag????????????)

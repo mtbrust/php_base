@@ -123,13 +123,13 @@ class Render
    * @param  mixed $flag
    * @return string
    */
-  public static function objCache($obj_path, $params = null, $cacheTime = null, $flag = null)
+  public static function objCache($obj_path, $cacheTime = null, $flag = null)
   {
     // Retorno padrão.
     $result = false;
 
     // Tenta obter cache.
-    $cache = self::getCache('obj/' . $obj_path, $cacheTime);
+    $cache = self::getCache('app/cache/obj/' . self::path_file_cache($obj_path, $flag), $cacheTime);
 
     // Verifica se teve retorno cache.
     if ($cache) {
@@ -188,21 +188,17 @@ class Render
    * Verifica se tem cache.
    *
    * @param  mixed $html
-   * @param  mixed $params
    * @param  mixed $cacheTime
-   * @param  mixed $flag
+   * @param  mixed $flag // Nome do arquivo cache.
    * @return string
    */
-  public static function htmlCache($html, $params = null, $cacheTime = null, $flag = null)
+  public static function htmlCache($cacheTime = null, $flag)
   {
     // Retorno padrão.
     $result = false;
 
-    // Só verifica cache se foi passado $flag, pois necessita de um nome.
-    if ($flag) {
-      // Tenta obter cache.
-      $cache = self::getCache('html/', $cacheTime);
-    }
+    // Tenta obter cache.
+    $cache = self::getCache('app/cache/obj/' . self::path_file_cache($flag), $cacheTime);
 
     // Verifica se teve retorno cache.
     if ($cache) {
@@ -224,24 +220,16 @@ class Render
    * @param  mixed $html
    * @param  mixed $params
    * @param  mixed $cacheTime
-   * @param  mixed $flag
+   * @param  mixed $flag // Nome do arquivo cache.
    * @return string
    */
-  public static function html($html, $params = null, $cacheTime = null, $flag = null)
+  public static function html($html, $params = null, $cacheTime = null, $flag)
   {
     // Retorno padrão.
     $result = false;
 
-    // todo - pq tem que verificar flag?
-    // // Só verifica cache se foi passado $flag, pois necessita de um nome.
-    // if ($flag) {
-    //   // Tenta obter cache.
-    //   $cache = self::getCache('html/', $cacheTime, $flag);
-    // }
-
-    // todo - pegar a url atual e jogar em $obj_path.
     // Tenta obter cache.
-    $cache = self::getCache('app/cache/html/' . self::path_file_cache($obj_path, $flag), $cacheTime, $flag);
+    $cache = self::getCache('app/cache/html/' . self::path_file_cache($flag), $cacheTime);
 
     // Verifica se teve retorno cache.
     if ($cache) {
@@ -259,12 +247,8 @@ class Render
     // Inicia o processamento do objeto.
     $result = $twig->render('index', $params);
 
-    // // Salva resultado do processamento em cache.
-    // self::saveCache('html/' . $flag, $result, $cacheTime, $flag);
-
-    // todo - pegar a url atual e jogar em $obj_path.
     // Salva resultado do processamento em cache.
-    self::saveCache('app/cache/obj/' . self::path_file_cache($obj_path, $flag), $result, $cacheTime, $flag);
+    self::saveCache('app/cache/obj/' . self::path_file_cache($flag), $result, $cacheTime);
 
     return $result;
   }
@@ -480,7 +464,7 @@ class Render
    * @param  mixed $path_file
    * @return string
    */
-  private static function path_file_cache($path_file, $flag)
+  private static function path_file_cache($path_file, $flag = 'flag')
   {
     return str_replace(['/', '.php', '.html'], ['-', '', ''], $path_file) . '-' . $flag . '.txt';
   }
