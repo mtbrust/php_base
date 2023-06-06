@@ -99,6 +99,10 @@ class Render
 
       // Verifica se a saída é json.
       if ($params['render']['content_type'] == 'application/json') {
+        // Acrescenta retorno padrão.
+        $params['response']['ENV'] = BASE_ENV;
+        $params['response']['DATE'] = date('Y-m-d H:i:s');
+        $params['response']['IP'] = BASE_IP;
         // Converte a saída array para json com utf-8.
         return json_encode($params['response'], JSON_UNESCAPED_UNICODE);
       } else {

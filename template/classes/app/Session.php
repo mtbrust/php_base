@@ -48,12 +48,12 @@ class Session
     public static function check($time)
     {
         // Verifica se não existe sessão ou se está vazia e finaliza.
-        if (!isset($_SESSION) || empty($_SESSION)){
+        if (!isset($_SESSION) || empty($_SESSION)) {
             return false;
         }
 
         // Verifica se não está na validade, destroy sessão e finaliza.
-        if($_SESSION['timestampCreate'] < ($time - $_SESSION['timestampCreate'])){
+        if ($_SESSION['timestampCreate'] < ($time - $_SESSION['timestampCreate'])) {
             $_SESSION = [];
             return false;
         }
@@ -118,5 +118,30 @@ class Session
             // Guarda o valor na posição escolhida.
             $_SESSION[$key] = $value;
         }
+    }
+
+    
+    /**
+     * getAll
+     * 
+     * Obtém todas as sessões abertas.
+     *
+     * @return void
+     */
+    public static function getAll()
+    {
+        $allSessions = [];
+        $sessionNames = scandir(session_save_path());
+
+        foreach ($sessionNames as $sessionName) {
+            $sessionName = str_replace("sess_", "", $sessionName);
+            if (strpos($sessionName, ".") === false) { //This skips temp files that aren't sessions
+                session_id($sessionName);
+                session_start();
+                $allSessions[$sessionName] = $_SESSION;
+                session_abort();
+            }
+        }
+        print_r($allSessions);
     }
 }

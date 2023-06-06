@@ -1,8 +1,8 @@
 
 Ajustar controller endpoint.
-  Criar as funções necessárias para carregar todos os parâmetros.
-  Criar as funções necessárias para executar o endpoint.
-  Ajustar paths de require
+  Criar as funções necessárias para carregar todos os parâmetros. (acho que já esta carregando)
+  Criar as funções necessárias para executar o endpoint. (acho que já esta executando.)
+  Ajustar paths de require (acho que já esta correto)
 
 Ajustar controller security.
   Ajustar como será realizada a criação de permissões.
@@ -12,13 +12,10 @@ Ajustar controller security.
 
 Ajustar Classe "Session.php"
 
-Arrumar config.
-  separar por ambiente
 
 Arrumar criação de classes
-arrumar criação de Bds
-  selecionar BD por key e não por index no array (criar key)
-arrumar criação de obj render
+
+Arrumar inclusão de plugins.
 
 
 Na API
@@ -30,10 +27,12 @@ self::$params['status'] = 404
 ENGINE.PHP
 colocar a opção de definir informações por banco de dados.
 para não precisar ficar preenchendo arquivo.
-criar BD options
 criar os bds necessários
 
 
-RENDER cache
-  html cache
-  pegar url atual para passar no cache. (sera q url vem na flag????????????)
+Comparar endpoint de pages.
+  api -> modelo.php
+  com
+  page -> c -> index.php
+  Ao final criar um modelo de endpoint page.
+  Ao final criar um modelo limpo.

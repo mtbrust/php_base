@@ -112,203 +112,17 @@ switch (BASE_URL) {
 
 
 /**
- * * BANCO DE DADOS
- * Conexão com os bancos de dados de acordo com ambiente.
- */
-switch (BASE_ENV) {
-    // Ambiente de Desenvolvimento.
-  case 'DEV':
-    define("BASE_BDS", [
-      [
-        'TITLE'    => 'VINDI HOMOLOGAÇÃO',
-        'ACTIVE'     => true,
-        'DBMANAGER' => 'mysql',
-        'HOST'      => '192.168.0.12',
-        'PORT'      => '3306',
-        'USERNAME'  => 'vindi_homolog',
-        'PASSWORD'  => 'Sp_H0m0l@2019',
-        'DATABASE'  => 'vindi_homolog',
-        'CHARSET'   => 'utf8',
-        'PREFIX'    => '',
-      ],
-      [
-        'TITLE'     => 'VINDI LOCAL DEV',
-        'ACTIVE'     => true,
-        'DBMANAGER' => 'mysql',
-        'HOST'      => 'localhost',
-        'PORT'      => '3306',
-        'USERNAME'  => 'root',
-        'PASSWORD'  => '',
-        'DATABASE'  => 'vindi_api',
-        'CHARSET'   => 'utf8',
-        'PREFIX'    => 'vindi_',
-      ],
-      [
-        'TITLE'     => 'VINDI LOCAL DEV', // Exemplo.
-        'ACTIVE'     => true,
-        'DBMANAGER' => 'mysql',
-        'HOST'      => 'localhost',
-        'PORT'      => '3306',
-        'USERNAME'  => 'root',
-        'PASSWORD'  => '',
-        'DATABASE'  => 'vindi_api',
-        'CHARSET'   => 'utf8',
-        'PREFIX'    => 'vindi_',
-      ],
-    ]);
-    break;
-
-    // Ambiente de Homologação.
-  case 'HOMOLOG':
-    define("BASE_BDS", [
-      [
-        'TITLE'    => 'VINDI HOMOLOGAÇÃO',
-        'ACTIVE'     => true,
-        'DBMANAGER' => 'mysql',
-        'HOST'      => '192.168.0.12',
-        'PORT'      => '3306',
-        'USERNAME'  => 'vindi_homolog',
-        'PASSWORD'  => 'Sp_H0m0l@2019',
-        'DATABASE'  => 'vindi_homolog',
-        'CHARSET'   => 'utf8',
-        'PREFIX'    => '',
-      ],
-      [
-        'TITLE'    => 'VINDI HOMOLOGAÇÃO',
-        'ACTIVE'     => true,
-        'DBMANAGER' => 'mysql',
-        'HOST'      => '192.168.0.12',
-        'PORT'      => '3306',
-        'USERNAME'  => 'vindi_homolog',
-        'PASSWORD'  => 'Sp_H0m0l@2019',
-        'DATABASE'  => 'vindi_api',
-        'CHARSET'   => 'utf8',
-        'PREFIX'    => '',
-      ],
-      [
-        'TITLE'    => 'LYCEUM HOMOLOGAÇÃO', // Exemplo.
-        'ACTIVE'     => true,
-        'DBMANAGER' => 'mysql',
-        'HOST'      => 'localhost',
-        'PORT'      => '3306',
-        'USERNAME'  => 'root',
-        'PASSWORD'  => '',
-        'DATABASE'  => 'vindi_api',
-        'CHARSET'   => 'utf8',
-        'PREFIX'    => 'vindi_',
-      ],
-    ]);
-    break;
-
-    // Ambiente de Produção.
-  case 'PROD':
-    define("BASE_BDS", [
-      [
-        'TITLE'    => 'VINDI PRODUÇÃO',
-        'ACTIVE'     => true,
-        'DBMANAGER' => 'mysql',
-        'HOST'      => '192.168.0.12',
-        'PORT'      => '3306',
-        'USERNAME'  => 'vindi_prod',
-        'PASSWORD'  => 'Sp_Pr0d3@2019',
-        'DATABASE'  => 'vindi_prod',
-        'CHARSET'   => 'utf8',
-        'PREFIX'    => '',
-      ]
-    ]);
-    break;
-
-    // Caso tenha algum problema zera o valor.
-  default:
-    define("BASE_BDS", [[]]);
-    break;
-}
-
-
-/**
- * * AUTORIZAÇÕES
- * Autorizações de APIs, TOKENS, Terceiros, Logins, etc de acordo com ambiente.
- */
-switch (BASE_ENV) {
-    // Ambiente de Desenvolvimento.
-  case 'DEV':
-    define("BASE_AUTH", [
-      // Exemplo
-      'CAMPO' => 'valor',
-    ]);
-    break;
-
-    // Ambiente de Homologação.
-  case 'HOMOLOG':
-    define("BASE_AUTH", [
-      // Exemplo
-      'CAMPO' => 'valor',
-    ]);
-    break;
-
-    // Ambiente de Produção.
-  case 'PROD':
-    define("BASE_AUTH", [
-      // Exemplo
-      'CAMPO' => 'valor',
-    ]);
-    break;
-
-    // Caso tenha algum problema zera o valor.
-  default:
-    define("BASE_AUTH", []);
-    break;
-}
-
-
-/**
- * * CONFIGURAÇÕES
- * Configurações personalizadas de acordo com ambiente.
- */
-switch (BASE_ENV) {
-    // Ambiente de Desenvolvimento.
-  case 'DEV':
-    define("BASE_CONFIG", [
-      'SHOW_ERRORS' => 1,
-      'CAMPO' => 'valor',
-    ]);
-    break;
-
-    // Ambiente de Homologação.
-  case 'HOMOLOG':
-    define("BASE_CONFIG", [
-      'SHOW_ERRORS' => 1,
-      'CAMPO' => 'valor',
-    ]);
-    break;
-
-    // Ambiente de Produção.
-  case 'PROD':
-    define("BASE_CONFIG", [
-      'SHOW_ERRORS' => 1,
-      'CAMPO' => 'valor',
-    ]);
-    break;
-
-    // Caso tenha algum problema zera o valor.
-  default:
-    define("BASE_CONFIG", []);
-    break;
-}
-
-
-/**
  * * PARÂMETROS DEFAULT - RENDERIZAÇÃO
  * Opções de renderização.
  * 
  * * Opções com * podem ser modificadas no processamento do endpoint.
  */
 define("BASE_PARAMS_RENDER", [
-  'cache'        => false,                 // Ativa uso de cache para resultado.
+  'cache'        => false,                // Ativa uso de cache para resultado.
   'cacheTime'    => (60 * 60 * 24),       // Tempo para renovar cache em segundos. (1 dia).
-  'cacheParams'    => true,       // Cache por parametros (attr).
-  'content_type' => 'application/json',   // * Tipo do retorno padrão do cabeçalho http.
-  // 'content_type' => 'text/html',          // * Tipo do retorno padrão do cabeçalho http.
+  'cacheParams'  => true,                 // Cache por parametros (attr), cada página entra em cache dependendo dos parâmetros passados.
+  // 'content_type' => 'application/json',   // * Tipo do retorno padrão do cabeçalho http.
+  'content_type' => 'text/html',          // * Tipo do retorno padrão do cabeçalho http.
   'charset'      => 'utf-8',              // * Tipo de codificação do cabeçalho http.
 ]);
 
@@ -351,7 +165,7 @@ define("BASE_PARAMS_CONFIG", [
   'reply_to'         => 'contato@desv.com.br',   // E-mail do responsável da página.
   'charset'          => 'utf-8',                 // Charset da página.
   'image'            => 'logo.png',              // Imagem redes sociais.
-  'url'              => 'desv.com.br',                      // Url para instagram.
+  'url'              => 'desv.com.br',           // Url para instagram.
   'site'             => 'desv.com.br',           // Site para twitter.
   'creator'          => '',                      // Perfil criador twitter.
   'author_article'   => '',                      // Autor do artigo da página atual.
@@ -506,9 +320,9 @@ define("BASE_PARAMS_CONTROLLERS", [
  */
 define("BASE_PARAMS_MENUS", [
   // Função:
-  'index' => [
-    'title'      => 'Início',      // Nome exibido no menu. Somente pages.
-    'permission' => '110000000',   // Permissões necessárias para acesso.
+  'get' => [
+    'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
+    'permission' => '100010000',   // Permissões necessárias para acesso.
     'groups'     => [],            // Quais grupos tem acesso a esse menu.
     'ids'        => [],            // Quais ids tem acesso a esse menu.
   ],
@@ -555,9 +369,9 @@ define("BASE_PARAMS_SCRIPTS", [
     'default-min.js', // Default.
   ],
   'libs' => [
-    'jquery/jquery.min.js', // JQuery.
-    'bootstrap/js/bootstrap.bundle.min.js', // bootstrap.
-    'sweetalert2/sweetalert2.min.js', // sweetalert2.
+    'jquery/jquery.min.js',  // JQuery.
+    'bootstrap/js/bootstrap.bundle.min.js',  // bootstrap.
+    'sweetalert2/sweetalert2.min.js',  // sweetalert2.
   ],
 ]);
 
@@ -574,9 +388,9 @@ define("BASE_PARAMS_STYLES", [
     'simple.css', // demostração.
   ],
   'libs' => [
-    'bootstrap/css/bootstrap.min.css', //
-    'sweetalert2/sweetalert2.min.css', //
-    'fontawesome/css/all.min.css', //
+    'bootstrap/css/bootstrap.min.css',  // bootstrap
+    'sweetalert2/sweetalert2.min.css',  // sweetalert2
+    'fontawesome/css/all.min.css',  // fontawesome
   ],
 ]);
 
@@ -587,5 +401,5 @@ define("BASE_PARAMS_STYLES", [
  * Local: "template/plugins/"
  */
 define("BASE_PARAMS_PLUGINS", [
-  // 'modelo',   // Exemplo.
+  'modelo',   // Exemplo.
 ]);

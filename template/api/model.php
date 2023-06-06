@@ -45,9 +45,9 @@ class model extends \controllers\EndPoint
     self::$params['render']      = [
       // 'cache'        => false,                // Ativa uso de cache para resultado.
       // 'cacheTime'    => (60 * 30),            // Tempo para renovar cache em segundos. (30 Minutos).
-      // 'cacheParams'    => true,       // Cache por parametros (attr).
-      // 'content_type' => 'application/json',   // * Tipo do retorno padrão do cabeçalho http.
-      // 'charset'      => 'utf-8',              // * Tipo de codificação do cabeçalho http.
+      // 'cacheParams'  => true,                 // Cache por parametros (attr).
+      'content_type' => 'application/json',   // Tipo do retorno padrão do cabeçalho http.
+      // 'charset'      => 'utf-8',              // Tipo de codificação do cabeçalho http.
     ];
 
     // Configuração personalizada do endpoins.
