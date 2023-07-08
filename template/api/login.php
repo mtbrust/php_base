@@ -139,26 +139,26 @@ class login extends \controllers\EndPoint
     self::$params['menus']       = [
       // Função:
       'get' => [
-          'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
-          'permission' => '100010000',   // Permissões necessárias para acesso.
-          'groups'     => [],            // Quais grupos tem acesso a esse menu.
-          'ids'        => [],            // Quais ids tem acesso a esse menu.
+        'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
+        'permission' => '100010000',   // Permissões necessárias para acesso.
+        'groups'     => [],            // Quais grupos tem acesso a esse menu.
+        'ids'        => [],            // Quais ids tem acesso a esse menu.
       ],
 
       // Função:
       'post' => [
-          'title'      => 'Adicionar',   // Nome exibido no menu. Somente pages.
-          'permission' => '101000000',   // Permissões necessárias para acesso.
-          'groups'     => [],            // Quais grupos tem acesso a esse menu.
-          'ids'        => [],            // Quais ids tem acesso a esse menu.
+        'title'      => 'Adicionar',   // Nome exibido no menu. Somente pages.
+        'permission' => '101000000',   // Permissões necessárias para acesso.
+        'groups'     => [],            // Quais grupos tem acesso a esse menu.
+        'ids'        => [],            // Quais ids tem acesso a esse menu.
       ],
 
       // Função:
       'put' => [
-          'title'      => 'Atualizar',   // Nome exibido no menu. Somente pages.
-          'permission' => '100100000',   // Permissões necessárias para acesso.
-          'groups'     => [],            // Quais grupos tem acesso a esse menu.
-          'ids'        => [],            // Quais ids tem acesso a esse menu.
+        'title'      => 'Atualizar',   // Nome exibido no menu. Somente pages.
+        'permission' => '100100000',   // Permissões necessárias para acesso.
+        'groups'     => [],            // Quais grupos tem acesso a esse menu.
+        'ids'        => [],            // Quais ids tem acesso a esse menu.
       ],
     ];
   }
@@ -179,27 +179,58 @@ class login extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_GET'] = $_GET;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
-    // MOCK Sessão.
-    // Força criação de sessão. Apenas para teste;
-    \classes\Session::create([
+
+    // todo - fazer a verificação se login e senha.
+    // Verificação de login e senha.
+    // code... // todo - obter do banco de dados.
+    $logado = true;
+
+    // Verifica autenticação
+    if (!$logado) {
+      // Quanto conteúdo é passado por body (normalmente Json).
+      $response['msg'] = 'Logado com sucesso. opa';
+      // Monta resposta.
+
+      self::$params['status']   = 200;
+      self::$params['response'] = $response;
+      // Finaliza execução da função.
+      return true;
+    }
+
+    // Pegar informações de login. // todo - obter do banco de dados.
+    $login = [
       'nome'        => 'Mateus',
       'id'          => '123',
-      'permissions' => [
-        'template/api/index.php'      => '111111111',
-        'template/api/model.php'      => '111111111',
-        'template/api/modellimpo.php' => '111111111',
-      ],
-    ]);
+    ];
+    $session = $login;
+
+    // Pegar informações de permissões. // todo - obter do banco de dados.
+    $permissions = [
+      'template/api/index.php'      => '111111111',
+      'template/api/model.php'      => '111111111',
+      'template/api/modellimpo.php' => '111111111',
+      'template/pages/c/index.php'  => '111111111',
+    ];
+    // Aqui recebe todas as permissões em todas as páginas que usuário tem.
+    $session['permissions'] = $permissions;
+
+    // Cria Sessão.
+    // Força criação de sessão. Apenas para teste;
+    \classes\Session::create($session);
+
+    // Obtém os valores da sessão.
+    $session = \classes\Session::get();
 
     // Quanto conteúdo é passado por body (normalmente Json).
     $response['msg'] = 'Logado com sucesso. opa';
+    $response['msg'] = $session;
 
     // Finaliza a execução da função.
+    self::$params['status']   = 200;
     self::$params['response'] = $response;
   }
-  
+
   /**
    * post
    * 
@@ -219,7 +250,7 @@ class login extends \controllers\EndPoint
     // Finaliza a execução da função.
     self::$params['response'] = $response;
   }
-  
+
   /**
    * post
    * 
@@ -239,7 +270,7 @@ class login extends \controllers\EndPoint
     // Finaliza a execução da função.
     self::$params['response'] = $response;
   }
-  
+
   /**
    * foo_personalizada
    * 

@@ -97,6 +97,13 @@ class Render
   {
     if (isset($params['response'])) {
 
+      // Verifica se foi passado o código do status da requisição.
+      if(isset($params['status'])){
+        http_response_code($params['status']);
+      }else{
+        http_response_code(200);
+      }
+
       // Verifica se a saída é json.
       if ($params['render']['content_type'] == 'application/json') {
         // Acrescenta retorno padrão.

@@ -2,8 +2,12 @@
 
 namespace classes;
 
+/**
+ * Session
+ */
 class Session
 {
+
     /**
      * Inicia serviço de sessão.
      *
@@ -20,19 +24,27 @@ class Session
      * 
      * Acrescenta na sessão as informações enviadas por parâmetro.
      *
-     * @param  mixed $params
-     * @return void
+     * @param  array $params
+     * @return boolean
      */
     public static function create($params)
     {
+        // Guarda os parâmetros default.
+        $paramsDefault = [
+            'timestampCreate' => time(), // Guarda o tempo atual que foi criada a sessão.
+        ];
+
+        // Mescla os parâmetros recebidos com os default.
+        $params = array_merge_recursive($paramsDefault, $params);
+
         // Garante que não tem sessão aberta.
         $_SESSION = [];
 
         // Acrescenta na sessão as informações enviadas por parâmetro.
         $_SESSION = $params;
 
-        // Acrescenta o time da criação da sessão.
-        $_SESSION['timestampCreate'] = time();
+        // Finalização
+        return true;
     }
 
 
@@ -42,23 +54,24 @@ class Session
      * Verifica se existe sessão.
      * Verifica se sessão está na validade.
      *
-     * @param  int $time
+     * @param  int $sessionTimeDuration
      * @return bool
      */
-    public static function check($time)
+    public static function check($sessionTimeDuration)
     {
         // Verifica se não existe sessão ou se está vazia e finaliza.
         if (!isset($_SESSION) || empty($_SESSION)) {
             return false;
         }
 
+        // Caso tenha sessão, porém está vencida.
         // Verifica se não está na validade, destroy sessão e finaliza.
-        if ($_SESSION['timestampCreate'] < ($time - $_SESSION['timestampCreate'])) {
+        if ((time() - $_SESSION['timestampCreate']) > $sessionTimeDuration) {
             $_SESSION = [];
             return false;
         }
 
-        // Caso não tenha impeditivo a sessão está ok.
+        // Caso não tenha impeditivo a sessão está ok. Sessão válida.
         return true;
     }
 
@@ -118,30 +131,5 @@ class Session
             // Guarda o valor na posição escolhida.
             $_SESSION[$key] = $value;
         }
-    }
-
-    
-    /**
-     * getAll
-     * 
-     * Obtém todas as sessões abertas.
-     *
-     * @return void
-     */
-    public static function getAll()
-    {
-        $allSessions = [];
-        $sessionNames = scandir(session_save_path());
-
-        foreach ($sessionNames as $sessionName) {
-            $sessionName = str_replace("sess_", "", $sessionName);
-            if (strpos($sessionName, ".") === false) { //This skips temp files that aren't sessions
-                session_id($sessionName);
-                session_start();
-                $allSessions[$sessionName] = $_SESSION;
-                session_abort();
-            }
-        }
-        print_r($allSessions);
     }
 }

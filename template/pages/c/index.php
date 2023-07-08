@@ -100,10 +100,10 @@ class index extends \controllers\EndPoint
 		self::$params['security']    = [
 
 			// // Controller usará controller de segurança.
-			// 'ativo'             => true,
+			'ativo'             => true,
 
 			// // Usuário só acessa logado.
-			// 'session'           => true,
+			'session'           => true,
 
 			// // Tempo para sessão acabar nesta página.
 			// 'sessionTimeOut'    => (60 * 30), // 30 min.
@@ -171,13 +171,13 @@ class index extends \controllers\EndPoint
 
 		// Monta estrutura de parâmetros passados na url.
 		self::$params['menus']       = [
-			// // Função:
-			// 'get' => [
-			//     'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
-			//     'permission' => '100010000',   // Permissões necessárias para acesso.
-			//     'groups'     => [],            // Quais grupos tem acesso a esse menu.
-			//     'ids'        => [],            // Quais ids tem acesso a esse menu.
-			// ],
+			// Função:
+			'get' => [
+			    'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
+			    'permission' => '100010000',   // Permissões necessárias para acesso.
+			    'groups'     => [],            // Quais grupos tem acesso a esse menu.
+			    'ids'        => [],            // Quais ids tem acesso a esse menu.
+			],
 
 			// // Função:
 			// 'post' => [
@@ -211,13 +211,13 @@ class index extends \controllers\EndPoint
 			//     'ids'        => [],            // Quais ids tem acesso a esse menu.
 			// ],
 
-			// // Função:
-			// 'test' => [
-			//     'title'      => 'Teste',       // Nome exibido no menu. Somente pages.
-			//     'permission' => '100000010',   // Permissões necessárias para acesso.
-			//     'groups'     => [],            // Quais grupos tem acesso a esse menu.
-			//     'ids'        => [],            // Quais ids tem acesso a esse menu.
-			// ],
+			// Função:
+			'test' => [
+			    'title'      => 'Teste',       // Nome exibido no menu. Somente pages.
+			    'permission' => '100000011',   // Permissões necessárias para acesso.
+			    'groups'     => [],            // Quais grupos tem acesso a esse menu.
+			    'ids'        => [],            // Quais ids tem acesso a esse menu.
+			],
 
 			// // Função:
 			// 'dashboard' => [
@@ -249,11 +249,11 @@ class index extends \controllers\EndPoint
 		self::$params['scripts']     = [
 			// pasta js.
 			'js' => [
-				// 'default-min.js',   		// Exemplo.
+				// 'default-min.js', // Exemplo.
 			],
 			// pasta libs.
 			'libs' => [
-				// 'bootstrap/js/bootstrap.bundle.min.js',   		// Exemplo.
+				// 'bootstrap/js/bootstrap.bundle.min.js', // Exemplo.
 			],
 		];
 
@@ -261,11 +261,11 @@ class index extends \controllers\EndPoint
 		self::$params['styles']      = [
 			// pasta css.
 			'css' => [
-				// 'default-min.css',   // Exemplo.
+				// 'default-min.css', // Exemplo.
 			],
 			// pasta libs.
 			'libs' => [
-				// 'bootstrap/css/bootstrap.min.css',   		// Exemplo.
+				// 'bootstrap/css/bootstrap.min.css', // Exemplo.
 			],
 		];
 
@@ -288,6 +288,20 @@ class index extends \controllers\EndPoint
 	{
 		// Informações para montar a página.
 		self::$params['html'] = \controllers\Render::obj('app/show_params.html', $params, 20);
+	}
+	
+	public function test($params)
+	{
+		// Informações para montar a página.
+		self::$params['html'] = \controllers\Render::obj('app/show_params.html', $params, 20);
+		// self::$params['html'] = 'teste';
+	}
+	
+	public function post($params)
+	{
+		// Informações para montar a página.
+		self::$params['html'] = \controllers\Render::obj('app/show_params.html', $params, 20);
+		// self::$params['html'] = 'teste';
 	}
 
 	/**
@@ -320,11 +334,12 @@ class index extends \controllers\EndPoint
 		self::$params['render']['content_type'] = 'application/json';
 
 		// Mensagens padrão de retorno.
-		$ret = '';
-		$msg = 'Execução não retornou resultados.';
-		$html = '';
-		$post = $_POST;
-		$get = $_GET;
+		$error = false;
+		$response   = '';
+		$msg   = 'API da página não implementada.';
+		$html  = '';
+		$post  = $_POST;
+		$get   = $_GET;
 
 		if (isset($params['infoUrl']['attr'][1])) {
 			switch ($params['infoUrl']['attr'][1]) {
@@ -345,7 +360,7 @@ class index extends \controllers\EndPoint
 					break;
 				case 'test':
 					// Tem retorno.
-					$ret = true;
+					$response = true;
 					// Mensagem de retorno.
 					$msg = 'Teste realizado com sucesso.';
 					break;
@@ -354,7 +369,7 @@ class index extends \controllers\EndPoint
 					// Modifico header padrão html.
 					self::$params['render']['content_type'] = 'text/html';
 					// Tem retorno.
-					$ret = '<h1>Teste Html OK</h1>';
+					$response = '<h1>Teste Html OK</h1>';
 					// Mensagem de retorno.
 					$msg = 'Teste realizado com sucesso.';
 					break;
@@ -367,11 +382,12 @@ class index extends \controllers\EndPoint
 
 		// Monta array de retorno.
 		$response = [
-			'ret' => $ret,
-			'msg' => $msg,
-			'html' => $html,
-			'post' => $post,
-			'get' => $get,
+			'error'    => $error,
+			'response' => $response,
+			'msg'      => $msg,
+			'html'     => $html,
+			'post'     => $post,
+			'get'      => $get,
 		];
 
 		// Finaliza a execução da função.

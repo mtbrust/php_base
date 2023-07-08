@@ -179,10 +179,10 @@ class model extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_GET'] = $_GET;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
   
   /**
@@ -199,10 +199,10 @@ class model extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_POST'] = $_POST;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
   
   /**
@@ -219,10 +219,10 @@ class model extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_POST'] = $_POST;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
   
   /**
@@ -239,9 +239,9 @@ class model extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_POST'] = $_POST;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
 }

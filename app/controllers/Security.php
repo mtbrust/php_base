@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use classes\DevHelper;
+
 class Security
 {
   private static $paramsSecurity = [];
@@ -15,8 +17,14 @@ class Security
    */
   public static function start($params = [], $menus = [])
   {
+    // Inicia a sessão independente se tiver sessão a página (para garantir que vai disponibilizar informações caso usuário estiver logado).
+    \classes\Session::start();
+
     // Salva os parâmetros de segurança.
     self::$paramsSecurity = $params;
+
+    // Mesmo não precisando de sessão, caso tenha, manda para a controller.
+    self::$paramsSecurity['session'] = \classes\Session::get();
 
     // Guarda namespace (api ou page)
     $namespace = \controllers\FriendlyUrl::getParameters('namespace');
@@ -26,7 +34,7 @@ class Security
 
     // Verifica se segurança NÃO está ativa para endpoint atual e finaliza.
     if (!$params['ativo']) {
-      return [];
+      return self::$paramsSecurity;
     }
 
     // Permite as origens informadas do endpoint.
@@ -37,10 +45,10 @@ class Security
 
     // Verifica se foi solicitada altenticação por headers.
     self::checkAuthorizationHeaders($params, $namespace);
-    
+
     // Verifica se é obrigatório uso de token na transação e se tem transação.
     self::checkToken($params, $namespace, $menu);
-    
+
     // Verifica se necessita de sessão. E analisa permissões do usuário logado.
     self::checkPermissions($params, $menu, $menus);
 
@@ -48,7 +56,7 @@ class Security
     return self::$paramsSecurity;
   }
 
-  
+
   /**
    * allowOrigins
    * 
@@ -57,7 +65,8 @@ class Security
    * @param  mixed $params
    * @return void
    */
-  private static function allowOrigins($params){
+  private static function allowOrigins($params)
+  {
 
     // Verifica as origens permitidas do endpoint.
     foreach ($params['origin'] as $key => $value) {
@@ -80,9 +89,6 @@ class Security
     // Verifica se necessita de sessão.
     if ($params['session']) {
 
-      // Inicia a sessão.
-      \classes\Session::start();
-
       // Verifica se existe sessão aberta.
       if (!\classes\Session::check($params['sessionTimeOut'])) {
         // Monta url de redirecionamento para login e passa a url atual.
@@ -92,7 +98,7 @@ class Security
       }
     }
   }
-  
+
   /**
    * checkAuthorizationHeaders
    * 
@@ -137,7 +143,7 @@ class Security
     }
   }
 
-  
+
   /**
    * checkToken
    * 
@@ -174,7 +180,7 @@ class Security
       }
     }
   }
-    
+
 
   /**
    * todo - FAZER A PARTE DE PERMISSÕES POR USUÁRIO LOGADO E GRUPOS.
@@ -202,149 +208,22 @@ class Security
         $permissionEndpoint = $params['permission'];
       }
 
-      $permissionUser = \classes\Session::get('permissions');
-      print_r($permissionUser[\controllers\FriendlyUrl::getParameters('controller_path')]);
+      // Permissão da página atual.
+      $permission = \controllers\FriendlyUrl::getParameters('controller_path');
 
-      echo '
+      $permissionUser = \classes\Session::get('permissions');
+      echo '<hr>PERMISSÕES QUE USUÁRIO LOGADO TEM NESTA PÁGINA(MENU): <pre>';
+      print_r($permissionUser[$permission]);
+      echo '<hr>PERMISSÕES QUE A PÁGINA(MENU) ATUAL EXIGE: <pre>';
+      print_r($permissionEndpoint);
+      echo '<hr>PÁGINA(MENU) ATUAL: <pre>';
+      print_r($permission);
+
+      echo '<Hr>
     Finalizar aqui.
     ';
       print_r($params);
       exit;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-  // todo - ANTIGO - VERIFICAR POIS ACHO QUE NÃO PRECISA MAIS.
-
-
-  /**
-   * createSession
-   * Cria sessão com as informações passadas por parâmetro.
-   * Ao final redireciona para página restrita.
-   *
-   * @param  mixed $infoSession
-   * @return void
-   */
-
-   /*
-  public static function createSession($infoSession, $redirect_url = null)
-  {
-    // Inicia o serviço de sessão.
-    session_start();
-
-    // Informações default de usuário. Garante que terá no mínimo esses campos.
-    $infoSessionDefault = [
-      'id'         => '0',       // Identificador único do usuário.
-      'nome'       => 'guest',   // Nome para ser exibido.
-      'login'      => 'guest',   // Identificação de usuário (user, matricula, email, id).
-      'senha'      => '',        // Senha usada para logar. Depois é retirada da sessão.
-      'menus'      => [],        // Menu do usuário e do grupo do usuário.
-      'permission' => [
-        'url/'          => '000000000',
-        'url/endpoint/' => '000000000',
-      ],   // Permissões personalizadas do usuário logado em cada url. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
-      'groups'        => [],       // Grupos que usuário pertence.
-      'sessionTimeIn' => time(),   // Guarda o time de login.
-    ];
-
-    // Mescla informações default com as informações recebidas.
-    $infoSession = array_replace_recursive($infoSessionDefault, $infoSession);
-
-    // Guarda informações de sessão do usuário logado.
-    $_SESSION[BASE_ENV] = $infoSession;
-
-    // Caso não seja passado nenhuma url por parâmetro, segue o padrão.
-    if (!$redirect_url) {
-      // Obtém a url padrão para endpoint restrito.
-      $redirect_url = self::$paramsSecurity['restrictPage'];
-      if (isset($_GET['redirect_url'])) {
-        // Sobreescreve endpoint restrito, para onde o usuário estava.
-        $redirect_url = $_GET['redirect_url'];
-      }
-    }
-
-    // Redireciona usuário para login.
-    header("location: " . $redirect_url);
-    // Garante que vai redirecionar.
-    exit;
-  }
-  */
-
-  /**
-   * getSession
-   * Obtém uma informação específica da sessão de segurança atual.
-   * Caso não passe parâmetro, devolve toda a sessão.
-   *
-   * @param  mixed $param
-   * @return mixed
-   */
-  
-  public static function getSession($param = null)
-  {
-
-    // Inicia o serviço de sessão.
-    session_start();
-
-    // Verifica se não inicializou sessão e finaliza.
-    if (!isset($_SESSION[BASE_ENV])) {
-      return false;
-    }
-
-    // Verifica se tem o parâmetro na sessão e retorna.
-    if (isset($_SESSION[BASE_ENV][$param])) {
-      return $_SESSION[BASE_ENV][$param];
-    }
-
-    // Retorna toda a session.
-    return $_SESSION[BASE_ENV];
-  }
-
-  public static function getUserId($param = null)
-  {
-    return true;
-
-    // Inicia o serviço de sessão.
-    session_start();
-
-    // Verifica se não inicializou sessão e finaliza.
-    if (!isset($_SESSION[BASE_ENV])) {
-      return false;
-    }
-
-    // Verifica se tem o parâmetro na sessão e retorna.
-    if (isset($_SESSION[BASE_ENV][$param])) {
-      return $_SESSION[BASE_ENV][$param];
-    }
-
-    // Retorna toda a session.
-    return $_SESSION[BASE_ENV];
-  }
-  
-
-  /**
-   * delSession
-   * Finaliza a sessão aberta para segurança do sistema atual.
-   * Permite deixar outras informações na sessão.
-   *
-   * @return bool
-   */
-  /*
-  public static function delSession()
-  {
-    // Apaga apenas a sessão aberta para o sistema.
-    unset($_SESSION[BASE_ENV]);
-
-    // Finaliza.
-    return true;
-  }
-  */
 }

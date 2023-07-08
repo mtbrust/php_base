@@ -394,6 +394,8 @@ class index extends \controllers\EndPoint
 
     // self::$params['response'] = $params;
 
+    
+    self::$params['status'] = 200;
     self::$params['response'] = [
       'error' => false,
       'msg' => 'Entrou na função: ' . __FUNCTION__,

@@ -199,7 +199,7 @@ class Engine
     self::$checkSecurity = \controllers\Security::start(self::$endPointParams['security'], self::$endPointParams['menus']);
 
     // Manda parâmetros atualizados para a controller.
-    self::$endpointClass->setParameters(self::$checkSecurity);
+    self::$endpointClass->setParameters(['security' => self::$checkSecurity]);
 
     // Finaliza função.
     return true;
