@@ -20,7 +20,7 @@ namespace api;
  * O nome da controller vai ficar como "quemsomos".
  * 
  */
-class testepaulo extends \controllers\EndPoint
+class deletar_tabelas extends \controllers\EndPoint
 {
 
   /**
@@ -45,9 +45,9 @@ class testepaulo extends \controllers\EndPoint
     self::$params['render']      = [
       // 'cache'        => false,                // Ativa uso de cache para resultado.
       // 'cacheTime'    => (60 * 30),            // Tempo para renovar cache em segundos. (30 Minutos).
-      // 'cacheParams'    => true,       // Cache por parametros (attr).
-      // 'content_type' => 'application/json',   // * Tipo do retorno padrão do cabeçalho http.
-      // 'charset'      => 'utf-8',              // * Tipo de codificação do cabeçalho http.
+      // 'cacheParams'  => true,                 // Cache por parametros (attr).
+      'content_type' => 'application/json',   // Tipo do retorno padrão do cabeçalho http.
+      // 'charset'      => 'utf-8',              // Tipo de codificação do cabeçalho http.
     ];
 
     // Configuração personalizada do endpoins.
@@ -117,7 +117,7 @@ class testepaulo extends \controllers\EndPoint
 
     // Carrega classes de apoio.
     self::$params['classes']     = [
-      'sap/ApiSap',
+      // 'Midia',
     ];
 
     // Carrega controllers para reutilizar funções.
@@ -175,39 +175,28 @@ class testepaulo extends \controllers\EndPoint
    */
   public function get($params)
   {
-    $DB_HOST = "10.22.235.7";
-    $DB_DATABASE = "LYCEUMDEV";
-    $DB_USERNAME = "vinicius.teixeira";
-    $DB_PASSWORD = "Vinícius@+1011";
+    // Quanto conteúdo é passado por body (normalmente Json).
+    $response['method'] = __FUNCTION__;
+    $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
+    $response['$_GET'] = $_GET;
 
-    $DSN = "sqlsrv:server=tcp: {$DB_HOST},1433; database={$DB_DATABASE}";
+    $bdLogDB = new \BdLogDb();
+    $bdLogins = new \BdLogins();
+    $bdLoginsGroups = new \BdLoginsGroups();
+    $bdPermissions = new \BdPermissions();
+    $bdStatus = new \BdStatus();
+    $bdLogDB->dropTable();
+    $bdLogins->dropTable();
+    $bdLoginsGroups->dropTable();
+    $bdPermissions->dropTable();
+    $bdStatus->dropTable();
 
-    try {
-
-      $db = new \PDO ($DSN,"$DB_USERNAME","$DB_PASSWORD");
-      $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-      $query = $db->prepare("SELECT TOP 1 * FROM LY_ALUNO");
-      $query->execute();
-
-      $response = $query->fetchAll();
-    } catch (\PDOException $e) {
-      echo "Erro de Conexão " . $e->getMessage() . "\n";
-      exit;
-    }
-
-   
-    // Recebe o CardCode e busca as parcelas no SAP
-    // $response['parcelas'] = \classes\ApiSap::listBaixasParcelas('95014853315C');
-
-    // // Quanto conteúdo é passado por body (normalmente Json).
-    // $response['method'] = __FUNCTION__;
-    // $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
-    // $response['$_GET'] = $_GET;
-    // $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
+    
+    $response['msg'] = 'Tabelas apagadas com sucesso.';
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
   
   /**
@@ -224,10 +213,10 @@ class testepaulo extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_POST'] = $_POST;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
   
   /**
@@ -244,10 +233,10 @@ class testepaulo extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_POST'] = $_POST;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
   
   /**
@@ -264,9 +253,9 @@ class testepaulo extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_POST'] = $_POST;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
 }

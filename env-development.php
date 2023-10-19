@@ -19,7 +19,7 @@ define("BASE_BDS", [
         'PASSWORD'  => '',
         'DATABASE'  => 'base_php',
         'CHARSET'   => 'utf8',
-        'PREFIX'    => 'v4',
+        'PREFIX'    => 'v4_',
     ],
     1 => [
         'TITLE'     => 'BD Secundario DEV',
@@ -31,7 +31,7 @@ define("BASE_BDS", [
         'PASSWORD'  => '',
         'DATABASE'  => 'base_php',
         'CHARSET'   => 'utf8',
-        'PREFIX'    => 'v4',
+        'PREFIX'    => 'base2_',
     ],
 ]);
 

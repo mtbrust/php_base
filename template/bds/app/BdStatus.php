@@ -1,6 +1,6 @@
 <?php
 
-class BdStatus2 extends \controllers\DataBase
+class BdStatus extends \controllers\DataBase
 {
 
     /**

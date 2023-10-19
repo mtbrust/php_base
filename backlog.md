@@ -26,8 +26,21 @@ Comparar endpoint de pages.
   com
   page -> c -> index.php
   Ao final criar um modelo de endpoint page.
-  Ao final criar um modelo limpo.
+  Ao final criar um modelo limpo apenas para get simples.
 
 
 Endpoint
   Quando habilitar um menu utilizar as permissões do menu.
+
+Erro de javascript
+  Uncaught SyntaxError: Unexpected token ':'
+  é pq não tem a api que chama os plugins.
+  structure -> html -> default.
+  Tenho que criar a API que carrega os plugins dinamicamente.
+
+
+Caso chame a API da página ignorar função post.
+  Quando uso a pagina/api e mando um post o sistema está puxando a função post e não a função api.
+
+Ajustar BD
+  acrescentaValoresObrigatorios igual do checkin.

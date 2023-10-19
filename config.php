@@ -102,6 +102,15 @@ switch (BASE_URL) {
     break;
 
     // * Ambiente de PRODUÇÃO.
+  case 'PROD':   // Para forçar valor no Switch.
+  case 'http://basephpprod.local/':   // vhost local. (Mateus Brust)
+  case 'https://basephpprod.local/':   // vhost local. (Mateus Brust)
+
+    // Define nome do ambiente.
+    define("BASE_ENV", "PROD");
+      // Carrega configurações personalizadas.
+    require_once('env-production.php');
+    break;
   default:
     // Define nome do ambiente.
     define("BASE_ENV", "PROD");
@@ -273,16 +282,6 @@ define("BASE_PARAMS_INFO", [
  */
 define("BASE_PARAMS_BDS", [
   // 'pasta/DataBase',
-  'BdBills',
-  'BdCrons',
-  'BdLogsLoja',
-  'BdlogsLyceum',
-  'BdlogsSap',
-  'BdLogsVindi',
-  'BdLogsVindiNotifications',
-  'BdSubscriptions',
-  'BdVindiCronsErrors',
-  'BdVindiCronsLogs',
 ]);
 
 

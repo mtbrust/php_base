@@ -207,7 +207,6 @@ class DataBase
 		// $this->conn agora é o objeto de conexão.
 		$pdo = self::getConn($this->conn);
 
-
 		// Acrescenta valores default caso não exista.
 		$fields = array_merge($this->acrescentaCamposObrigatorios(), $fields);
 
@@ -410,7 +409,7 @@ class DataBase
 		$pdo = self::getConn($this->conn);
 
 		// Acrescenta valores default caso não exista.
-		// $fields = array_merge($this->acrescentaValoresObrigatorios(true), $fields);
+		$fields = array_merge($this->acrescentaValoresObrigatorios(true), $fields);
 
 		// Obtém as chaves (nome dos campos).
 		$cols = implode(', ', array_keys($fields));
@@ -642,7 +641,7 @@ class DataBase
 		$pdo = self::getConn($this->conn);
 
 		// Acrescenta valores default caso não exista.
-		// $fields = array_merge($this->acrescentaValoresObrigatorios(), ['idStatus' => '0']);
+		$fields = array_merge($this->acrescentaValoresObrigatorios(), ['idStatus' => '0']);
 
 		// Prepara o SET (key, values)
 		$set = "";
@@ -965,9 +964,6 @@ class DataBase
 			'obs'           => $options['obs'],                   // Observação aberta.
 		];
 
-		// Acrescenta valores default caso não exista.
-		$fields = array_merge($this->acrescentaValoresObrigatorios(true), $fields);
-
 		// $this->conn agora é o objeto de conexão.
 		$pdo = self::getConn($this->conn);
 
@@ -1055,17 +1051,17 @@ class DataBase
 
 		// Monta valores de update.
 		$fields = [
-			//'idStatus'      => 1,                                    // Observação aberta.
-			// 'idLoginUpdate' => \controllers\Security::getUserId(),   // ID usuário. (só que não altera mais).
-			// 'dtUpdate'      => date("Y-m-d H:i:s"),                  // Data. (só que não altera mais)
+			'idStatus'      => 1,                                    // Observação aberta.
+			'idLoginUpdate' => \classes\Session::get('id'),   // ID usuário. (só que não altera mais).
+			'dtUpdate'      => date("Y-m-d H:i:s"),                  // Data. (só que não altera mais)
 		];
 
 		// Monta valores de insert.
 		if ($insert) {
-			//$fields['obs']           = 'Preenchimento padrão.';             // Observação.
-			//$fields['idStatus']      = 1;                                   // Status 1 [Ativo].
-			// $fields['idLoginCreate'] = \controllers\Security::getUserId();  // ID usuário logado.
-			//$fields['dtCreate']      = date("Y-m-d H:i:s");                 // Data de criação deste log.
+			$fields['obs']           = 'Preenchimento padrão.';             // Observação.
+			$fields['idStatus']      = 1;                                   // Status 1 [Ativo].
+			$fields['idLoginCreate'] = \classes\Session::get('id');  // ID usuário logado.
+			$fields['dtCreate']      = date("Y-m-d H:i:s");                 // Data de criação deste log.
 		}
 
 		return $fields;
@@ -1081,12 +1077,10 @@ class DataBase
 	 */
 	private function acrescentaCamposObrigatorios()
 	{
-		return [];
 		// Monta valores de update.
 		$fields = [
 			// Identificador Padrão (obrigatório).
 			"id" => "INT NOT NULL AUTO_INCREMENT primary key",
-
 
 			// Observações do registro (obrigatório).
 			"obs" => "VARCHAR(255) NULL",

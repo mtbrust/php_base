@@ -2,8 +2,6 @@
 
 namespace api;
 
-use classes\DevHelper;
-
 /**
  * ORIENTAÇÕES DO MODELO PADRÃO
  * Modelo padrão de controller para o endpoint (páginas ou APIs).
@@ -22,7 +20,7 @@ use classes\DevHelper;
  * O nome da controller vai ficar como "quemsomos".
  * 
  */
-class testebrust extends \controllers\EndPoint
+class criar_tabelas extends \controllers\EndPoint
 {
 
   /**
@@ -47,9 +45,9 @@ class testebrust extends \controllers\EndPoint
     self::$params['render']      = [
       // 'cache'        => false,                // Ativa uso de cache para resultado.
       // 'cacheTime'    => (60 * 30),            // Tempo para renovar cache em segundos. (30 Minutos).
-      // 'cacheParams'    => true,       // Cache por parametros (attr).
-      // 'content_type' => 'application/json',   // * Tipo do retorno padrão do cabeçalho http.
-      // 'charset'      => 'utf-8',              // * Tipo de codificação do cabeçalho http.
+      // 'cacheParams'  => true,                 // Cache por parametros (attr).
+      'content_type' => 'application/json',   // Tipo do retorno padrão do cabeçalho http.
+      // 'charset'      => 'utf-8',              // Tipo de codificação do cabeçalho http.
     ];
 
     // Configuração personalizada do endpoins.
@@ -119,7 +117,7 @@ class testebrust extends \controllers\EndPoint
 
     // Carrega classes de apoio.
     self::$params['classes']     = [
-      // 'loja/ApiLoja',
+      // 'Midia',
     ];
 
     // Carrega controllers para reutilizar funções.
@@ -177,36 +175,34 @@ class testebrust extends \controllers\EndPoint
    */
   public function get($params)
   {
-
-    $r = \classes\ApiSap::getOrdersCardCode('43059665818C');
-
-
-    self::$params['response'] = $r;
-    return true;
-
     // Quanto conteúdo é passado por body (normalmente Json).
-    // $response['method'] = __FUNCTION__;
-    // $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
-    // $response['$_GET'] = $_GET;
-    // $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
+    $response['method'] = __FUNCTION__;
+    $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
+    $response['$_GET'] = $_GET;
 
-    // exemplo notificação da vindi.
-    // $notificationVindi = [
-    //   "segura"=> "bill"
-    // ];
+    // Instancia as tabelas.
+    $bdLogDB = new \BdLogDb();
+    $bdLogins = new \BdLogins();
+    $bdLoginsGroups = new \BdLoginsGroups();
+    $bdPermissions = new \BdPermissions();
+    $bdStatus = new \BdStatus();
 
-    // Exemplo de repasse de notificação para a loja.
-    // $response['bill'] = \classes\ApiLoja::postNotificationVindi($notificationVindi);
+    // Cria as tabelas na base.
+    $bdLogDB->createTable();
+    $bdLogins->createTable();
+    $bdLoginsGroups->createTable();
+    $bdPermissions->createTable();
+    $bdStatus->createTable();
 
-    $bdBills = new \BdBills();
+    // Popula as tabelas.
+    $bdLogins->seeds();
 
-    $response['count'] = $bdBills->count();
-
-    $response['ambiente'] = BASE_BDS;
-    $response['outro'] = '';
+    
+    $response['msg'] = 'Tabelas criadas com sucesso.';
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
   
   /**
@@ -223,10 +219,10 @@ class testebrust extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_POST'] = $_POST;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
   
   /**
@@ -243,10 +239,10 @@ class testebrust extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_POST'] = $_POST;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
   
   /**
@@ -263,9 +259,9 @@ class testebrust extends \controllers\EndPoint
     $response['method'] = __FUNCTION__;
     $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
     $response['$_POST'] = $_POST;
-    $response['token'] = BASE_AUTH['token']; // Token para transações de dados na plataforma.
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
+    self::$params['status']   = 200;
   }
 }

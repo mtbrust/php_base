@@ -107,7 +107,10 @@ class Session
         // Verifica se foi passada posição.
         if ($key) {
             // Retorna o valor na posição escolhida.
-            return $_SESSION[$key];
+            if (isset($_SESSION[$key]))
+                return $_SESSION[$key];
+            else
+                return null;
         } else {
             // Retorna toda a sessão.
             return $_SESSION;
