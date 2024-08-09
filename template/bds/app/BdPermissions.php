@@ -274,15 +274,15 @@ class BdPermissions extends \controllers\DataBase
      *
      * @return bool
      */
-    private function seeds()
+    public function seeds()
     {
         // Retorno padrão.
         $r = true;
 
         // Acrescenta permissões iniciais de grupo.
-        $this->addPermissionsGroup(5, '00-modelo/modelo-bd/');
-        $this->addPermissionsGroup(5, '00-modelo/modelo-restrito/');
-        $this->addPermissionsGroup(5, 'api/00-modelo/');
+        $this->addPermissionsGroup(1, '00-modelo/modelo-bd/');
+        $this->addPermissionsGroup(1, '00-modelo/modelo-restrito/');
+        $this->addPermissionsGroup(1, 'api/00-modelo/');
 
         // Acrescenta permissões iniciais de login.
         $this->addPermissionsLogin(1, '00-modelo/modelo-bd/');

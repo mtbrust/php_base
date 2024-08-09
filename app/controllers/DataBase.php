@@ -433,7 +433,7 @@ class DataBase
 		// Guarda SQL gerado.
 		self::$sql = $sql;
 
-		
+
 
 		// Executa query de criação.
 		if (!$sth->execute()) {
@@ -760,7 +760,7 @@ class DataBase
 	 * 
 	 * Função que busca registro por id.
 	 * Retorna um array da linha.
-     * Retorna um array com os campos da linha.
+	 * Retorna um array com os campos da linha.
 	 * É necessário preencher um dos dois parâmetros.
 	 *
 	 * @param int $id
@@ -884,7 +884,7 @@ class DataBase
 		}
 
 		// Verifica se não é SELECT e cria feedback.
-		if (!strpos($sql, "ELECT")){
+		if (!strpos($sql, "ELECT")) {
 			// FeedBack
 			\classes\FeedBackMessagens::add('success', 'Sucesso.', 'SQL executado com sucesso.');
 
@@ -917,7 +917,6 @@ class DataBase
 	 */
 	protected function gravaLog($obs = 'Log Simples', $type = 'ND', $sql = 'ND')
 	{
-		return true;
 		// Verifica se no tipo EXECUTE tem os seguintes tipos para realizar gravação de log.
 		$queryType = $this->verificaTipo($sql);
 
@@ -1049,19 +1048,21 @@ class DataBase
 	private function acrescentaValoresObrigatorios($insert = false)
 	{
 
+		$idLogin = \classes\Session::get('id');
+
 		// Monta valores de update.
 		$fields = [
-			'idStatus'      => 1,                                    // Observação aberta.
-			'idLoginUpdate' => \classes\Session::get('id'),   // ID usuário. (só que não altera mais).
-			'dtUpdate'      => date("Y-m-d H:i:s"),                  // Data. (só que não altera mais)
+			'idStatus'      => 1,                     // Observação aberta.
+			'idLoginUpdate' => $idLogin ? $idLogin : 0,   // ID usuário. (só que não altera mais).
+			'dtUpdate'      => date("Y-m-d H:i:s"),   // Data. (só que não altera mais)
 		];
 
 		// Monta valores de insert.
 		if ($insert) {
-			$fields['obs']           = 'Preenchimento padrão.';             // Observação.
-			$fields['idStatus']      = 1;                                   // Status 1 [Ativo].
-			$fields['idLoginCreate'] = \classes\Session::get('id');  // ID usuário logado.
-			$fields['dtCreate']      = date("Y-m-d H:i:s");                 // Data de criação deste log.
+			$fields['obs']           = 'Preenchimento padrão.';  // Observação.
+			$fields['idStatus']      = 1;                        // Status 1 [Ativo].
+			$fields['idLoginCreate'] = $idLogin ? $idLogin : 0;      // ID usuário logado.
+			$fields['dtCreate']      = date("Y-m-d H:i:s");      // Data de criação deste log.
 		}
 
 		return $fields;
@@ -1108,6 +1109,20 @@ class DataBase
 	protected function limpaInject($string)
 	{
 		return preg_replace('/[^[:alnum:]_]/', '', $string);
+		//return self::removeSpecialChar($string);
+	}
+
+		
+	/**
+	 * RemoveSpecialChar
+	 *
+	 * @param  mixed $str
+	 * @return string
+	 */
+	protected function removeSpecialChar($str)
+	{
+		$res = preg_replace('/[0-9\@\;\" "]+/', '', $str);
+		return $res;
 	}
 
 

@@ -27,21 +27,21 @@ class Session
      * @param  array $params
      * @return boolean
      */
-    public static function create($params)
+    public static function create($user, $permissions, $menu = [])
     {
         // Guarda os parâmetros default.
         $paramsDefault = [
-            'timestampCreate' => time(), // Guarda o tempo atual que foi criada a sessão.
+            'timestampCreate' => time(),         // Guarda o tempo atual que foi criada a sessão.
+            'user'            => $user,          // Informações do usuário logado.
+            'permissions'     => $permissions,   // Informações de permissões (páginas e permissões).
+            'menu'            => $menu           // Menus personalizados (Grupo ou individual).
         ];
-
-        // Mescla os parâmetros recebidos com os default.
-        $params = array_merge_recursive($paramsDefault, $params);
 
         // Garante que não tem sessão aberta.
         $_SESSION = [];
 
         // Acrescenta na sessão as informações enviadas por parâmetro.
-        $_SESSION = $params;
+        $_SESSION = $paramsDefault;
 
         // Finalização
         return true;
@@ -90,6 +90,30 @@ class Session
             unset($_SESSION[$key]);
         } else {
             session_destroy();
+        }
+    }
+
+
+    /**
+     * get
+     * 
+     * Obtém uma posição específica da sessão ou toda a sessão.
+     *
+     * @param  mixed $key
+     * @return mixed
+     */
+    public static function getUser($key = null)
+    {
+        // Verifica se foi passada posição.
+        if ($key) {
+            // Retorna o valor na posição escolhida.
+            if (isset($_SESSION['user'][$key]))
+                return $_SESSION['user'][$key];
+            else
+                return null;
+        } else {
+            // Retorna toda a sessão.
+            return $_SESSION['user'];
         }
     }
 

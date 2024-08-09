@@ -182,11 +182,14 @@ class deletar_tabelas extends \controllers\EndPoint
 
     $bdLogDB = new \BdLogDb();
     $bdLogins = new \BdLogins();
+    $bdGroups = new \BdGroups();
     $bdLoginsGroups = new \BdLoginsGroups();
     $bdPermissions = new \BdPermissions();
     $bdStatus = new \BdStatus();
+
     $bdLogDB->dropTable();
     $bdLogins->dropTable();
+    $bdGroups->dropTable();
     $bdLoginsGroups->dropTable();
     $bdPermissions->dropTable();
     $bdStatus->dropTable();

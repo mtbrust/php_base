@@ -181,9 +181,11 @@ class login extends \controllers\EndPoint
     $response['$_GET'] = $_GET;
 
 
-    // todo - fazer a verificação se login e senha.
-    // Verificação de login e senha.
-    // code... // todo - obter do banco de dados.
+    // Verificação de login e senha. (fixo ou post, etc).
+    $login = 'mateus.brust';
+    $senha = '123456';
+    $bdLogins = new \BdLogins();
+    $response['login'] = $bdLogins->verificaLogin($login, hash('sha256', $senha));
     $logado = true;
 
     // Verifica autenticação
@@ -217,14 +219,14 @@ class login extends \controllers\EndPoint
 
     // Cria Sessão.
     // Força criação de sessão. Apenas para teste;
-    \classes\Session::create($session);
+    \classes\Session::create($response['login'], $permissions);
 
     // Obtém os valores da sessão.
     $session = \classes\Session::get();
 
     // Quanto conteúdo é passado por body (normalmente Json).
     $response['msg'] = 'Logado com sucesso. opa';
-    $response['msg'] = $session;
+    $response['session'] = $session;
 
     // Finaliza a execução da função.
     self::$params['status']   = 200;

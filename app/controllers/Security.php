@@ -209,15 +209,15 @@ class Security
       }
 
       // Permissão da página atual.
-      $permission = \controllers\FriendlyUrl::getParameters('controller_path');
+      $controller_path = \controllers\FriendlyUrl::getParameters('controller_path');
 
       $permissionUser = \classes\Session::get('permissions');
       echo '<hr>PERMISSÕES QUE USUÁRIO LOGADO TEM NESTA PÁGINA(MENU): <pre>';
-      print_r($permissionUser[$permission]);
+      print_r($permissionUser[$controller_path]);
       echo '<hr>PERMISSÕES QUE A PÁGINA(MENU) ATUAL EXIGE: <pre>';
       print_r($permissionEndpoint);
       echo '<hr>PÁGINA(MENU) ATUAL: <pre>';
-      print_r($permission);
+      print_r($controller_path);
 
       echo '<Hr>
     Finalizar aqui.

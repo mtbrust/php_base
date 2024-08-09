@@ -44,6 +44,7 @@ class BdLogins extends \controllers\DataBase
             "matricula" => "INT NULL",
             "idUser"    => "INT NULL",   // Id do usuário. Tabela com informações detalhadas da entidade.
             "idOld"     => "INT NULL",   // Id identificador de tabela antiga.
+            "cod"  => "VARCHAR(64) NULL",   // Código identificador multiplo ex.
 
             // Chaves externas" => "
             "idMenu" => "INT NULL", // Menu personalizado.
@@ -233,8 +234,8 @@ class BdLogins extends \controllers\DataBase
     public function verificaLogin($login, $senha)
     {
         // Limpa valores
-        $login = parent::limpaInject($login);
-        $senha = parent::limpaInject($senha);
+        // $login = parent::limpaInject($login);
+        // $senha = parent::limpaInject($senha);
 
         // Obtém select padrão.
         $sql = $this->fullSelect();
@@ -242,13 +243,13 @@ class BdLogins extends \controllers\DataBase
         // Acrescenta where no SQL.
         $sql .= "
         WHERE (
-            email = $login OR
-            userName = $login OR
-            matricula = $login
+            email = '$login' OR
+            userName = '$login' OR
+            matricula = '$login'
             ) AND
-            (senha = $senha)
+            (senha = '$senha')
             AND
-            idStatus != 2
+            idStatus != 0
         LIMIT 1;
         ";
         
@@ -316,6 +317,7 @@ class BdLogins extends \controllers\DataBase
             matricula,
             idUser,
             idOld,
+            cod,
             idMenu,
             fullName,
             firstName,
@@ -360,16 +362,46 @@ class BdLogins extends \controllers\DataBase
         // Insert modelo.
         $r = parent::insert([
             // Informações do registro.
-            'matricula' => '2142',
+            'matricula' => '0001',
+
+            'fullName'  => 'Administração Sistema',
+            'firstName' => 'Administração',
+            'lastName'  => 'Sistema',
+
+            'userName' => 'sistema',
+            'email'    => 'mateus.brust@coopama.com.br',
+            'telefone' => '31993265491',
+            'cpf'      => '',
+
+            'senha'          => hash('sha256', '123456'),
+            'expirationDays' => '360',
+            'strongPass'     => false,
+            'dateChangePass' => '2023-05-23',
+
+            // Observações do registro (obrigatório).
+            'obs'           => 'Insert Automático.',
+
+            // Controle padrão do registro (obrigatório).
+            'idStatus'      => 1,
+            'idLoginCreate' => 1,
+            'dtCreate'      => date("Y-m-d H:i:s"),
+            'idLoginUpdate' => 1,
+            'dtUpdate'      => date("Y-m-d H:i:s"),
+        ]);
+
+        // Insert modelo.
+        $r = parent::insert([
+            // Informações do registro.
+            'matricula' => '0002',
 
             'fullName'  => 'Mateus Rocha Brust',
             'firstName' => 'Mateus',
             'lastName'  => 'Brust',
 
-            'userName' => 'brust',
-            'email'    => 'mateus.brust@coopama.com.br',
+            'userName' => 'mateus.brust',
+            'email'    => 'mateus.brust@desv.com.br',
             'telefone' => '31993265491',
-            'cpf'      => '10401141640',
+            'cpf'      => '',
 
             'senha'          => hash('sha256', '123456'),
             'expirationDays' => '360',

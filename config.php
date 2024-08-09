@@ -290,9 +290,7 @@ define("BASE_PARAMS_BDS", [
  * Carrega classes de apoio para todos os endpoints.
  */
 define("BASE_PARAMS_CLASSES", [
-  'Logs',
-  'loja/ApiLoja',
-  'sap/ApiSap',
+  // 'pasta/Classe',
 ]);
 
 

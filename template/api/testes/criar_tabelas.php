@@ -183,6 +183,7 @@ class criar_tabelas extends \controllers\EndPoint
     // Instancia as tabelas.
     $bdLogDB = new \BdLogDb();
     $bdLogins = new \BdLogins();
+    $bdGroups = new \BdGroups();
     $bdLoginsGroups = new \BdLoginsGroups();
     $bdPermissions = new \BdPermissions();
     $bdStatus = new \BdStatus();
@@ -190,12 +191,17 @@ class criar_tabelas extends \controllers\EndPoint
     // Cria as tabelas na base.
     $bdLogDB->createTable();
     $bdLogins->createTable();
+    $bdGroups->createTable();
     $bdLoginsGroups->createTable();
     $bdPermissions->createTable();
     $bdStatus->createTable();
 
     // Popula as tabelas.
     $bdLogins->seeds();
+    $bdGroups->seeds();
+    $bdLoginsGroups->seeds();
+    $bdPermissions->seeds();
+    $bdStatus->seeds();
 
     
     $response['msg'] = 'Tabelas criadas com sucesso.';

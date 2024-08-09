@@ -302,7 +302,11 @@ class BdLoginsGroups extends \controllers\DataBase
         // Retorno padrão.
         $r = true;
 
-        // Adiciona grupo ao login.
+        // Adiciona todos os grupos ao login sistema.
+        $this->loginInGroup(1, 1);
+        $this->loginInGroup(1, 2);
+        $this->loginInGroup(1, 3);
+        $this->loginInGroup(1, 4);
         $this->loginInGroup(1, 5);
         $this->loginInGroup(1, 6);
         $this->loginInGroup(1, 7);
@@ -310,12 +314,19 @@ class BdLoginsGroups extends \controllers\DataBase
         $this->loginInGroup(1, 9);
         $this->loginInGroup(1, 10);
         $this->loginInGroup(1, 11);
-        $this->loginInGroup(1, 12);
-        $this->loginInGroup(1, 13);
-        $this->loginInGroup(1, 14);
-        $this->loginInGroup(1, 15);
 
-
+        // Adiciona todos os grupos ao login mateus.brust.
+        $this->loginInGroup(2, 1);
+        $this->loginInGroup(2, 2);
+        $this->loginInGroup(2, 3);
+        $this->loginInGroup(2, 4);
+        $this->loginInGroup(2, 5);
+        $this->loginInGroup(2, 6);
+        $this->loginInGroup(2, 7);
+        $this->loginInGroup(2, 8);
+        $this->loginInGroup(2, 9);
+        $this->loginInGroup(2, 10);
+        $this->loginInGroup(2, 11);
 
         // Finaliza a função.
         return $r;

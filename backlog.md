@@ -44,3 +44,13 @@ Caso chame a API da página ignorar função post.
 
 Ajustar BD
   acrescentaValoresObrigatorios igual do checkin.
+
+  Alterar a classe logs.php para gravar os logs generico.
+    Melhor criar uma tabela para "logs request" para separar dos logs normais.
+
+
+Security.php
+  checar e calcular as permissões.
+
+
+*** -> Fazer o painel administrativo logo para poder testar o login e as permissões.
