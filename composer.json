@@ -18,6 +18,7 @@
         "imangazaliev/didom": "^1.18",
         "twig/intl-extra": "^3.3",
         "twig/extra-bundle": "^3.3",
-        "phpoffice/phpspreadsheet": "^1.23"
+        "phpoffice/phpspreadsheet": "^1.23",
+        "firebase/php-jwt": "^6.10"
     }
 }

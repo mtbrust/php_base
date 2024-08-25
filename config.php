@@ -72,55 +72,6 @@ define('BASE_PATH_API', 'template/api/');
 
 
 /**
- * * AMBIENTE
- * Personalização do ambiente automaticamente pela base URL.
- */
-switch (BASE_URL) {
-
-    // * Ambiente de HOMOLOGAÇÃO.
-  case 'HOMOLOG':   // Para forçar valor no Switch.
-  case 'http://basephp.desv.com.br/':   // basephp.com.br (Mateus Brust)
-  case 'https://basephp.desv.com.br/':   // basephp.com.br (Mateus Brust)
-
-    // Define nome do ambiente.
-    define("BASE_ENV", "HOMOLOG");
-    // Carrega configurações personalizadas.
-    require_once('env-homolog.php');
-    break;
-
-    // * Ambiente de DESENVOLVIMENTO.
-  case 'DEV':   // Para forçar valor no Switch.
-  case 'http://basephp.local/':   // vhost local. (Mateus Brust)
-  case 'https://basephp.local/':   // vhost local. (Mateus Brust)
-  case 'http://localhost/desv/base_php/':   // vhost local. (Mateus Brust)
-  case 'https://localhost/desv/base_php/':   // vhost local. (Mateus Brust)
-
-    // Define nome do ambiente.
-    define("BASE_ENV", "DEV");
-    // Carrega configurações personalizadas.
-    require_once('env-development.php');
-    break;
-
-    // * Ambiente de PRODUÇÃO.
-  case 'PROD':   // Para forçar valor no Switch.
-  case 'http://basephpprod.local/':   // vhost local. (Mateus Brust)
-  case 'https://basephpprod.local/':   // vhost local. (Mateus Brust)
-
-    // Define nome do ambiente.
-    define("BASE_ENV", "PROD");
-      // Carrega configurações personalizadas.
-    require_once('env-production.php');
-    break;
-  default:
-    // Define nome do ambiente.
-    define("BASE_ENV", "PROD");
-    // Carrega configurações personalizadas.
-    require_once('env-production.php');
-    break;
-}
-
-
-/**
  * * PARÂMETROS DEFAULT - RENDERIZAÇÃO
  * Opções de renderização.
  * 
@@ -173,7 +124,7 @@ define("BASE_PARAMS_CONFIG", [
   'content_type'     => 'text/html',             // Tipo de codificação da página.
   'reply_to'         => 'contato@desv.com.br',   // E-mail do responsável da página.
   'charset'          => 'utf-8',                 // Charset da página.
-  'image'            => 'logo.png',              // Imagem redes sociais.
+  'image'            => 'template/assets/midias/logo/logo.png',              // Imagem redes sociais.
   'url'              => 'desv.com.br',           // Url para instagram.
   'site'             => 'desv.com.br',           // Site para twitter.
   'creator'          => '',                      // Perfil criador twitter.
@@ -181,9 +132,9 @@ define("BASE_PARAMS_CONFIG", [
   'generator'        => 'vscode',                // Programa usado para gerar página.
   'refresh'          => false,                   // Tempo para recarregar a página em segundos.
   'redirect'         => false,                   // URL para redirecionar usuário após refresh.
-  'favicon'          => 'favicon.ico',           // Imagem do favicon na página.
-  'icon'             => 'favicon.ico',           // Imagem ícone da empresa na página.
-  'appletouchicon'   => 'favicon.ico',           // Imagem da logo na página.
+  'favicon'          => 'template/assets/midias/logo/favicon.ico',           // Imagem do favicon na página.
+  'icon'             => 'template/assets/midias/logo/favicon.ico',           // Imagem ícone da empresa na página.
+  'appletouchicon'   => 'template/assets/midias/logo/favicon.ico',           // Imagem da logo na página.
 
   // INFORMAÇÕES ADICIONAIS PERSONALIZADAS
   // *********************
@@ -399,4 +350,57 @@ define("BASE_PARAMS_STYLES", [
  */
 define("BASE_PARAMS_PLUGINS", [
   'modelo',   // Exemplo.
+]);
+
+
+/**
+ * * BANCO DE DADOS
+ * Conexão com os bancos de dados de acordo com ambiente.
+ */
+define("BASE_BDS", [
+  0 => [
+      'TITLE'     => 'BD Principal DEV',
+      'ACTIVE'    => true,
+      'DBMANAGER' => 'mysql',
+      'HOST'      => 'localhost',
+      'PORT'      => '3306',
+      'USERNAME'  => 'root',
+      'PASSWORD'  => '',
+      'DATABASE'  => 'base_php',
+      'CHARSET'   => 'utf8',
+      'PREFIX'    => 'v4',
+  ],
+  1 => [
+      'TITLE'     => 'BD Secundario DEV',
+      'ACTIVE'    => true,
+      'DBMANAGER' => 'mysql',
+      'HOST'      => 'localhost',
+      'PORT'      => '3306',
+      'USERNAME'  => 'root',
+      'PASSWORD'  => '',
+      'DATABASE'  => 'base_php',
+      'CHARSET'   => 'utf8',
+      'PREFIX'    => 'v4',
+  ],
+]);
+
+
+/**
+* * AUTORIZAÇÕES
+* Autorizações de APIs, TOKENS, Terceiros, Logins, etc de acordo com ambiente.
+*/
+define("BASE_AUTH", [
+  // Exemplo
+  'CAMPO' => 'valor', // Campo personalizado.
+]);
+
+
+/**
+* * CONFIGURAÇÕES
+* Configurações personalizadas de acordo com ambiente.
+*/
+define("BASE_CONFIG", [
+  'SHOW_ERRORS' => 1,         // [0] Não exibe erros php. [1] Exibe erros php na tela.
+  'TIMEZONE'   => 'America/Sao_Paulo', // Seta o horário local para o horário de brasília.
+  'CAMPO'       => 'valor',   // Campo personalizado.
 ]);

@@ -75,7 +75,7 @@ class index extends \controllers\EndPoint
 			// PAGES - INFORMAÇÕES DE SEO HTML
 			// *********************
 			// Informações que vão ser usadas para SEO na página.
-			'title'            => \controllers\FriendlyUrl::getParameters('title_endpoint'),  // Título da página exibido na aba/janela navegador.
+			//'title'            => \controllers\FriendlyUrl::getParameters('title_endpoint'),  // Título da página exibido na aba/janela navegador.
 			// 'author'           => 'Mateus Brust',            // Autor do desenvolvimento da página ou responsável.
 			// 'description'      => '',                        // Resumo do conteúdo do site em até 90 carecteres.
 			// 'keywords'         => '',                        // palavras minúsculas separadas por "," em até 150 caracteres.
@@ -100,10 +100,10 @@ class index extends \controllers\EndPoint
 		self::$params['security']    = [
 
 			// // Controller usará controller de segurança.
-			'ativo'             => true,
+			// 'ativo'             => true,
 
 			// // Usuário só acessa logado.
-			'session'           => true,
+			// 'session'           => true,
 
 			// // Tempo para sessão acabar nesta página.
 			// 'sessionTimeOut'    => (60 * 30), // 30 min.
@@ -169,65 +169,6 @@ class index extends \controllers\EndPoint
 			// ],
 		];
 
-		// Monta estrutura de parâmetros passados na url.
-		self::$params['menus']       = [
-			// Função:
-			'get' => [
-			    'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
-			    'permission' => '100010000',   // Permissões necessárias para acesso.
-			    'groups'     => [],            // Quais grupos tem acesso a esse menu.
-			    'ids'        => [],            // Quais ids tem acesso a esse menu.
-			],
-
-			// // Função:
-			// 'post' => [
-			//     'title'      => 'Adicionar',   // Nome exibido no menu. Somente pages.
-			//     'permission' => '101000000',   // Permissões necessárias para acesso.
-			//     'groups'     => [],            // Quais grupos tem acesso a esse menu.
-			//     'ids'        => [],            // Quais ids tem acesso a esse menu.
-			// ],
-
-			// // Função:
-			// 'put' => [
-			//     'title'      => 'Atualizar',   // Nome exibido no menu. Somente pages.
-			//     'permission' => '100100000',   // Permissões necessárias para acesso.
-			//     'groups'     => [],            // Quais grupos tem acesso a esse menu.
-			//     'ids'        => [],            // Quais ids tem acesso a esse menu.
-			// ],
-
-			// // Função:
-			// 'getfull' => [
-			//     'title'      => 'Listar Completo',   // Nome exibido no menu. Somente pages.
-			//     'permission' => '100001000',         // Permissões necessárias para acesso.
-			//     'groups'     => [],                  // Quais grupos tem acesso a esse menu.
-			//     'ids'        => [],                  // Quais ids tem acesso a esse menu.
-			// ],
-
-			// // Função:
-			// 'delete' => [
-			//     'title'      => 'Deletar',     // Nome exibido no menu. Somente pages.
-			//     'permission' => '100000100',   // Permissões necessárias para acesso.
-			//     'groups'     => [],            // Quais grupos tem acesso a esse menu.
-			//     'ids'        => [],            // Quais ids tem acesso a esse menu.
-			// ],
-
-			// Função:
-			'test' => [
-			    'title'      => 'Teste',       // Nome exibido no menu. Somente pages.
-			    'permission' => '100000011',   // Permissões necessárias para acesso.
-			    'groups'     => [],            // Quais grupos tem acesso a esse menu.
-			    'ids'        => [],            // Quais ids tem acesso a esse menu.
-			],
-
-			// // Função:
-			// 'dashboard' => [
-			//     'title'      => 'Dash Board',   // Nome exibido no menu. Somente pages.
-			//     'permission' => '110100010',    // Permissões necessárias para acesso.
-			//     'groups'     => [],             // Quais grupos tem acesso a esse menu.
-			//     'ids'        => [],             // Quais ids tem acesso a esse menu.
-			// ],
-		];
-
 		// Carrega estrutura html. Somente pages.
 		self::$params['structure']   = [
 			// // Origem
@@ -249,11 +190,11 @@ class index extends \controllers\EndPoint
 		self::$params['scripts']     = [
 			// pasta js.
 			'js' => [
-				// 'default-min.js', // Exemplo.
+				// 'default-min.js',   		// Exemplo.
 			],
 			// pasta libs.
 			'libs' => [
-				// 'bootstrap/js/bootstrap.bundle.min.js', // Exemplo.
+				// 'bootstrap/js/bootstrap.bundle.min.js',   		// Exemplo.
 			],
 		];
 
@@ -261,11 +202,11 @@ class index extends \controllers\EndPoint
 		self::$params['styles']      = [
 			// pasta css.
 			'css' => [
-				// 'default-min.css', // Exemplo.
+				// 'default-min.css',   // Exemplo.
 			],
 			// pasta libs.
 			'libs' => [
-				// 'bootstrap/css/bootstrap.min.css', // Exemplo.
+				// 'bootstrap/css/bootstrap.min.css',   		// Exemplo.
 			],
 		];
 
@@ -287,110 +228,12 @@ class index extends \controllers\EndPoint
 	public function get($params)
 	{
 		// Informações para montar a página.
-		self::$params['html'] = \controllers\Render::obj('app/show_params.html', $params, 20);
-	}
-	
-	public function test($params)
-	{
-		// Informações para montar a página.
-		self::$params['html'] = \controllers\Render::obj('app/show_params.html', $params, 20);
-		// self::$params['html'] = 'teste';
-	}
-	
-	public function post($params)
-	{
-		// Informações para montar a página.
-		self::$params['html'] = \controllers\Render::obj('app/show_params.html', $params, 20);
-		// self::$params['html'] = 'teste';
-	}
-
-	/**
-	 * foo_personalizada
-	 * 
-	 * Função é chamada quando o metodo for get e o primeiros parametro for foo_personalizada.
-	 * Recebe todos os parâmetros do endpoint em $params.
-	 *
-	 * @param  mixed $params
-	 */
-	public function foo_personalizada($params)
-	{
-		// Informações para montar a página.
 		self::$params['html'] = 'Função: ' . __FUNCTION__;
 	}
 
-	/**
-	 * api
-	 * 
-	 * Api da página atual.
-	 * Quando o parâmetro se chamar API, chama esta função.
-	 * Sistema vai responder como se fosse uma api.
-	 *
-	 * @param  mixed $params
-	 * @return void
-	 */
-	public function api($params)
+	public function post($params)
 	{
-		// Seta o retorno padrão para esta função como json.
-		self::$params['render']['content_type'] = 'application/json';
-
-		// Mensagens padrão de retorno.
-		$error = false;
-		$response   = '';
-		$msg   = 'API da página não implementada.';
-		$html  = '';
-		$post  = $_POST;
-		$get   = $_GET;
-
-		if (isset($params['infoUrl']['attr'][1])) {
-			switch ($params['infoUrl']['attr'][1]) {
-				case 'post':
-					# code...
-					break;
-				case 'put':
-					# code...
-					break;
-				case 'get':
-					# code...
-					break;
-				case 'getfull':
-					# code...
-					break;
-				case 'delete':
-					# code...
-					break;
-				case 'test':
-					// Tem retorno.
-					$response = true;
-					// Mensagem de retorno.
-					$msg = 'Teste realizado com sucesso.';
-					break;
-
-				case 'testhtml':
-					// Modifico header padrão html.
-					self::$params['render']['content_type'] = 'text/html';
-					// Tem retorno.
-					$response = '<h1>Teste Html OK</h1>';
-					// Mensagem de retorno.
-					$msg = 'Teste realizado com sucesso.';
-					break;
-
-				default:
-					# code...
-					break;
-			}
-		}
-
-		// Monta array de retorno.
-		$response = [
-			'error'    => $error,
-			'response' => $response,
-			'msg'      => $msg,
-			'html'     => $html,
-			'post'     => $post,
-			'get'      => $get,
-		];
-
-		// Finaliza a execução da função.
-		self::$params['response'] = $response;
+		// Informações para montar a página.
+		self::$params['html'] = 'Função: ' . __FUNCTION__;
 	}
 }

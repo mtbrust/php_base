@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use classes\DevHelper;
+
 /**
  * EndPoint
  * 
@@ -19,7 +21,7 @@ abstract class EndPoint
    * @param  mixed $endPoint
    * @return array
    */
-  public function start()
+  public function start($menu, $session = null)
   {
     // // Acrescenta as demais informações para uso no endpoint.
     // self::$params['session'] = \controllers\Security::getSession();
@@ -29,12 +31,6 @@ abstract class EndPoint
 
     // Carrega classes .
     $this->carregaClasses();
-
-    // Carrega controllers.
-    $this->carregaControllers();
-
-    // Obtém dinamicamente a função personalizada.
-    $menu = \controllers\FriendlyUrl::getParameters('func');
 
     // Caso seja endpoint de página. Carrega apenas funções de página.
     if (self::$params['infoUrl']['namespace'] == 'pages' && $menu != 'api') {
@@ -114,7 +110,6 @@ abstract class EndPoint
       'path_pages_controllers' => BASE_PATH_PAGES_CONTROLLERS,
       'path_pages_views'       => BASE_PATH_PAGES_VIEWS,
       'path_api'               => BASE_PATH_API,
-      'env'                    => BASE_ENV,
       'auth'                   => BASE_AUTH,
       'config'                 => BASE_CONFIG,
     ];
@@ -207,60 +202,6 @@ abstract class EndPoint
 
 
   /**
-   * Carrega as controllers para uso das funções staticas.
-   * As classes após carregadas ficam disponíveis na controller para uso.
-   * Caso o arquivo exista, ele é carregado.
-   *
-   * @return void
-   */
-  protected function carregaControllers()
-  {
-    // Carrega as controllers passados nos parâmetros da controler. 
-    foreach (self::$params['controllers'] as $key => $origem) {
-
-      // Classes do módulo
-      foreach ($origem as $item) {
-
-        // Inicia a base.
-        $path_arquivo = '';
-
-        // Verifica se é módulo ou api.
-        switch ($key) {
-          case 'pages':
-            // $modulo = $modulos[0]; // Guarda o módulo de Page.
-            // unset($modulos[0]); // Elimina o módulo para juntar apenas a page.
-            // $path_arquivo .= VC_PATHS['PATH_CONTROL'] . 'modulos/' . $modulo . '/pages/c/' . implode('/', $modulos) . '.php';
-            $path_arquivo .= BASE_DIR . 'template/pages/c/' . $item . '.php';
-            break;
-
-          case 'api':
-            // $modulo = $modulos[0]; // Guarda o módulo de API.
-            // unset($modulos[0]); // Elimina o módulo de api para juntar apenas a função.
-            // $path_arquivo .= VC_PATHS['PATH_CONTROL'] . 'api/' . $modulo . '/functions/' . implode('/', $modulos) . '.php';
-            $path_arquivo .= BASE_DIR . 'template/api/' . $item . '.php';
-            break;
-        }
-
-        // Caso não tenha o módulo.
-        if (empty($path_arquivo)) {
-          // Avisa que não foi possível carregar Classe de tabela.
-          \classes\FeedBackMessagens::addWarning('Módulo.', "O módulo [$key] não existe. Verifique o nome.");
-        } else {
-
-          // Carrega arquivo.
-          if (file_exists($path_arquivo)) {
-            require_once $path_arquivo;
-          } else {
-            // Avisa que não foi possível carregar Classe de tabela.
-            \classes\FeedBackMessagens::addWarning('Controller.', "A controller [$key] não existe. Verifique o nome.");
-          }
-        }
-      }
-    }
-  }
-
-
-  /**
    * carregaEstrutura
    * 
    * Carrega conteúdo html dos arquivos de estrutura do módulo.
@@ -279,10 +220,10 @@ abstract class EndPoint
     }
 
     // Acrescenta novamente o html após as permissões.
-    self::$params['structure']['html'] = str_replace("block content_page", "block " . self::$params['infoUrl']['func'], self::$params['structure']['html']);
+    self::$params['structure']['html'] = str_replace("block content_page", "block get", self::$params['structure']['html']);
 
     // Carrega conteúdo da página.
-    self::$params['structure']['content_page'] = file_get_contents(self::$params['infoUrl']['path_endpoint']);
+    self::$params['structure']['content_page'] = "{% block get %}" . file_get_contents(self::$params['infoUrl']['path_endpoint']) . "{% endblock %}";
 
     // Finaliza.
     return true;

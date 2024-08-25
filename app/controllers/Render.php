@@ -52,14 +52,6 @@ class Render
       $params['structure']
     );
 
-    // Arquivos virtuais. // * NÃO IMPLEMENTADO OS ARQUIVOS VIRTUAIS
-    // Variável receberá a estrutura serialize do banco de dados.
-    $estruturaVirtual = [
-      'html' => '<div id="html"><div id="head"><title>Banco de dados</title>{% block head %}{% endblock %}</div><div id="body">{% block body %}{% endblock %}</div></div>',
-      'head' => '{% block head %}<div value="teste">array head</div>{% endblock %}',
-    ];
-    $vurlv = new \Twig\Loader\ArrayLoader($estruturaVirtual);
-
     // Monta quais são as partes (pastas) que se usa no template da página atual.
     $base = '';
     foreach (array_keys($params['structure']) as $key => $value) {
@@ -73,7 +65,7 @@ class Render
     ]);
 
     // Sequência de prioridade. Arquivos físicos depois Virtuais.
-    $loader = new \Twig\Loader\ChainLoader([$vurll, $vurlv, $html_base]);
+    $loader = new \Twig\Loader\ChainLoader([$vurll, $html_base]);
     $twig   = new \Twig\Environment($loader);
     $twig->addExtension(new IntlExtension());
 
@@ -107,7 +99,6 @@ class Render
       // Verifica se a saída é json.
       if ($params['render']['content_type'] == 'application/json') {
         // Acrescenta retorno padrão.
-        $params['response']['ENV'] = BASE_ENV;
         $params['response']['DATE'] = date('Y-m-d H:i:s');
         $params['response']['IP'] = BASE_IP;
         // Converte a saída array para json com utf-8.
@@ -200,10 +191,10 @@ class Render
    *
    * @param  mixed $html
    * @param  mixed $cacheTime
-   * @param  mixed $flag // Nome do arquivo cache.
+   * @param  string $flag // Nome do arquivo cache.
    * @return string
    */
-  public static function htmlCache($cacheTime = null, $flag)
+  public static function htmlCache($cacheTime = null, $flag = '')
   {
     // Retorno padrão.
     $result = false;
@@ -231,10 +222,10 @@ class Render
    * @param  mixed $html
    * @param  mixed $params
    * @param  mixed $cacheTime
-   * @param  mixed $flag // Nome do arquivo cache.
+   * @param  string $flag // Nome do arquivo cache.
    * @return string
    */
-  public static function html($html, $params = null, $cacheTime = null, $flag)
+  public static function html($html, $params = null, $cacheTime = null, $flag = '')
   {
     // Retorno padrão.
     $result = false;
