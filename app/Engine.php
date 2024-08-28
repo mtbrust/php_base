@@ -88,14 +88,6 @@ class Engine
       echo 'Necessário a instalação das dependências do composer. Execute o comando na raiz do projeto: $ composer install';
       exit;
     }
-
-    // Carrega as controllers na ordem correta.
-    // require_once(BASE_DIR . 'app/controllers/DataBase.php');      // Controller de Banco de dados.
-    // require_once(BASE_DIR . 'app/controllers/FriendlyUrl.php');   // Controller de URL.
-    // require_once(BASE_DIR . 'app/controllers/EndPoint.php');      // Controller de EndPoint.
-    // require_once(BASE_DIR . 'app/controllers/Security.php');      // Controller de Segurança.
-    // require_once(BASE_DIR . 'app/controllers/Render.php');        // Controller de Renderização.
-
     
     // Carrega Controllers padrão do app.
     self::loadAppDirClasses(BASE_DIR . 'app/controllers/');

@@ -72,6 +72,13 @@ define('BASE_PATH_API', 'template/api/');
 
 
 /**
+ * * BASE_PATH_CACHE
+ * Caminho base para o cache.
+ */
+define('BASE_PATH_CACHE', 'cache/');
+
+
+/**
  * * PARÂMETROS DEFAULT - RENDERIZAÇÃO
  * Opções de renderização.
  * 

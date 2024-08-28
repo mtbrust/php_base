@@ -6,7 +6,7 @@
     {% if params is iterable and kparams != 'html' and kparams != '_parent' %}
 
         {# Nível 1 #}
-        <br><br><b>&#123;&#123; {{kparams}} &#125;&#125;</b> : Array
+        <br><br><b>&#123;&#123;{{kparams}}&#125;&#125;</b> : Array
         {% for knivel1, nivel1 in params %}
             {% if nivel1 is not iterable %}
                 <br><b>&#123;&#123;{{kparams}}&#125;&#125;&#123;&#123;{{knivel1}}&#125;&#125;</b>: {{nivel1}}

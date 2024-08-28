@@ -229,11 +229,28 @@ class index extends \controllers\EndPoint
 	{
 		// Informações para montar a página.
 		self::$params['html'] = 'Função: ' . __FUNCTION__;
+
+		// Teste da controller de cache.
+		// $this->teste_cache();
+
+		
 	}
 
 	public function post($params)
 	{
 		// Informações para montar a página.
 		self::$params['html'] = 'Função: ' . __FUNCTION__;
+	}
+
+	private function teste_cache()
+	{
+		// teste cache.
+		$cache = \controllers\Cache::get('teste', 'teste', 10);
+		if (!$cache) {
+			sleep(10);
+			$cache = 'Segundos: [' . time() . '] utf8 é ação.';
+			\controllers\Cache::set('teste', 'teste', $cache);
+		}
+		\classes\DevHelper::printr($cache);
 	}
 }
