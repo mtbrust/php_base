@@ -231,7 +231,7 @@ class index extends \controllers\EndPoint
 		self::$params['html'] = 'Função: ' . __FUNCTION__;
 
 		// Teste da controller de cache.
-		// $this->teste_cache();
+		$this->teste_cache();
 
 		
 	}
@@ -244,13 +244,18 @@ class index extends \controllers\EndPoint
 
 	private function teste_cache()
 	{
+		// Limpa o cache (apaga tudo)
+		\controllers\Cache::clear();
+
 		// teste cache.
-		$cache = \controllers\Cache::get('teste', 'teste', 10);
+		$cache = \controllers\Cache::get('pasta/subpasta', 'teste', 5);
 		if (!$cache) {
-			sleep(10);
+			sleep(3);
 			$cache = 'Segundos: [' . time() . '] utf8 é ação.';
-			\controllers\Cache::set('teste', 'teste', $cache);
+			\controllers\Cache::set('pasta/subpasta', 'teste', $cache);
 		}
+
+		// Exibe na tela o cache.
 		\classes\DevHelper::printr($cache);
 	}
 }
