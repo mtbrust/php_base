@@ -253,7 +253,7 @@ class FriendlyUrl
       // Verifica se não existe controller.
       if (!is_file($infoUrl['controller_path'])) {
         // Seta controller default
-        $infoUrl['controller_name'] = 'default';
+        $infoUrl['controller_name'] = 'standart';
         $infoUrl['controller_path'] = BASE_PATH_PAGES_CONTROLLERS . $infoUrl['controller_name'] . '.php';
       }
     } else {

@@ -342,8 +342,12 @@ class Engine
       // Verifica se função solicitada existe no endpoint.
       if (!method_exists(self::$endpointClass, $menu)) {
 
+        header('Content-Type: application/json; charset=utf-8');
+
+        // Seta na requisição erro 400
+        http_response_code(400);
+
         // Mensagem para ajustar função.
-        // echo '{"msg": "É necessário implementar a função: ' . strtoupper($menu) . ' no endpoint atual: ' . self::$endPointParams['infoUrl']['controller_path'] . '"}';
         echo '{"msg": "É necessário implementar a função: ' . strtoupper($menu) . ' no endpoint atual: ' . \controllers\FriendlyUrl::getParameters('controller_path') . '"}';
         exit;
       }

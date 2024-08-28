@@ -20,7 +20,7 @@ namespace pages;
  * O nome da controller vai ficar como "quemsomos".
  * 
  */
-class model extends \controllers\EndPoint
+class standart extends \controllers\EndPoint
 {
 
 	/**

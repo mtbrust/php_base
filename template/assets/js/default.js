@@ -1,40 +1,61 @@
 /**
  * Função Ajax com CallBack.
- * Função tem o objetivo de enviar dados POST para uma URL e realizar uma função CALLBACK personalizada com o retorno.
+ * Função tem o objetivo de enviar dados POST para uma URL e realizar uma função CALLBACK personalizada com o responseorno.
  * 
  * @param {*} url_api 
  * @param {*} dados 
  * @param {*} callback 
  * @param {*} type 
  */
-function ajaxDados(url_api, dados, callback, type = 'POST'){
-    
+function ajaxDados(url_api, dados, callback, type = 'POST') {
+
     // Realiza chamada AJAX.
     $.ajax({
-    type: type,
-    url: url_api,
-    // async: false,
-    myCallback: callback,
-    data: dados,
-    processData: false,
-    contentType: false,
-    beforeSend: function(ret) {
-        // Preparação antes do envio.
-    },
-    success: function(ret) {
-        // Envio com sucesso.
-        this.myCallback(ret);
-    },
-    error: function(){
-        // Prepara valores e passa para o callback chamar o erro.
-        ret = {ret:'',msg:'Erro na chamada AJAX.'};
-        this.myCallback(ret);
-    },
-    complete: function(ret) {
-        // Ao finalizar toda a execução.
-    },
-    }).done(function (ret) {
+        type: type,
+        url: url_api,
+        // async: false,
+        myCallback: callback,
+        data: dados,
+        processData: false,
+        contentType: false,
+        beforeSend: function (response) {
+            // Preparação antes do envio. 
+        },
+        success: function (response) {
+            // Chama callback.
+            this.myCallback(response);
+
+            // Mostra o alerta na tela.
+            alerts2("Sucesso", "success", response.msg);
+        },
+        error: function (response) {
+            // Caso não tenha mensagem da api.
+            if (!response || !response.responseText || !JSON.parse(response.responseText).msg) {
+                // Mensagem padrão
+                response = { response: '', msg: 'Erro na chamada AJAX.' };
+            } else {
+                // Mensagem do servidor.
+                response = { response: '', msg: JSON.parse(response.responseText).msg, status: response.status };
+            }
+            this.myCallback(response);
+
+            // Mostra o alerta na tela.
+            alerts2("Erro " + response.status, "error", response.msg);
+        },
+        complete: function (response) {
+            // Ao finalizar toda a execução.
+        },
+    }).done(function (response) {
         // Para concluir o processo.
+    });
+}
+
+
+function alerts2(title = 'Notificação', icon = 'success', html = 'ND') {
+    Swal.fire({
+        title: title,
+        icon: icon,
+        html: html
     });
 }
 
@@ -157,10 +178,9 @@ function btnRegistro(cod, obs, url, token) {
 
 /**
  * Exemplo de uso da ajaxDados(url, dados, callback);
- * Neste exemplo o script faz uma consulta na api da página enviando os dados criados e escreve o retorno no console.log.
+ * Neste exemplo o script faz uma consulta na api da página enviando os dados criados e escreve o responseorno no console.log.
  */
-function teste_ajaxDados()
-{
+function teste_ajaxDados() {
     // Console
     console.log('Início do teste ajaxDados');
 
@@ -171,27 +191,27 @@ function teste_ajaxDados()
     dados.append('campo', 'valor'); // Exemplo de inclusão de valores.
 
     // Chamada AJAX
-    ajaxDados('https://v3.local/api/00-modelo/teste/test', dados, function(ret){
+    ajaxDados('https://v3.local/api/00-modelo/teste/test', dados, function (response) {
         // Para testes
-        console.log(ret);
+        console.log(response);
 
-        // Verifica se teve retorno ok.
-        if (ret.ret) {
-            
+        // Verifica se teve responseorno ok.
+        if (response.response) {
+
             // code...
 
             // Notificação.
             Swal.fire({
                 icon: "success",
                 title: "Sucesso.",
-                text: ret.msg,
+                text: response.msg,
                 toast: true,
                 position: "top-end",
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true,
             });
-        }else{
+        } else {
 
             // code...
 
@@ -199,7 +219,7 @@ function teste_ajaxDados()
             Swal.fire({
                 icon: 'error',
                 title: 'Erro.',
-                text: ret.msg,
+                text: response.msg,
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
@@ -214,15 +234,14 @@ function teste_ajaxDados()
 /**
  * Teste da função de notificação.
  */
-function teste_notificaBrowser()
-{
+function teste_notificaBrowser() {
     // Console
     console.log('Início do teste notificaBrowser');
 
     // Prepara os dados.
     options = {
-        title:'título da notificação',
-        icon:'https://v3.local/favicon.ico',
+        title: 'título da notificação',
+        icon: 'https://v3.local/favicon.ico',
         body: 'Texto da notificação.',
     }
 

@@ -75,7 +75,7 @@ class index extends \controllers\EndPoint
 			// PAGES - INFORMAÇÕES DE SEO HTML
 			// *********************
 			// Informações que vão ser usadas para SEO na página.
-			//'title'            => \controllers\FriendlyUrl::getParameters('title_endpoint'),  // Título da página exibido na aba/janela navegador.
+			// 'title'            => 'Título',  // Título da página exibido na aba/janela navegador.
 			// 'author'           => 'Mateus Brust',            // Autor do desenvolvimento da página ou responsável.
 			// 'description'      => '',                        // Resumo do conteúdo do site em até 90 carecteres.
 			// 'keywords'         => '',                        // palavras minúsculas separadas por "," em até 150 caracteres.
@@ -231,7 +231,7 @@ class index extends \controllers\EndPoint
 		self::$params['html'] = 'Função: ' . __FUNCTION__;
 
 		// Teste da controller de cache.
-		$this->teste_cache();
+		//$this->teste_cache();
 
 		
 	}
