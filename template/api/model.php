@@ -161,6 +161,14 @@ class model extends \controllers\EndPoint
           'groups'     => [],            // Quais grupos tem acesso a esse menu.
           'ids'        => [],            // Quais ids tem acesso a esse menu.
       ],
+
+      // Função:
+      'foo_personalizada' => [
+          'title'      => 'Atualizar',   // Nome exibido no menu. Somente pages.
+          'permission' => '100010000',   // Permissões necessárias para acesso.
+          'groups'     => [],            // Quais grupos tem acesso a esse menu.
+          'ids'        => [],            // Quais ids tem acesso a esse menu.
+      ],
     ];
   }
 
@@ -244,5 +252,6 @@ class model extends \controllers\EndPoint
     // Finaliza a execução da função.
     self::$params['response'] = $response;
     self::$params['status']   = 200;
+    self::$params['msg']   = 'Função personalizada.';
   }
 }

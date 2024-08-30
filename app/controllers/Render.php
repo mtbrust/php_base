@@ -185,7 +185,7 @@ class Render
     }
 
     // Inicia o processamento do objeto.
-    $result = self::twig('template/obj_render/', $obj_path, $params);
+    $result = self::twig('template/render/', $obj_path, $params);
 
     // Salva resultado do processamento em cache.
     self::saveCache('app/cache/obj/' . self::path_file_cache($obj_path, $flag), $result, $cacheTime);
