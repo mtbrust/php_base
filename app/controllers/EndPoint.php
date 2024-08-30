@@ -23,8 +23,8 @@ abstract class EndPoint
    */
   public function start($menu, $session = null)
   {
-    // // Acrescenta as demais informações para uso no endpoint.
-    // self::$params['session'] = \controllers\Security::getSession();
+    // Acrescenta as demais informações para uso no endpoint.
+    self::$params['session'] = $session;
 
     // Carrega banco de dados.
     $this->carregaBDs();
@@ -71,7 +71,7 @@ abstract class EndPoint
    *
    * @return array
    */
-  public function getParameters()
+  public function getParameters($infoUrl)
   {
     // Carrega os parâmetros personalizados.
     $this->loadParams();
@@ -97,7 +97,7 @@ abstract class EndPoint
     self::$params = array_merge_recursive($params_default_merge, self::$params);
 
     // Acrescenta as demais informações para uso no endpoint.
-    self::$params['infoUrl'] = \controllers\FriendlyUrl::getParameters();
+    self::$params['infoUrl'] = $infoUrl;
 
     // Acrescenta informações das constantes da base.
     self::$params['base'] = [
@@ -115,8 +115,8 @@ abstract class EndPoint
     ];
 
     // Obtém dinamicamente a função personalizada.
-    $menu = \controllers\FriendlyUrl::getParameters('func');
-    
+    $menu = $infoUrl['func'];
+
     // Acrescenta nos parâmetros gerais do endpoint o conteúdo header.
     self::$params[$menu] = $this->parse_raw_http_request();
 
@@ -136,7 +136,6 @@ abstract class EndPoint
    */
   public function setParameters($parameters)
   {
-
     // Mescla valores default com os valores definidos no endpoint.
     self::$params = array_replace_recursive(self::$params, $parameters);
 
@@ -155,7 +154,6 @@ abstract class EndPoint
    */
   protected function carregaBDs()
   {
-
     // Carrega os BDs passados nos parâmetros da controler. 
     foreach (self::$params['bds'] as $key => $bdTable) {
 

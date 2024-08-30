@@ -22,7 +22,7 @@ class Engine
 
   /**
    * start
-   * Inicia o motor da API.
+   * Inicia o motor do APP.
    * Executa em sequência o processo para execução do endpoint solicitado.
    * 
    * @author Mateus Brust
@@ -169,7 +169,7 @@ class Engine
     self::checkMenu();
 
     // Carrega os parâmetros personalizados do endpoint.
-    self::$endPointParams = self::$endpointClass->getParameters();
+    self::$endPointParams = self::$endpointClass->getParameters(self::$infoUrl);
 
     // Carrega os parâmetros do banco de dados caso tenha.
     // todo - carregar os parâmetros do banco de dados.
@@ -252,7 +252,7 @@ class Engine
     }
 
     // Chama o processamento do endpoint.
-    self::$endPointParams = self::$endpointClass->start(self::$infoUrl['func']);
+    self::$endPointParams = self::$endpointClass->start(self::$infoUrl['func'], self::$checkSecurity);
 
     // Finaliza função.
     return true;

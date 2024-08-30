@@ -91,6 +91,7 @@ define("BASE_PARAMS_RENDER", [
   // 'content_type' => 'application/json',   // * Tipo do retorno padrão do cabeçalho http.
   'content_type' => 'text/html',          // * Tipo do retorno padrão do cabeçalho http.
   'charset'      => 'utf-8',              // * Tipo de codificação do cabeçalho http.
+  'showParams'   => false,                // Exibe todos os parametros no retorno da API.
 ]);
 
 

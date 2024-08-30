@@ -90,26 +90,37 @@ class Render
     if (isset($params['response'])) {
 
       // Verifica se foi passado o código do status da requisição.
-      if(isset($params['status'])){
+      if (isset($params['status'])) {
         http_response_code($params['status']);
-      }else{
+      } else {
         http_response_code(200);
       }
 
       // Verifica se a saída é json.
       if ($params['render']['content_type'] == 'application/json') {
-        // Acrescenta retorno padrão.
-        $params['response']['DATE'] = date('Y-m-d H:i:s');
-        $params['response']['IP'] = BASE_IP;
+
+        // Padronização da response.
+        $response['error'] = false;
+        $response['status'] = $params['status'];
+        $response['date'] = date('Y-m-d H:i:s');
+        $response['ip'] = BASE_IP;
+        $response['msg'] = $params['msg'];
+        $response['body'] = $params['response'];
+
+        // Exibe todos os parametros no retorno da API.
+        if ($params['render']['showParams']) {
+          $response['params'] = $params;
+        }
+
         // Converte a saída array para json com utf-8.
-        return json_encode($params['response'], JSON_UNESCAPED_UNICODE);
+        return json_encode($response, JSON_UNESCAPED_UNICODE);
       } else {
         // Caso a saída seja personalizada, é necessário enviar de acordo com a saída.
         return $params['response'];
       }
     } else {
       // Retorno de erro.
-      return '{error:"true",msg:"Não foi definido valor de resposta. Preenche o $params[\'response\']"}';
+      return '{"error":"true","msg":"Não foi definido valor de resposta. Preencha o $params[\'response\']"}';
     }
   }
 
