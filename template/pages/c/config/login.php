@@ -20,7 +20,7 @@ namespace pages;
  * O nome da controller vai ficar como "quemsomos".
  * 
  */
-class index extends \controllers\EndPoint
+class login extends \controllers\EndPoint
 {
 
 	/**
@@ -151,7 +151,7 @@ class index extends \controllers\EndPoint
 
 		// Carrega classes de apoio.
 		self::$params['classes']     = [
-			// 'Midia',
+			'AccessControl',
 		];
 
 		// Carrega controllers para reutilizar funções.
@@ -227,35 +227,16 @@ class index extends \controllers\EndPoint
 	 */
 	public function get($params)
 	{
-		// Informações para montar a página.
-		self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
-
-		// Teste da controller de cache.
-		//$this->teste_cache();
-
-		
+		self::$params['html'] = \controllers\Render::obj('forms/login.html', $params);
 	}
 
 	public function post($params)
 	{
-		// Informações para montar a página.
-		self::$params['html'] = 'Função: ' . __FUNCTION__;
-	}
+		
 
-	private function teste_cache()
-	{
-		// Limpa o cache (apaga tudo)
-		\controllers\Cache::clear();
+		\AccessControl::logIn($_POST['user'], $_POST['senha']);
 
-		// teste cache.
-		$cache = \controllers\Cache::get('pasta/subpasta', 'teste', 5);
-		if (!$cache) {
-			sleep(3);
-			$cache = 'Segundos: [' . time() . '] utf8 é ação.';
-			\controllers\Cache::set('pasta/subpasta', 'teste', $cache);
-		}
-
-		// Exibe na tela o cache.
-		\classes\DevHelper::printr($cache);
+		// self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
+		self::get($params);
 	}
 }

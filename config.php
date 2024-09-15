@@ -374,9 +374,9 @@ define("BASE_BDS", [
       'PORT'      => '3306',
       'USERNAME'  => 'root',
       'PASSWORD'  => '',
-      'DATABASE'  => 'base_php',
+      'DATABASE'  => 'desv_base_php',
       'CHARSET'   => 'utf8',
-      'PREFIX'    => 'v4',
+      'PREFIX'    => 'base_php_',
   ],
   1 => [
       'TITLE'     => 'BD Secundario DEV',

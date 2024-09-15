@@ -1,6 +1,6 @@
 <?php
 
-class BdModelo2 extends \controllers\DataBase
+class BdModelo extends \controllers\DataBase
 {
 
     /**

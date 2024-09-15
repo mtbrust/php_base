@@ -227,5 +227,6 @@ class model extends \controllers\EndPoint
 	 */
 	public function get($params)
 	{
+		self::$params['html'] = 'oi';
 	}
 }

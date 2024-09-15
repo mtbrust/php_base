@@ -9,27 +9,27 @@
         <br><br><b>&#123;&#123;{{kparams}}&#125;&#125;</b> : Array
         {% for knivel1, nivel1 in params %}
             {% if nivel1 is not iterable %}
-                <br><b>&#123;&#123;{{kparams}}&#125;&#125;&#123;&#123;{{knivel1}}&#125;&#125;</b>: {{nivel1}}
+                <br><b>&#123;&#123;{{kparams}}.{{knivel1}}&#125;&#125;</b>: {{nivel1}}
             {% else %}
 
                 {# Nível 2 #}
-                <br><b>&#123;&#123;{{kparams}}&#125;&#125;&#123;&#123;{{knivel1}}&#125;&#125;&#123;&#123;{{knivel2}}&#125;&#125;</b> : Array
+                <br><b>&#123;&#123;{{kparams}}.{{knivel1}}.{{knivel2}}&#125;&#125;</b> : Array
                 {% for knivel2, nivel2 in nivel1 %}
                     {% if nivel2 is not iterable %}
-                    <br><b>&#123;&#123;{{kparams}}&#125;&#125;&#123;&#123;{{knivel1}}&#125;&#125;&#123;&#123;{{knivel2}}&#125;&#125;</b>:{{ nivel2 }}
+                    <br><b>&#123;&#123;{{kparams}}.{{knivel1}}.{{knivel2}}&#125;&#125;</b>:{{ nivel2 }}
                     {% else %}
 
                         {# Nível 3 #}
-                        <br><b>&#123;&#123;{{kparams}}&#125;&#125;&#123;&#123;{{knivel1}}&#125;&#125;&#123;&#123;{{knivel2}}&#125;&#125;&#123;&#123;{{knivel3}}&#125;&#125;</b> : Array
+                        <br><b>&#123;&#123;{{kparams}}.{{knivel1}}.{{knivel2}}.{{knivel3}}&#125;&#125;</b> : Array
                         {% for knivel3, nivel3 in nivel2 %}
                             {% if nivel3 is not iterable %}
-                            <br><b>&#123;&#123;{{kparams}}&#125;&#125;&#123;&#123;{{knivel1}}&#125;&#125;&#123;&#123;{{knivel2}}&#125;&#125;&#123;&#123;{{knivel3}}&#125;&#125;</b>:{{ nivel3 }}
+                            <br><b>&#123;&#123;{{kparams}}.{{knivel1}}.{{knivel2}}.{{knivel3}}&#125;&#125;</b>:{{ nivel3 }}
                             {% else %}
 
                                 {# Nível 3 #}
-                                <br><b>&#123;&#123;{{kparams}}&#125;&#125;&#123;&#123;{{knivel1}}&#125;&#125;&#123;&#123;{{knivel2}}&#125;&#125;&#123;&#123;{{knivel3}}&#125;&#125;&#123;&#123;{{knivel4}}&#125;&#125;</b> : Array
+                                <br><b>&#123;&#123;{{kparams}}.{{knivel1}}.{{knivel2}}.{{knivel3}}.{{knivel4}}&#125;&#125;</b> : Array
                                 {% for knivel4, nivel4 in nivel3 %}
-                                <br><b>&#123;&#123;{{kparams}}&#125;&#125;&#123;&#123;{{knivel1}}&#125;&#125;&#123;&#123;{{knivel2}}&#125;&#125;&#123;&#123;{{knivel3}}&#125;&#125;&#123;&#123;{{knivel4}}&#125;&#125;</b>:{{ nivel4 }}
+                                <br><b>&#123;&#123;{{kparams}}.{{knivel1}}.{{knivel2}}.{{knivel3}}.{{knivel4}}&#125;&#125;</b>:{{ nivel4 }}
                                 {% endfor %}
 
                             {% endif %}
