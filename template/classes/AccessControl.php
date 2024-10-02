@@ -1,16 +1,21 @@
 <?php
 
+
 class AccessControl
 {
 
-    static public function logIn($user, $passWord)
+    static public function logIn($login, $passWord)
     {
         // Trato o password.
-        $passWord = self::passWord($passWord);
+        $passWord = self::trataPassWord($passWord);
 
         // Verifica usuário no banco de daos.
         $bdLogins = new \BdLogins();
-        $user = $bdLogins->verificaLogin($user, $passWord);
+        $user = $bdLogins->verificaLogin($login, $passWord);
+
+        if (!$user){
+            return self::response(true, 'Login ou Senha inválidos.');
+        }
 
         // Verifica se usuário tem impedimentos.
         $chekUser = self::checkUser($user);
@@ -19,16 +24,21 @@ class AccessControl
         }
 
         // Criar o select que pega os grupos e permissões do usuáro.
-        $permissions = [];
+        
+        $bdPermissions = new \BdPermissions();
+        $permissions = $bdPermissions->permissoesUsuario($user['id']);
+
+        \classes\DevHelper::printr($permissions);
+
         $menu = [];
 
         // Crio a sessão com as informações de usuário.
         \classes\Session::create($user, $permissions, $menu);
 
-        \classes\DevHelper::printr($user);
-
         // Retorno positivo.
-        return self::message(false, 'Usuário: ' . $user . '. Senha: ' . $passWord . '.<br>' . json_encode($user));
+        return self::response(false, 
+        'Usuário: ' . $login . '. Senha: ' . $passWord . '.<br>', 
+        $user);
     }
 
     static public function logOut() {}
@@ -42,23 +52,24 @@ class AccessControl
         }
     }
 
-    static private function message($error, $msg)
+    static private function response($error, $msg, $data = null)
     {
         return [
             'error' => $error,
-            'msg' => $msg,
+            'msg'   => $msg,
+            'data'  => $data,
         ];
     }
 
-    static private function passWord($passWord)
+    static private function trataPassWord($passWord)
     {
         return hash('sha256', $passWord);
     }
 
     static private function checkUser($user)
     {
-        // Verificar se usuário está ativo e ok para continuar.
+        // todo -Verificar se usuário está ativo e ok para continuar.
         // Verificar no banco de dados, etc.
-        return self::message(false, 'Usuário ' . $user['fullName'] . ' ok.');
+        return self::response(false, 'Usuário ' . $user['fullName'] . ' ok.');
     }
 }

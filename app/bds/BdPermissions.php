@@ -243,7 +243,8 @@ class BdPermissions extends \controllers\DataBase
         // $tableInnerUsers = parent::fullTableName('users');
 
         // Monta SQL.
-        $sql = "SELECT * FROM $table WHERE idLogin = '$idLogin' LIMIT 1;";
+        // todo - Montar sql para trazer todas as permissões. verificar função acima.
+        $sql = "SELECT * FROM $table WHERE idLogin = '$idLogin';";
 
         // Executa o select
         $r = parent::executeQuery($sql);
@@ -253,7 +254,7 @@ class BdPermissions extends \controllers\DataBase
             return false;
 
         // Retorna primeira linha.
-        return $r[0];
+        return $r;
     }
 
 
