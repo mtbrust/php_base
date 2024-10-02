@@ -22,12 +22,12 @@ class FeedBackMessagens
 
         // Retorno padrão.
         $html = '<!-- Sem Mensagens de feedback. -->';
-        // $html = serialize(Self::$messages);
+        $html = serialize(Self::$messages);
 
         // Caso tenha mensagens, cria html.
-        if (isset(Self::$messages[0])) {
-            $html = \controllers\Render::obj('feedbackmessagens.html', ['msgs' => Self::$messages]);
-        }
+        // if (isset(Self::$messages[0])) {
+        //     $html = \controllers\Render::obj('feedbackmessagens.html', ['msgs' => Self::$messages]);
+        // }
 
         // Retorna o html com as mensagens.
         return $html;

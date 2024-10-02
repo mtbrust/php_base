@@ -358,7 +358,7 @@ class BdStatus extends \controllers\DataBase
          */
         parent::insert(['nome' => 'Ativo', 'obs' => 'Contato ativo', 'statusGrupo' => 'contacts/idStatus']);
         parent::insert(['nome' => 'Inativo', 'obs' => 'Contato Inativo', 'statusGrupo' => 'contacts/idStatus']);
-        parent::insert(['nome' => 'Profissional', 'obs' => 'Profissional. Uso da Coopama.', 'statusGrupo' => 'contacts/idStatus']);
+        parent::insert(['nome' => 'Profissional', 'obs' => 'Profissional. Uso da Organização.', 'statusGrupo' => 'contacts/idStatus']);
         parent::insert(['nome' => 'Pessoal', 'obs' => 'Pessoal. Acesso apenas RH.', 'statusGrupo' => 'contacts/idStatus']);
         parent::insert(['nome' => 'Contato', 'obs' => 'Contato de outra pessoa próxima. Acesso apenas RH.', 'statusGrupo' => 'contacts/idStatus']);
 

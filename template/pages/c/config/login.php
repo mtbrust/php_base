@@ -233,10 +233,12 @@ class login extends \controllers\EndPoint
 	public function post($params)
 	{
 		
+		// Tenta realizar o login.
+		$result = \AccessControl::logIn($_POST['user'], $_POST['senha']);
 
-		\AccessControl::logIn($_POST['user'], $_POST['senha']);
+		self::$params['html'] = json_encode($result, JSON_UNESCAPED_UNICODE);
 
 		// self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
-		self::get($params);
+		// self::get($params);
 	}
 }

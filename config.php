@@ -408,7 +408,7 @@ define("BASE_AUTH", [
 * Configurações personalizadas de acordo com ambiente.
 */
 define("BASE_CONFIG", [
-  'SHOW_ERRORS' => 1,         // [0] Não exibe erros php. [1] Exibe erros php na tela.
-  'TIMEZONE'   => 'America/Sao_Paulo', // Seta o horário local para o horário de brasília.
-  'CAMPO'       => 'valor',   // Campo personalizado.
+  'SHOW_ERRORS' => 1,                     // [0] Não exibe erros php. [1] Exibe erros php na tela.
+  'TIMEZONE'    => 'America/Sao_Paulo',   // Seta o horário local para o horário de brasília.
+  'CAMPO'       => 'valor',               // Campo personalizado.
 ]);

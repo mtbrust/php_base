@@ -55,6 +55,7 @@ class BdModelo extends \controllers\DataBase
             "ex_datetime"  => "DATETIME NULL",
             "ex_timestamp" => "TIMESTAMP NULL",
             "ex_year"      => "YEAR NULL",
+            "ex_bool"      => "TINYINT(1) NULL",
 
             // Informações do registro do tipo data.
             "ex_varchar"    => "VARCHAR(255) NULL",

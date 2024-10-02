@@ -59,23 +59,11 @@ class bd_tables_create extends \controllers\EndPoint
    */
   public function get($params)
   {
-    // Instencio as classes.
-    $bdLogDb = new \BdLogDb();
-    $bdLogins = new \BdLogins();
-    $bdGroups = new \BdGroups();
-    $bdLoginsGroups = new \BdLoginsGroups();
-    $bdPermissions = new \BdPermissions();
-    $bdStatus = new \BdStatus();
-    $bdModelo = new \BdModelo();
-
     // Crio as tabelas.
-    $bdLogDb->createTable();
-    $bdLogins->createTable();
-    $bdGroups->createTable();
-    $bdLoginsGroups->createTable();
-    $bdPermissions->createTable();
-    $bdStatus->createTable();
-    $bdModelo->createTable();
+    \classes\ManagerDataBase::createTables();
+
+    echo \classes\FeedBackMessagens::get();
+    exit;
 
     // Finaliza a execução da função.
     self::$params['response'] = 'true';

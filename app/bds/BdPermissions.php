@@ -45,9 +45,17 @@ class BdPermissions extends \controllers\DataBase
             "idGrupo" => " INT NULL",   // Status grupo: "users/idGrupo"
 
             // Informações básicas
-            "nome"        => "VARCHAR(32) NULL",    // Título do registro.
-            "urlPagina"   => "VARCHAR(128) NULL",   // A frente do "/".
-            "permissions" => "VARCHAR(9) NULL",     // [000000000] menu, index, post, put, get, getFull, delete, api, test.
+            "nome"      => "VARCHAR(32) NULL",    // Título do registro.
+            "urlPagina" => "VARCHAR(128) NULL",   // A frente do "/".
+            "session"   => "TINYINT(1) NULL",     // Necessita de session.
+            "get"       => "TINYINT(1) NULL",     // Necessita de permissão para get.
+            "getFull"   => "TINYINT(1) NULL",     // Necessita de permissão para ver informações completas.
+            "post"      => "TINYINT(1) NULL",     // Necessita de permissão para post.
+            "put"       => "TINYINT(1) NULL",     // Necessita de permissão para put.
+            "patch"     => "TINYINT(1) NULL",     // Necessita de permissão para patch.
+            "del"       => "TINYINT(1) NULL",     // Necessita de permissão para delete.
+            "api"       => "TINYINT(1) NULL",     // Necessita de permissão para api da página.
+            "especific" => "TEXT NULL",           // Caso a página tenha permissões específicas, grava o json das permissões ativas.
 
 
             // CRIADO AUTOMATICAMENTE
@@ -226,6 +234,28 @@ class BdPermissions extends \controllers\DataBase
         return $r;
     }
 
+    public function permissoesUsuario($idLogin)
+    {
+        // Ajusta nome real da tabela.
+        $table = parent::fullTableName();
+        // $tableInnerMidia = parent::fullTableName('midia');
+        // $tableInnerLogin = parent::fullTableName('login');
+        // $tableInnerUsers = parent::fullTableName('users');
+
+        // Monta SQL.
+        $sql = "SELECT * FROM $table WHERE idLogin = '$idLogin' LIMIT 1;";
+
+        // Executa o select
+        $r = parent::executeQuery($sql);
+
+        // Verifica se não teve retorno.
+        if (!$r)
+            return false;
+
+        // Retorna primeira linha.
+        return $r[0];
+    }
+
 
     /**
      * consultaPersonalizada
@@ -300,14 +330,22 @@ class BdPermissions extends \controllers\DataBase
      * @param string $urlPage
      * @return bool
      */
-    private function addPermissionsGroup($idGroup, $urlPage, $permissions = '111111111')
+    private function addPermissionsGroup($idGroup, $urlPage)
     {
         // Administradores
         parent::insert([
             'idGrupo'   => $idGroup,
             'nome'      => 'Acesso Total',
             'urlPagina' => $urlPage,
-            'permissions' => (string)$permissions,
+            "session"   => true,
+            "get"       => true,
+            "getFull"   => true,
+            "post"      => true,
+            "put"       => true,
+            "patch"     => true,
+            "delete"    => true,
+            "api"       => true,
+            "especific" => '{"teste":1}',
             'obs'       => 'Cadastro Inicial.',
         ]);
 
@@ -321,14 +359,22 @@ class BdPermissions extends \controllers\DataBase
      * @param string $urlPage
      * @return bool
      */
-    private function addPermissionsLogin($idLogin, $urlPage, $permissions = '111111111')
+    private function addPermissionsLogin($idLogin, $urlPage)
     {
         // Administradores
         parent::insert([
             'idLogin'   => $idLogin,
             'nome'      => 'Acesso Total',
             'urlPagina' => $urlPage,
-            'permissions' => $permissions,
+            "session"   => true,
+            "get"       => true,
+            "getFull"   => true,
+            "post"      => true,
+            "put"       => true,
+            "patch"     => true,
+            "delete"    => true,
+            "api"       => true,
+            "especific" => '{"teste":1}',
             'obs'       => 'Cadastro Inicial.',
         ]);
 

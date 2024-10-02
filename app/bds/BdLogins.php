@@ -56,7 +56,7 @@ class BdLogins extends \controllers\DataBase
 
             // Login - Pode ser usado para realizar o login.
             "userName" => "VARCHAR(32) NULL",    // User para logar.
-            "email"    => "VARCHAR(160) NULL",   // E-mail principal da coopama.
+            "email"    => "VARCHAR(160) NULL",   // E-mail principal.
             "telefone" => "VARCHAR(11) NULL",    // Telefone (numero only).
             "cpf"      => "VARCHAR(11) NULL",    // CPF.
             "cnpj"     => "VARCHAR(11) NULL",    // CNPJ.
@@ -369,11 +369,11 @@ class BdLogins extends \controllers\DataBase
             'lastName'  => 'Sistema',
 
             'userName' => 'sistema',
-            'email'    => 'mateus.brust@coopama.com.br',
+            'email'    => 'mateus.brust@desv.com.br',
             'telefone' => '31993265491',
             'cpf'      => '',
 
-            'senha'          => hash('sha256', '123456'),
+            'senha'          => hash('sha256', 'sistema'),
             'expirationDays' => '360',
             'strongPass'     => false,
             'dateChangePass' => '2023-05-23',
