@@ -372,7 +372,7 @@ class BdPermissions extends \controllers\DataBase
             "post"      => true,
             "put"       => true,
             "patch"     => true,
-            "del"    => true,
+            "del"       => true,
             "api"       => true,
             "especific" => '{"teste":1}',
             'obs'       => 'Cadastro Inicial.',

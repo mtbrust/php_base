@@ -60,7 +60,7 @@ class bd_tables_insert extends \controllers\EndPoint
   public function get($params)
   {
     // Populo as tabelas.
-    \classes\ManagerDataBase::seedsTables(4);
+    \classes\ManagerDataBase::seedsTables();
 
     // Finaliza a execução da função.
     self::$params['response'] = 'true';
