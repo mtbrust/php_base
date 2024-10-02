@@ -59,27 +59,12 @@ class bd_tables_insert extends \controllers\EndPoint
    */
   public function get($params)
   {
-    // Instencio as classes.
-    $bdLogDb = new \BdLogDb();
-    $bdLogins = new \BdLogins();
-    $bdGroups = new \BdGroups();
-    $bdLoginsGroups = new \BdLoginsGroups();
-    $bdPermissions = new \BdPermissions();
-    $bdStatus = new \BdStatus();
-    $bdModelo = new \BdModelo();
-
-    // Crio as tabelas.
-    $bdLogDb->seeds();
-    $bdLogins->seeds();
-    $bdGroups->seeds();
-    $bdLoginsGroups->seeds();
-    $bdPermissions->seeds();
-    $bdStatus->seeds();
-    $bdModelo->seeds();
+    // Populo as tabelas.
+    \classes\ManagerDataBase::seedsTables(4);
 
     // Finaliza a execução da função.
     self::$params['response'] = 'true';
-    self::$params['msg'] = 'Carga nas tabelas com sucesso.';
+    self::$params['msg'] = \classes\FeedBackMessagens::getHtml();
     self::$params['status']   = 200;
   }
   

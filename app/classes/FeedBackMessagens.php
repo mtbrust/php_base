@@ -33,6 +33,28 @@ class FeedBackMessagens
         return $html;
     }
 
+    public static function getJson()
+    {
+        return json_encode(Self::$messages, JSON_UNESCAPED_UNICODE);
+    }
+    
+
+    public static function getHtml()
+    {
+        $html = '';
+        foreach (Self::$messages as $key => $value) {
+            $html .= '<ul class="list-group">';
+            $html .= '<l1 class="list-group-item list-group-item-' . $value['type'] . ' text-start">';
+            $html .= $value['title'];
+            $html .= '</l1>';
+            $html .= '<l1 class="list-group-item list-group-item-' . $value['type'] . ' text-start">';
+            $html .= $value['msg'];
+            $html .= '</l1>';
+            $html .= '</ul><br>';
+        }
+        return $html;
+    }
+
     /**
      * Função que acrescenta uma mensagem de FeedBack para usuário.
      * Type: [primary], [secondary], [success], [danger], [warning], [info], [light], [dark].

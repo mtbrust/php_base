@@ -62,13 +62,10 @@ class bd_tables_create extends \controllers\EndPoint
     // Crio as tabelas.
     \classes\ManagerDataBase::createTables();
 
-    echo \classes\FeedBackMessagens::get();
-    exit;
-
     // Finaliza a execução da função.
     self::$params['response'] = 'true';
-    self::$params['msg'] = 'Tabelas criadas com sucesso.';
+    self::$params['msg'] = \classes\FeedBackMessagens::getHtml();
+    // self::$params['msg'] = \classes\ManagerDataBase::getTablesHtml();
     self::$params['status']   = 200;
   }
-  
 }

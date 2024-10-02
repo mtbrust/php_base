@@ -53,7 +53,7 @@ class BdPermissions extends \controllers\DataBase
             "post"      => "TINYINT(1) NULL",     // Necessita de permissão para post.
             "put"       => "TINYINT(1) NULL",     // Necessita de permissão para put.
             "patch"     => "TINYINT(1) NULL",     // Necessita de permissão para patch.
-            "del"       => "TINYINT(1) NULL",     // Necessita de permissão para delete.
+            "del"       => "TINYINT(1) NULL",     // Necessita de permissão para delete. (palavra reservada do mysql "delete".)
             "api"       => "TINYINT(1) NULL",     // Necessita de permissão para api da página.
             "especific" => "TEXT NULL",           // Caso a página tenha permissões específicas, grava o json das permissões ativas.
 
@@ -343,7 +343,7 @@ class BdPermissions extends \controllers\DataBase
             "post"      => true,
             "put"       => true,
             "patch"     => true,
-            "delete"    => true,
+            "del"    => true,
             "api"       => true,
             "especific" => '{"teste":1}',
             'obs'       => 'Cadastro Inicial.',
@@ -372,7 +372,7 @@ class BdPermissions extends \controllers\DataBase
             "post"      => true,
             "put"       => true,
             "patch"     => true,
-            "delete"    => true,
+            "del"    => true,
             "api"       => true,
             "especific" => '{"teste":1}',
             'obs'       => 'Cadastro Inicial.',

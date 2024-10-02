@@ -85,8 +85,20 @@ class model extends \controllers\EndPoint
       // 'loginPage'         => "api/login/", // Page login dentro do modelo.
 
       // // Permissões personalizadas da página atual. 
-      // // [1] Menu, [2] Início, [3] Adicionar, [4] Editar, [5] Listar (Básico), [6] Listar Completo, [7] Deletar, [8] API, [9] Testes.
-      // 'permission'        => '111111111', // [1] Necessita de permissão, [0] Não necessita permissão.
+			// // [1] Usuário tem que ter permissão, [0] Não necessita permissão.
+			// 'permission'        => [ 
+			// 	"session" => 1,   // Necessário usuário com sessao nesta página.
+			// 	"get"     => 1,   // Permissão para acessar a função get desta página.
+			// 	"getFull" => 1,   // Permissão para acessar a função getFull desta página.
+			// 	"post"    => 1,   // Permissão para acessar a função post ou requisição post desta página.
+			// 	"put"     => 1,   // Permissão para acessar a função put ou requisição put desta página.
+			// 	"patch"   => 1,   // Permissão para acessar a função patch ou requisição patch desta página.
+			// 	"delete"  => 1,   // Permissão para acessar a função delete ou requisição delete desta página.
+			// 	"api"     => 1,   // Permissão para acessar a função API desta página.
+			// 	"especific" => [
+			// 		'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+			// 	],
+			// ],
 
       // // Transações de dados (GET - POST) apenas com token. Usar classe Tokens. Exemplo: (<input name="token" type="text" value="{{token}}" hidden>').
       // 'token'             => true, // Só aceitar com token (definido na config "BASE_AUTH['token']").

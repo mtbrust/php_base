@@ -59,28 +59,12 @@ class bd_tables_delete extends \controllers\EndPoint
    */
   public function get($params)
   {
-    // Instencio as classes.
-    $bdLogDb = new \BdLogDb();
-    $bdLogins = new \BdLogins();
-    $bdGroups = new \BdGroups();
-    $bdLoginsGroups = new \BdLoginsGroups();
-    $bdPermissions = new \BdPermissions();
-    $bdStatus = new \BdStatus();
-    $bdModelo = new \BdModelo();
-
-    // Crio as tabelas.
-    $bdLogDb->dropTable();
-    $bdLogins->dropTable();
-    $bdGroups->dropTable();
-    $bdLoginsGroups->dropTable();
-    $bdPermissions->dropTable();
-    $bdStatus->dropTable();
-    $bdModelo->dropTable();
+    // Deleto as tabelas.
+    \classes\ManagerDataBase::dropTables();
 
     // Finaliza a execução da função.
     self::$params['response'] = 'true';
-    self::$params['msg'] = 'Tabelas deletadas com sucesso.';
+    self::$params['msg'] = \classes\FeedBackMessagens::getHtml();
     self::$params['status']   = 200;
   }
-  
 }

@@ -177,9 +177,21 @@ define("BASE_PARAMS_SECURITY", [
   // Caminho para página restrita.
   'restrictPage'      => 'admin/', // Page admin dentro do modelo.
 
-  // Permissões personalizadas da página atual. 
-  // [1] Menu, [2] Início, [3] Adicionar, [4] Editar, [5] Listar (Básico), [6] Listar Completo, [7] Deletar, [8] API, [9] Testes.
-  'permission'        => '000000000', // [1] Necessita de permissão, [0] Não necessita permissão.
+  // // Permissões personalizadas da página atual. 
+  // // [1] Usuário tem que ter permissão, [0] Não necessita permissão.
+  'permission'        => [ 
+    "session" => 0,   // Necessário usuário com sessao nesta página.
+    "get"     => 0,   // Permissão para acessar a função get desta página.
+    "getFull" => 0,   // Permissão para acessar a função getFull desta página.
+    "post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
+    "put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
+    "patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
+    "delete"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+    "api"     => 0,   // Permissão para acessar a função API desta página.
+    "especific" => [
+      'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+    ],
+  ],
 
   // Transações de dados (GET - POST) apenas com token. Usar classe Tokens. Exemplo: (<input name="token" type="text" value="{{token}}" hidden>').
   'token'             => false, // Só aceitar com token (definido na config "BASE_AUTH['token']").
