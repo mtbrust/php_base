@@ -2,6 +2,8 @@
 
 namespace pages;
 
+use classes\ManagerLogs;
+
 /**
  * ORIENTAÇÕES DO MODELO PADRÃO
  * Modelo padrão de controller para o endpoint (páginas ou APIs).
@@ -240,12 +242,15 @@ class index extends \controllers\EndPoint
 	 */
 	public function get($params)
 	{
+
 		// Informações para montar a página.
 		self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
 
 		// Teste da controller de cache.
 		//$this->teste_cache();
 
+		// teste de criação de logs.
+		ManagerLogs::test();
 		
 	}
 

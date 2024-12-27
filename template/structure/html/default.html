@@ -96,7 +96,7 @@
         async function getPlugin(plugin) {
             console.log('Plugin: ' + plugin);
             $.ajax({
-                url: '{{base.dir_relative}}api/plugins/get/' + plugin,
+                url: '{{base.dir_relative}}api/plugins/js/' + plugin,
                 dataType: 'script',
                 async: true
             });

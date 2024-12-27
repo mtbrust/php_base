@@ -20,7 +20,7 @@ namespace api;
  * O nome da controller vai ficar como "quemsomos".
  * 
  */
-class model extends \controllers\EndPoint
+class js extends \controllers\EndPoint
 {
 
   /**
@@ -46,7 +46,8 @@ class model extends \controllers\EndPoint
       // 'cache'        => false,                // Ativa uso de cache para resultado.
       // 'cacheTime'    => (60 * 30),            // Tempo para renovar cache em segundos. (30 Minutos).
       // 'cacheParams'  => true,                 // Cache por parametros (attr).
-      'content_type' => 'application/json',   // Tipo do retorno padrão do cabeçalho http.
+      // 'content_type' => 'application/json',   // Tipo do retorno padrão do cabeçalho http.
+      'content_type' => 'text/plain',   // Tipo do retorno padrão do cabeçalho http.
       // 'charset'      => 'utf-8',              // Tipo de codificação do cabeçalho http.
       // 'showParams'   => false,           // Exibe todos os parametros.
     ];
@@ -198,9 +199,14 @@ class model extends \controllers\EndPoint
   public function get($params)
   {
     // Quanto conteúdo é passado por body (normalmente Json).
-    $response['method'] = __FUNCTION__;
-    $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
-    $response['$_GET'] = $_GET;
+    // $response['method'] = __FUNCTION__;
+    // $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
+    // $response['$_GET'] = $_GET;
+    // $response['parametro'] = $params['infoUrl']['attr'][0];
+    // $response['teste'] = $params;
+
+    // todo - Pegar o arquivo js (de acordo com o attr 0) e retornar o texto do arquivo aqui.
+    $response = 'console.log("Plugin JS solicitado: ' . $params['infoUrl']['attr'][0] . '");';
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
@@ -208,66 +214,4 @@ class model extends \controllers\EndPoint
     self::$params['status']   = 200;
   }
   
-  /**
-   * post
-   * 
-   * Acessada via primeiro parâmetro ou pelo request method.
-   * Recebe todos os parâmetros do endpoint em $params.
-   *
-   * @param  mixed $params
-   */
-  public function post($params)
-  {
-    // Quanto conteúdo é passado por body (normalmente Json).
-    $response['method'] = __FUNCTION__;
-    $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
-    $response['$_POST'] = $_POST;
-
-    // Finaliza a execução da função.
-    self::$params['response'] = $response;
-    self::$params['msg'] = 'Requisição recebida com sucesso.';
-    self::$params['status']   = 200;
-  }
-  
-  /**
-   * post
-   * 
-   * Acessada via primeiro parâmetro ou pelo request method.
-   * Recebe todos os parâmetros do endpoint em $params.
-   *
-   * @param  mixed $params
-   */
-  public function put($params)
-  {
-    // Quanto conteúdo é passado por body (normalmente Json).
-    $response['method'] = __FUNCTION__;
-    $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
-    $response['$_POST'] = $_POST;
-
-    // Finaliza a execução da função.
-    self::$params['response'] = $response;
-    self::$params['msg'] = 'Requisição recebida com sucesso.';
-    self::$params['status']   = 200;
-  }
-  
-  /**
-   * foo_personalizada
-   * 
-   * Função é chamada quando o metodo for get e o primeiros parametro for foo_personalizada.
-   * Recebe todos os parâmetros do endpoint em $params.
-   *
-   * @param  mixed $params
-   */
-  public function foo_personalizada($params)
-  {
-    // Quanto conteúdo é passado por body (normalmente Json).
-    $response['method'] = __FUNCTION__;
-    $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
-    $response['$_POST'] = $_POST;
-
-    // Finaliza a execução da função.
-    self::$params['response'] = $response;
-    self::$params['status']   = 200;
-    self::$params['msg']   = 'Função personalizada.';
-  }
 }

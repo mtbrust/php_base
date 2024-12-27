@@ -143,7 +143,7 @@ class Cache
       // Verifica se é uma pasta.
       if (!is_dir($tmpPath . $dir)) {
         // Cria a pasta.
-        mkdir($tmpPath . $dir, 0777);
+        mkdir($tmpPath . $dir, 0755);
       }
       // Guarda caminho percorrido.
       $tmpPath .= $dir . '/';
