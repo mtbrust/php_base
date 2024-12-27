@@ -250,7 +250,7 @@ class index extends \controllers\EndPoint
 		//$this->teste_cache();
 
 		// teste de criação de logs.
-		ManagerLogs::test();
+		// ManagerLogs::test();
 		
 	}
 

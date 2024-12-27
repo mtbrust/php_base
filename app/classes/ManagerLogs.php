@@ -22,7 +22,6 @@ class ManagerLogs
 		self::registerNotice($domain, $content);
 		self::registerWarning($domain, $content);
 		self::registerError($domain, $content);
-		
 	}
 
 	/**
