@@ -28,6 +28,10 @@ class AccessControl
         $bdPermissions = new \BdPermissions();
         $permissions = $bdPermissions->permissoesUsuario($user['id']);
 
+        // $permissions = json_decode('['.$permissions[0]['especific'].']');
+        // $permissions = json_decode('["a"'.$permissions[0]['especific'].']');
+        // $array = array_merge($array[0], $array[1]);
+
         \classes\DevHelper::printr($permissions);
 
         $menu = [];

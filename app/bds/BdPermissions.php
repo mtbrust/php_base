@@ -238,13 +238,57 @@ class BdPermissions extends \controllers\DataBase
     {
         // Ajusta nome real da tabela.
         $table = parent::fullTableName();
-        // $tableInnerMidia = parent::fullTableName('midia');
-        // $tableInnerLogin = parent::fullTableName('login');
-        // $tableInnerUsers = parent::fullTableName('users');
+        $tableInnerLoginsGroups = parent::fullTableName('loginsgroups');
 
         // Monta SQL.
-        // todo - Montar sql para trazer todas as permissões. verificar função acima.
-        $sql = "SELECT * FROM $table WHERE idLogin = '$idLogin';";
+        $sql = "
+            SELECT 
+                urlPagina, 
+                max(session) as 'session',
+                max(get) as 'get',
+                max(getFull) as 'getFull',
+                max(post) as 'post',
+                max(put) as 'put',
+                max(patch) as 'patch',
+                max(del) as 'del',
+                max(api) as 'api',
+                GROUP_CONCAT(especific ORDER BY especific SEPARATOR ',') AS especific
+            from (
+                SELECT 
+                    bpp.urlPagina, 
+                    max(bpp.session) as 'session',
+                    max(bpp.get) as 'get',
+                    max(bpp.getFull) as 'getFull',
+                    max(bpp.post) as 'post',
+                    max(bpp.put) as 'put',
+                    max(bpp.patch) as 'patch',
+                    max(bpp.del) as 'del',
+                    max(bpp.api) as 'api',
+                    GROUP_CONCAT(bpp.especific ORDER BY bpp.especific SEPARATOR ',') AS especific
+                FROM $table bpp  
+                WHERE bpp.idLogin = '$idLogin'
+                group by bpp.urlPagina 
+
+                UNION
+
+                SELECT 
+                    bpp.urlPagina, 
+                    max(bpp.session) as 'session',
+                    max(bpp.get) as 'get',
+                    max(bpp.getFull) as 'getFull',
+                    max(bpp.post) as 'post',
+                    max(bpp.put) as 'put',
+                    max(bpp.patch) as 'patch',
+                    max(bpp.del) as 'del',
+                    max(bpp.api) as 'api',
+                    GROUP_CONCAT(bpp.especific ORDER BY bpp.especific SEPARATOR ',') AS especific
+                FROM $tableInnerLoginsGroups bpl
+                inner join $table bpp on bpl.idGroup = bpp.idGrupo 
+                WHERE bpl.idLogin = '$idLogin'
+                group by bpp.urlPagina 
+            ) tbl
+            group by urlPagina 
+        ";
 
         // Executa o select
         $r = parent::executeQuery($sql);
@@ -310,14 +354,20 @@ class BdPermissions extends \controllers\DataBase
         // Retorno padrão.
         $r = true;
 
-        // Acrescenta permissões iniciais de grupo.
-        $this->addPermissionsGroup(1, '00-modelo/modelo-bd/');
-        $this->addPermissionsGroup(1, '00-modelo/modelo-restrito/');
-        $this->addPermissionsGroup(1, 'api/00-modelo/');
+        // Acrescenta permissões iniciais de grupo. (Administradores)
+        $this->addPermissionsGroup(1, 'restrito/');
+        $this->addPermissionsGroup(1, 'restrito/page2/');
 
-        // Acrescenta permissões iniciais de login.
-        $this->addPermissionsLogin(1, '00-modelo/modelo-bd/');
-        $this->addPermissionsLogin(1, '00-modelo/modelo-restrito/');
+        $this->addPermissionsGroup(2, 'restrito/');
+        $this->addPermissionsGroup(2, 'restrito/page2/');
+
+        // Acrescenta permissões iniciais de login. (sistema)
+        $this->addPermissionsLogin(1, 'restrito/');
+        $this->addPermissionsLogin(1, 'restrito/page2/');
+
+        // Acrescenta permissões iniciais de login. (mateus.brust)
+        $this->addPermissionsLogin(2, 'restrito/');
+        $this->addPermissionsLogin(2, 'restrito/page2/');
 
 
         // Finaliza a função.
@@ -343,10 +393,10 @@ class BdPermissions extends \controllers\DataBase
             "getFull"   => true,
             "post"      => true,
             "put"       => true,
-            "patch"     => true,
-            "del"    => true,
-            "api"       => true,
-            "especific" => '{"teste":1}',
+            "patch"     => false,
+            "del"       => true,
+            "api"       => false,
+            "especific" => '["botao_excluir1","botao_editar1"]',
             'obs'       => 'Cadastro Inicial.',
         ]);
 
@@ -373,9 +423,9 @@ class BdPermissions extends \controllers\DataBase
             "post"      => true,
             "put"       => true,
             "patch"     => true,
-            "del"       => true,
-            "api"       => true,
-            "especific" => '{"teste":1}',
+            "del"       => false,
+            "api"       => false,
+            "especific" => '["botao_excluir2","botao_editar2"]',
             'obs'       => 'Cadastro Inicial.',
         ]);
 

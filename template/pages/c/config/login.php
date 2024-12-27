@@ -129,7 +129,8 @@ class login extends \controllers\EndPoint
 			// 	"delete"  => 1,   // Permissão para acessar a função delete ou requisição delete desta página.
 			// 	"api"     => 1,   // Permissão para acessar a função API desta página.
 			// 	"especific" => [
-			// 		'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+			// 		'botao_excluir',
+			// 		'botao_editar', // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
 			// 	],
 			// ],
 
