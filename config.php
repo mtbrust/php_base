@@ -335,7 +335,7 @@ define("BASE_PARAMS_STRUCTURE", [
  */
 define("BASE_PARAMS_SCRIPTS", [
   'js' => [
-    'default-min.js', // Default.
+    'default.min.js', // Default.
   ],
   'libs' => [
     'jquery/jquery.min.js',  // JQuery.
@@ -353,7 +353,7 @@ define("BASE_PARAMS_SCRIPTS", [
  */
 define("BASE_PARAMS_STYLES", [
   'css' => [
-    'default-min.css', // Default.
+    'default.min.css', // Default.
     'simple.css', // demostração.
   ],
   'libs' => [

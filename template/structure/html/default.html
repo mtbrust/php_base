@@ -15,6 +15,11 @@
     <link href="{{base.dir_relative}}template/assets/css/{{item}}" rel="stylesheet">
     {% endfor %}
 
+    <!-- JS -->
+    {% for item in scripts.js %}
+    <script defer src="{{base.dir_relative}}template/assets/js/{{item}}"></script>
+    {% endfor %}
+
 </head>
 
 <body>
@@ -68,7 +73,7 @@
     {% endfor %}
     <!-- JS -->
     {% for item in scripts.js %}
-    <script src="{{base.dir_relative}}template/assets/js/{{item}}"></script>
+    <script defer src="{{base.dir_relative}}template/assets/js/{{item}}"></script>
     {% endfor %}
 
     <!-- Scripts abertos da página -->

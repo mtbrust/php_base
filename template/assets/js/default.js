@@ -1,11 +1,15 @@
+
 /**
  * Função Ajax com CallBack.
  * Função tem o objetivo de enviar dados POST para uma URL e realizar uma função CALLBACK personalizada com o responseorno.
  * 
- * @param {*} url_api 
- * @param {*} dados 
- * @param {*} callback 
- * @param {*} type 
+ * @param string url_api
+ * @param array dados
+ * @param function callback
+ * @param string type
+ * 
+ * @return void
+ * 
  */
 function ajaxDados(url_api, dados, callback, type = 'POST') {
 
@@ -57,6 +61,33 @@ function alerts2(title = 'Notificação', icon = 'success', html = 'ND') {
         icon: icon,
         html: html
     });
+}
+
+/**
+ * Alerta pequeno
+ *
+ * @param string title
+ * @param string icon
+ * 
+ * @return void
+ * 
+ */
+function alertMin(title = 'Sucesso', icon = 'success') {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: icon,
+        title: title
+      });
 }
 
 /**
@@ -119,6 +150,19 @@ function cpTransferencia(value) {
 
     // Realiza o comando copiar.
     document.execCommand('copy');
+}
+
+/**
+ * Copia o conteúdo (texto) do elemento
+ *
+ * @param Element e
+ * 
+ * @return void
+ * 
+ */
+function cpTransferenciaText(e) {
+    cpTransferencia($(e).text());
+    alertMin("Copiado para Área de Transferência");
 }
 
 /**

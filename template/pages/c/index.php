@@ -242,7 +242,6 @@ class index extends \controllers\EndPoint
 	 */
 	public function get($params)
 	{
-
 		// Informações para montar a página.
 		self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
 
