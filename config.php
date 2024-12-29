@@ -370,7 +370,7 @@ define("BASE_PARAMS_STYLES", [
  * Local: "template/plugins/"
  */
 define("BASE_PARAMS_PLUGINS", [
-  'modelo',   // Exemplo.
+  // 'modelo',   // Exemplo.
 ]);
 
 

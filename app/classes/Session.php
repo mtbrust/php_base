@@ -60,7 +60,7 @@ class Session
     public static function check($sessionTimeDuration)
     {
         // Verifica se não existe sessão ou se está vazia e finaliza.
-        if (!isset($_SESSION) || empty($_SESSION)) {
+        if (!isset($_SESSION) || empty($_SESSION) || empty($_SESSION['timestampCreate'])) {
             return false;
         }
 

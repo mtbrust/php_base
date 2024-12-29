@@ -240,6 +240,6 @@ class standart extends \controllers\EndPoint
 	 */
 	public function get($params)
 	{
-		self::$params['html'] = 'oi';
+		self::$params['html'] = 'Padrão.';
 	}
 }
