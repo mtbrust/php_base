@@ -79,7 +79,7 @@ class ManagerLogs
 	 */
 	private static function register($logDomain, $logContent, $type = 'note')
 	{
-		ManagerFile::write('logs/' . $logDomain . '.txt', self::prefix($logContent, $type));
+		ManagerFile::write('logs/' . date('Y-m-d') . '/' . $logDomain . '.txt', self::prefix($logContent, $type));
 	}
 
 	/**
