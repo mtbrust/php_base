@@ -2,6 +2,7 @@
 
 namespace api;
 
+use classes\ManagerFile;
 use controllers\Render;
 
 /**
@@ -45,7 +46,7 @@ class js extends \controllers\EndPoint
   {
     // Opções de renderização.
     self::$params['render']      = [
-      // 'cache'        => false,                // Ativa uso de cache para resultado.
+      'cache'        => true,                // Ativa uso de cache para resultado.
       // 'cacheTime'    => (60 * 30),            // Tempo para renovar cache em segundos. (30 Minutos).
       // 'cacheParams'  => true,                 // Cache por parametros (attr).
       // 'content_type' => 'application/json',   // Tipo do retorno padrão do cabeçalho http.
@@ -200,17 +201,14 @@ class js extends \controllers\EndPoint
    */
   public function get($params)
   {
-    // Quanto conteúdo é passado por body (normalmente Json).
-    // $response['method'] = __FUNCTION__;
-    // $response[__FUNCTION__] = $params[strtolower(__FUNCTION__)];
-    // $response['$_GET'] = $_GET;
-    // $response['parametro'] = $params['infoUrl']['attr'][0];
-    // $response['teste'] = $params;
+    // Obtenho o caminho do arquivo do plugin.
+    $pathFile = BASE_DIR . '/template/plugins/' . $params['infoUrl']['attr'][0] . '/' . $params['infoUrl']['attr'][0] . '.js';
 
-    // todo - Pegar o arquivo js (de acordo com o attr 0) e retornar o texto do arquivo aqui.
-    $response = 'console.log("oiPlugin JS solicitado: {{infoUrl.attr.0}}");';
+    // Carrego o arquivo js do plugin.
+    $plugin = ManagerFile::read($pathFile);
 
-    $response = Render::doc($response, $params, 5, 'plugin-' . $params['infoUrl']['attr'][0]);
+    // Trabalho os parâmetros dentro do plugin.
+    $response = Render::doc($plugin, $params, 5, 'plugin-' . $params['infoUrl']['attr'][0]);
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;
