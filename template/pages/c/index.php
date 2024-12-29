@@ -48,6 +48,8 @@ class index extends \controllers\EndPoint
 			// 'cache'        => false,         // Ativa uso de cache para resultado.
 			// 'cacheTime'    => (60 * 30),     // Tempo para renovar cache em segundos. (30 Minutos).
 			// 'cacheParams'  => true,          // Cache por parametros (attr).
+			'cache'        => true,         // Ativa uso de cache para resultado.
+			'cacheTime'    => 30,     // Tempo para renovar cache em segundos. (30 Minutos).
 			'content_type' => 'text/html',   // * Tipo do retorno padrão do cabeçalho http.
 			// 'charset'      => 'utf-8',       // * Tipo de codificação do cabeçalho http.
 		];
@@ -246,7 +248,7 @@ class index extends \controllers\EndPoint
 		self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
 
 		// Teste da controller de cache.
-		//$this->teste_cache();
+		// $this->teste_cache();
 
 		// teste de criação de logs.
 		// ManagerLogs::test();
@@ -262,10 +264,10 @@ class index extends \controllers\EndPoint
 	private function teste_cache()
 	{
 		// Limpa o cache (apaga tudo)
-		\controllers\Cache::clear();
+		// \controllers\Cache::clear();
 
 		// teste cache.
-		$cache = \controllers\Cache::get('pasta/subpasta', 'teste', 5);
+		$cache = \controllers\Cache::get('pasta/subpasta', 'teste', 10);
 		if (!$cache) {
 			sleep(3);
 			$cache = 'Segundos: [' . time() . '] utf8 é ação.';

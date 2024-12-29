@@ -29,6 +29,55 @@ class ManagerFile
         fclose($arquivo);
     }
 
+
+    /**
+     * Carrega um arquivo.
+     *
+     * @param string $pathName
+     * 
+     * @return string
+     * 
+     */
+    public static function read($pathName)
+    {
+        return file_get_contents($pathName);
+    }
+
+    /**
+     * Verifica se o tempo de vida do arquivo é maior que o tempo passado.
+     *
+     * @param string $pathName
+     * @param int $time
+     * 
+     * @return bool
+     * 
+     */
+    public static function timeExpired($pathName, $time)
+    {
+        // Se o arquivo existe e cache não venceu finaliza.
+        if (is_file($pathName) && time() - filemtime($pathName) < $time) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Cria arquivo e os diretórios.
+     *
+     * @param string $pathName
+     * @param string $content
+     * 
+     * @return void
+     * 
+     */
+    public static function create($pathName, $content)
+    {
+        // Verifica se path existe.
+        self::createIfNotExistDirPath($pathName);
+        // Grava o arquivo.
+        file_put_contents($pathName, $content);
+    }
+
     /**
      * Verifica todo o path passado e cria as pastas caso não exista.
      *
@@ -37,7 +86,7 @@ class ManagerFile
      * @return void
      * 
      */
-    private static function createIfNotExistDirPath($pathName)
+    public static function createIfNotExistDirPath($pathName)
     {
         // Divide o path em pastas.
         $pastas = explode('/', $pathName);

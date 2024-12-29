@@ -2,6 +2,8 @@
 
 namespace api;
 
+use controllers\Render;
+
 /**
  * ORIENTAÇÕES DO MODELO PADRÃO
  * Modelo padrão de controller para o endpoint (páginas ou APIs).
@@ -47,7 +49,7 @@ class js extends \controllers\EndPoint
       // 'cacheTime'    => (60 * 30),            // Tempo para renovar cache em segundos. (30 Minutos).
       // 'cacheParams'  => true,                 // Cache por parametros (attr).
       // 'content_type' => 'application/json',   // Tipo do retorno padrão do cabeçalho http.
-      'content_type' => 'text/plain',   // Tipo do retorno padrão do cabeçalho http.
+      'content_type' => 'application/javascript',   // Tipo do retorno padrão do cabeçalho http.
       // 'charset'      => 'utf-8',              // Tipo de codificação do cabeçalho http.
       // 'showParams'   => false,           // Exibe todos os parametros.
     ];
@@ -206,7 +208,9 @@ class js extends \controllers\EndPoint
     // $response['teste'] = $params;
 
     // todo - Pegar o arquivo js (de acordo com o attr 0) e retornar o texto do arquivo aqui.
-    $response = 'console.log("Plugin JS solicitado: ' . $params['infoUrl']['attr'][0] . '");';
+    $response = 'console.log("oiPlugin JS solicitado: {{infoUrl.attr.0}}");';
+
+    $response = Render::doc($response, $params, 5, 'plugin-' . $params['infoUrl']['attr'][0]);
 
     // Finaliza a execução da função.
     self::$params['response'] = $response;

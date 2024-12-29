@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use classes\ManagerFile;
+
 /**
  * Cache
  */
@@ -18,18 +20,18 @@ class Cache
    * @param  mixed $time
    * @return string|bool
    */
-  public static function get($domain, $hash, $time)
+  public static function get($domain, $time)
   {
     // Obtém o path do arquivo ou false.
-    $pathFile = self::check($domain, $hash);
-
-    // Verifica se cache está vencido e finaliza.
-    if ((time() - filemtime($pathFile)) > $time) {
-      return false;
-    }
+    $pathFile = self::check($domain);
 
     // Verifica se existe o caminho.
     if (!$pathFile) {
+      return false;
+    }
+
+    // Verifica se cache está vencido e finaliza.
+    if ((time() - filemtime($pathFile)) > $time) {
       return false;
     }
 
@@ -48,10 +50,10 @@ class Cache
    * @param  mixed $content
    * @return bool
    */
-  public static function set($domain, $hash, $content)
+  public static function set($domain, $content)
   {
     // Obtém o path do arquivo ou false.
-    $pathFile = self::pathHash($domain, $hash);
+    $pathFile = self::pathHash($domain);
 
     // Grava conteúdo em TXT.
     return file_put_contents($pathFile, $content);
@@ -92,10 +94,10 @@ class Cache
    * @param  mixed $domain
    * @return string|bool
    */
-  private static function check($domain, $hash)
+  private static function check($domain)
   {
-    // Guarda o nome e caminho do arquivo.
-    $pathFile = self::pathHash($domain, $hash);
+    // Guarda o caminho e o nome do arquivo.
+    $pathFile = self::pathHash($domain);
 
     // Verifica se o arquivo existe e retorna caminho.
     if (is_file($pathFile)) {
@@ -114,16 +116,16 @@ class Cache
    * @param  mixed $domain
    * @return string|bool
    */
-  private static function pathHash($domain, $hash)
+  private static function pathHash($domain)
   {
     // Monta o caminho base.
-    $basePath = BASE_PATH_CACHE . $domain;
+    $basePath = BASE_PATH_CACHE . str_replace(['.php', '.html'], ['', ''], $domain) . '.txt';
 
     // Caso não tenha a pasta, cria.
-    self::creatDir($basePath);
+    ManagerFile::createIfNotExistDirPath($basePath);
 
     // Retorna o caminho completo do arquivo.
-    return $basePath . '/' . str_replace(['/', '.php', '.html'], ['-', '', ''], $hash) . '.txt';
+    return $basePath;
   }
   
   /**

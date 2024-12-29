@@ -267,8 +267,7 @@ class Engine
    */
   private static function renderEndpoint()
   {
-
-    // Caso tenha cache, não processa a renderização.
+    // Caso tenha cache, mostra na tela e finaliza.
     if (self::$renderCacheEndPoint) {
       // Renderiza o cache.
       echo self::$renderCacheEndPoint;

@@ -142,7 +142,7 @@ class Render
     $result = false;
 
     // Tenta obter cache.
-    $cache = self::getCache('app/cache/obj/' . self::path_file_cache($obj_path, $flag), $cacheTime);
+    $cache = self::getCache('obj/' . self::path_file_cache($obj_path, $flag), $cacheTime);
 
     // Verifica se teve retorno cache.
     if ($cache) {
@@ -170,13 +170,13 @@ class Render
    * @param  mixed $flag Flag para diferenciar cache.
    * @return string
    */
-  public static function obj($obj_path, $params = null, $cacheTime = null, $flag = null)
+  public static function obj($obj_path, $params = null, $cacheTime = false, $flag = null)
   {
     // Retorno padrão.
     $result = false;
 
     // Tenta obter cache.
-    $cache = self::getCache('app/cache/obj/' . self::path_file_cache($obj_path, $flag), $cacheTime);
+    $cache = self::getCache('obj/' . self::path_file_cache($obj_path, $flag), $cacheTime);
 
     // Verifica se teve retorno cache.
     if ($cache) {
@@ -188,7 +188,7 @@ class Render
     $result = self::twig('template/render/', $obj_path, $params);
 
     // Salva resultado do processamento em cache.
-    self::saveCache('app/cache/obj/' . self::path_file_cache($obj_path, $flag), $result, $cacheTime);
+    self::saveCache('obj/' . self::path_file_cache($obj_path, $flag), $result, $cacheTime);
 
     // Retorna o resultado do processamento.
     return $result;
@@ -211,7 +211,7 @@ class Render
     $result = false;
 
     // Tenta obter cache.
-    $cache = self::getCache('app/cache/obj/' . self::path_file_cache($flag), $cacheTime);
+    $cache = self::getCache('obj/' . self::path_file_cache($flag), $cacheTime);
 
     // Verifica se teve retorno cache.
     if ($cache) {
@@ -224,25 +224,25 @@ class Render
 
 
   /**
-   * html
+   * doc
    * 
-   * Renderiza um texto html com os parâmetros personalizados.
+   * Renderiza um documento de texto com os parâmetros personalizados.
    * É possível criar um cache para não precisar renderizar esse texto html.
    * É possível criar uma flag para tornar esse cache único.
    *
-   * @param  mixed $html
+   * @param  mixed $text
    * @param  mixed $params
-   * @param  mixed $cacheTime
+   * @param  mixed $cacheTime // Em segundos
    * @param  string $flag // Nome do arquivo cache.
    * @return string
    */
-  public static function html($html, $params = null, $cacheTime = null, $flag = '')
+  public static function doc($text, $params = null, $cacheTime = false, $flag = '')
   {
     // Retorno padrão.
     $result = false;
 
     // Tenta obter cache.
-    $cache = self::getCache('app/cache/html/' . self::path_file_cache($flag), $cacheTime);
+    $cache = self::getCache('text/' . self::path_file_cache($flag), $cacheTime);
 
     // Verifica se teve retorno cache.
     if ($cache) {
@@ -252,7 +252,7 @@ class Render
 
     // Inicia a construção do HTML
     $loader = new \Twig\Loader\ArrayLoader([
-      'index' => $html,
+      'index' => $text,
     ]);
     $twig = new \Twig\Environment($loader);
     $twig->addExtension(new IntlExtension());
@@ -261,7 +261,7 @@ class Render
     $result = $twig->render('index', $params);
 
     // Salva resultado do processamento em cache.
-    self::saveCache('app/cache/obj/' . self::path_file_cache($flag), $result, $cacheTime);
+    self::saveCache('text/' . self::path_file_cache($flag), $result, $cacheTime);
 
     return $result;
   }
@@ -299,30 +299,19 @@ class Render
    * Carrega cache se possível.
    * É possível criar uma flag para tornar esse cache único.
    *
-   * @param  mixed $path_file
+   * @param  mixed $pathFile
    * @param  mixed $cacheTime
    * @param  mixed $flag
    * @return string
    */
-  public static function getCache($path_file, $cacheTime = null)
+  public static function getCache($pathFile, $cacheTime = false)
   {
-    // Verifica se o arquivo não existe e finaliza.
-    if (!is_file($path_file)) {
-      return false;
-    }
-
-    // Verifica se não é necessário obter cache.
+    // Verifica se não tem vencimento ou se não ten conteúdo a ser salvo e finaliza.
     if (!$cacheTime) {
       return false;
     }
 
-    // Verifica se cache está vencido e finaliza.
-    if ((time() - filemtime($path_file)) > $cacheTime) {
-      return false;
-    }
-
-    // Retorna conteúdo do cache.
-    return file_get_contents($path_file);
+    return Cache::get($pathFile, $cacheTime);
   }
 
 
@@ -330,27 +319,20 @@ class Render
    * saveCache
    * 
    * Salva cache se possível.
-   * É possível criar uma flag para tornar esse cache único.
    *
-   * @param  mixed $path_file
-   * @param  mixed $cacheTime Em segundos
-   * @param  mixed $flag
-   * @return bool
+   * @param  string $pathFile
+   * @param  string $content
+   * @param  int $cacheTime Em segundos
+   * @return void
    */
-  public static function saveCache($path_file, $content = null, $cacheTime = null)
+  public static function saveCache($pathFile, $content = false, $cacheTime = false)
   {
     // Verifica se não tem vencimento ou se não ten conteúdo a ser salvo e finaliza.
     if (!$cacheTime || !$content) {
       return false;
     }
-
-    // Verifica se o arquivo não existe, Verifica se cache não está vencido e finaliza.
-    if (is_file($path_file) && time() - filemtime($path_file) < $cacheTime) {
-      return false;
-    }
-
-    // Retorna conteúdo do cache.
-    return file_put_contents($path_file, $content);
+    
+    Cache::set($pathFile, $content);
   }
 
 
@@ -371,23 +353,15 @@ class Render
     // Verifica se o cache está ativo.
     if ($paramsRender['cache']) {
 
-      // Obtém tipo do retorno.
-      $extension = explode('/', $paramsRender['content_type']);
-      // Obtém o path do arquivo cache do endpoint.
-      $path_file = self::path_file_endpoint(end($extension), $paramsRender['cacheParams']);
-
-      // Verifica se é um arquivo.
-      if (is_file($path_file)) {
-
-        // Tempo corrido desde a última atualização do arquivo até hj em segundos.
-        $update = time() - filectime($path_file);
-
-        // Verifica se o chache está dentro do tempo.
-        if ($update < $paramsRender['cacheTime']) {
-          // Carrega o arquivo cache.
-          $cache = file_get_contents($path_file);
-        }
+      // Caso seja necessário cachear por parametros.
+      $path_endpoint = '';
+      if ($paramsRender['cacheParams']) {
+        $path_endpoint = '-' . implode('-', \controllers\FriendlyUrl::getParameters('attr'));
       }
+      // Monta o domínio do endpoint
+      $pathFile = 'endpoint/' . str_replace(['.php', '.html'], ['', ''], \controllers\FriendlyUrl::getParameters('path_endpoint')) . $path_endpoint;
+      
+      $cache = self::getCache($pathFile, $paramsRender['cacheTime']);
     }
 
     // Retorna se tem cache.
@@ -407,34 +381,19 @@ class Render
    */
   public static function saveCacheEndpoint($paramsRender, $content)
   {
-    // Retorno padrão.
-    $cache = false;
-
     // Verifica se o cache está ativo.
     if ($paramsRender['cache']) {
 
-      // Obtém tipo do retorno.
-      $extension = explode('/', $paramsRender['content_type']);
-      // Obtém o path do arquivo cache do endpoint.
-      $path_file = self::path_file_endpoint(end($extension), $paramsRender['cacheParams']);
-
-      // Verifica se é um arquivo.
-      if (is_file($path_file)) {
-        // Tempo corrido desde a última atualização do arquivo até hj em segundos.
-        $update = time() - filectime($path_file);
-      } else {
-        $update = $paramsRender['cacheTime'];
+      // Caso seja necessário cachear por parametros.
+      $path_endpoint = '';
+      if ($paramsRender['cacheParams']) {
+        $path_endpoint = '-' . implode('-', \controllers\FriendlyUrl::getParameters('attr'));
       }
+      // Monta o domínio do endpoint
+      $pathFile = 'endpoint/' . str_replace(['.php', '.html'], ['', ''], \controllers\FriendlyUrl::getParameters('path_endpoint')) . $path_endpoint;
 
-      // Verifica se o chache está dentro do tempo.
-      if ($update >= $paramsRender['cacheTime']) {
-        // salva o arquivo cache.
-        $cache = file_put_contents($path_file, $content);
-      }
+      self::saveCache($pathFile, $content, $paramsRender['cacheTime']);
     }
-
-    // Finaliza informando que não tem cache.
-    return $cache;
   }
 
 
@@ -451,7 +410,7 @@ class Render
   private static function path_file_endpoint($extension, $use_url_params = false)
   {
     // Guarda caminho do diretório.
-    $dir = 'app/cache/endpoint/';
+    $dir = 'endpoint/';
 
     // Obtém caminho do arquivo cache.
     $path_file = $dir . str_replace(['/', '.php', '.html'], ['-', '', ''], \controllers\FriendlyUrl::getParameters('path_endpoint'));
@@ -479,6 +438,6 @@ class Render
    */
   private static function path_file_cache($path_file, $flag = 'flag')
   {
-    return str_replace(['/', '.php', '.html'], ['-', '', ''], $path_file) . '-' . $flag . '.txt';
+    return str_replace(['.php', '.html'], ['', ''], $path_file) . '-' . $flag;
   }
 }
