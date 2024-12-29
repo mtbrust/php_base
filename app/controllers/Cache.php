@@ -119,7 +119,7 @@ class Cache
   private static function pathHash($domain)
   {
     // Monta o caminho base.
-    $basePath = BASE_PATH_CACHE . str_replace(['.php', '.html'], ['', ''], $domain) . '.txt';
+    $basePath = BASE_PATH_CACHE . date('Y-m-d') . '/' . str_replace(['.php', '.html'], ['', ''], $domain) . '.txt';
 
     // Caso não tenha a pasta, cria.
     ManagerFile::createIfNotExistDirPath($basePath);
