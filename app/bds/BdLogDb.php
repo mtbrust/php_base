@@ -44,8 +44,8 @@ class BdLogDb extends \controllers\DataBase
             "url"        => "VARCHAR(256) NULL",                                          // Url atual.
             "attr"       => "VARCHAR(256) NULL",                                          // Parametros da url atual.
             "post"       => "VARCHAR(256) NULL",                                          // POST.
-            "get"        => "VARCHAR(256) NULL",                                          // GET.
-            "controller" => "VARCHAR(64) NULL",                                           // GET.
+            "`get`"      => "VARCHAR(256) NULL",                                          // GET Params
+            "controller" => "VARCHAR(64) NULL",                                           // Controlador.
             "conn"       => "INT(1) NULL",                                                // Conexão utilizada.
             "query"      => "VARCHAR(256) NULL COMMENT 'SQL completo, ou Dispositivo'",   // Query executada. [LOG VISITA].
             "tableName"  => "VARCHAR(256) NULL COMMENT 'Tabela, ou Linguagem'",           // Tabela principal da Query executada. [LOG VISITA].

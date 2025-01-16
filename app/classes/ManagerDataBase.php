@@ -18,13 +18,13 @@ class ManagerDataBase
      * @var array
      */
     static private $tables = [
-        'BdLogDb',
-        'BdLogins',
-        'BdGroups',
-        'BdLoginsGroups',
+        // 'BdLogDb',
+        // 'BdLogins',
+        // 'BdGroups',
+        // 'BdLoginsGroups',
         'BdPermissions',
-        'BdStatus',
-        'BdModelo',
+        // 'BdStatus',
+        // 'BdModelo',
     ];
 
     /**

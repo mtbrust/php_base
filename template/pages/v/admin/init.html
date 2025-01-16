@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/ping', {},function(){}, 'GET')">Teste API</button>
+            <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/v1/config/init/bd_tables_create', {},function(){}, 'GET')">BD Tables Create</button>
+            <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/v1/config/init/bd_tables_delete', {},function(){}, 'GET')">BD Tables Delete</button>
+            <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/v1/config/init/bd_tables_insert', {},function(){}, 'GET')">BD Tables Insert</button>
+        </div>
+    </div>
+</div>
+{{base.url}}
+{{html|raw}}

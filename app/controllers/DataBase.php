@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use classes\ManagerLogs;
+
 /**
  * DataBase
  * 
@@ -112,6 +114,9 @@ class DataBase
 			// Guarda objeto de conexão no parâmetro conn.
 			self::$conns[$conn] = $pdo_conn;
 		} catch (\PDOException $error) {
+			
+			ManagerLogs::registerError('sql/connection', json_encode($error->errorInfo));
+			
 			// Caso não consiga realizar a conexão, salva mensagem de erro.
 			\classes\FeedBackMessagens::add('danger', 'Erro.', 'Não foi possível conectar com [' . BASE_BDS[$conn]['DBMANAGER'] . ']. Conexão: ' . BASE_BDS[$conn]['TITLE'] . $error->getMessage());
 		}
@@ -437,6 +442,8 @@ class DataBase
 
 		// Executa query de criação.
 		if (!$sth->execute()) {
+			ManagerLogs::registerError('sql/execute', $sql);
+			ManagerLogs::registerError('sql/execute', json_encode($pdo->errorInfo()));
 			// FeedBack
 			\classes\FeedBackMessagens::add('danger', 'Erro.', 'Não foi possível inserir o registro. Tabela [<b>' . $this->tableName . '</b>].' . print_r($sth->errorInfo(), true));
 			return false;
