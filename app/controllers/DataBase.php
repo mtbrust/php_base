@@ -220,7 +220,7 @@ class DataBase
 
 		// Junta e trata os campos e tipos.
 		foreach ($fields as $key => $value) {
-			$sql_fields .= ',' . $key . ' ' . $value;
+			$sql_fields .= ',`' . $key . '` ' . $value;
 		}
 		// Ajusta texto.
 		$sql_fields[0] = ' ';
@@ -417,7 +417,7 @@ class DataBase
 		$fields = array_merge($this->acrescentaValoresObrigatorios(true), $fields);
 
 		// Obtém as chaves (nome dos campos).
-		$cols = implode(', ', array_keys($fields));
+		$cols = '`' . implode('`, `', array_keys($fields)) . '`';
 		// Obtém as chaves como parâmetro (incluido em values), para depois trocar pelos valores.
 		$params = implode(', :', array_keys($fields));
 
@@ -977,12 +977,12 @@ class DataBase
 		$fields = array_merge($this->acrescentaValoresObrigatorios(true), $fields);
 
 		// Obtém as chaves (nome dos campos).
-		$cols = implode(', ', array_keys($fields));
+		$cols = '`' . implode('`, `', array_keys($fields)) . '`';
 		// Obtém as chaves como parâmetro (incluido em values), para depois trocar pelos valores.
 		$params = implode(', :', array_keys($fields));
 
 		// Constrói sql.
-		$sql = "INSERT INTO " . BASE_BDS[$this->conn]['PREFIX'] . 'logDb' . " ($cols) VALUES(:$params)";
+		$sql = "INSERT INTO `" . BASE_BDS[$this->conn]['PREFIX'] . 'logDb' . "` ($cols) VALUES(:$params)";
 
 		// Prepara a Query.
 		$sth = $pdo->prepare($sql);

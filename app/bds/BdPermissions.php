@@ -48,7 +48,7 @@ class BdPermissions extends \controllers\DataBase
             "nome"      => "VARCHAR(32) NULL",    // Título do registro.
             "urlPagina" => "VARCHAR(128) NULL",   // A frente do "/".
             "session"   => "TINYINT(1) NULL",     // Necessita de session.
-            "`get`"     => "TINYINT(1) NULL",     // Necessita de permissão para get.
+            "get"     => "TINYINT(1) NULL",     // Necessita de permissão para get.
             "getFull"   => "TINYINT(1) NULL",     // Necessita de permissão para ver informações completas.
             "post"      => "TINYINT(1) NULL",     // Necessita de permissão para post.
             "put"       => "TINYINT(1) NULL",     // Necessita de permissão para put.
@@ -356,6 +356,9 @@ class BdPermissions extends \controllers\DataBase
 
         // Acrescenta permissões iniciais de grupo. (Administradores)
         $this->addPermissionsGroup(1, 'restrito/');
+        // todo brust - Apenas para teste retirar
+        return $r;
+
         $this->addPermissionsGroup(1, 'restrito/page2/');
 
         $this->addPermissionsGroup(2, 'restrito/');
