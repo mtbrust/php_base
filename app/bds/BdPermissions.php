@@ -1,5 +1,7 @@
 <?php
 
+use classes\DevHelper;
+
 class BdPermissions extends \controllers\DataBase
 {
 
@@ -245,7 +247,7 @@ class BdPermissions extends \controllers\DataBase
             SELECT 
                 urlPagina, 
                 max(session) as 'session',
-                max(get) as 'get',
+                max(`get`) as 'get',
                 max(getFull) as 'getFull',
                 max(post) as 'post',
                 max(put) as 'put',
@@ -356,9 +358,6 @@ class BdPermissions extends \controllers\DataBase
 
         // Acrescenta permissões iniciais de grupo. (Administradores)
         $this->addPermissionsGroup(1, 'restrito/');
-        // todo brust - Apenas para teste retirar
-        return $r;
-
         $this->addPermissionsGroup(1, 'restrito/page2/');
 
         $this->addPermissionsGroup(2, 'restrito/');

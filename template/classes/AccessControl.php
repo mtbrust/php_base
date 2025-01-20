@@ -1,5 +1,6 @@
 <?php
 
+use classes\DevHelper;
 
 class AccessControl
 {
@@ -13,8 +14,9 @@ class AccessControl
         $bdLogins = new \BdLogins();
         $user = $bdLogins->verificaLogin($login, $passWord);
 
+        // Verifica se retornou usuário.
         if (!$user){
-            return self::response(true, 'Login ou Senha inválidos.');
+            return self::response(true, '{"Login ou Senha inválidos."}');
         }
 
         // Verifica se usuário tem impedimentos.
@@ -22,27 +24,24 @@ class AccessControl
         if ($chekUser['error']) {
             return $chekUser;
         }
-
-        // Criar o select que pega os grupos e permissões do usuáro.
         
+        // Obtém as permissões do usuário.
         $bdPermissions = new \BdPermissions();
         $permissions = $bdPermissions->permissoesUsuario($user['id']);
 
+        // todo - juntar as permissões específicas. (cachear permissões)
         // $permissions = json_decode('['.$permissions[0]['especific'].']');
         // $permissions = json_decode('["a"'.$permissions[0]['especific'].']');
         // $array = array_merge($array[0], $array[1]);
 
-        \classes\DevHelper::printr($permissions);
-
+        // todo - montar o menu específico do usuário. (cachear)
         $menu = [];
 
         // Crio a sessão com as informações de usuário.
         \classes\Session::create($user, $permissions, $menu);
 
         // Retorno positivo.
-        return self::response(false, 
-        'Usuário: ' . $login . '. Senha: ' . $passWord . '.<br>', 
-        $user);
+        return self::response(false, 'Usuário: ' . $login . '. Nome: ' . $user['fullName'] . '.', $user);
     }
 
     static public function logOut() {}
@@ -56,6 +55,16 @@ class AccessControl
         }
     }
 
+    /**
+     * [Description for response]
+     *
+     * @param bool $error // true ou false
+     * @param string $msg // Mensagem simplificada
+     * @param mixed $data // Informações
+     * 
+     * @return array
+     * 
+     */
     static private function response($error, $msg, $data = null)
     {
         return [

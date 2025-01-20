@@ -2,6 +2,9 @@
 
 namespace pages;
 
+use classes\DevHelper;
+use classes\Session;
+
 /**
  * ORIENTAÇÕES DO MODELO PADRÃO
  * Modelo padrão de controller para o endpoint (páginas ou APIs).
@@ -248,6 +251,8 @@ class login extends \controllers\EndPoint
 		
 		// Tenta realizar o login.
 		$result = \AccessControl::logIn($_POST['user'], $_POST['senha']);
+		// DevHelper::printr($result);
+		// DevHelper::printr(Session::get());
 
 		self::$params['html'] = json_encode($result, JSON_UNESCAPED_UNICODE);
 

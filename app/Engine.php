@@ -194,7 +194,7 @@ class Engine
   {
 
     // Verifica sessão e segurança.
-    self::$checkSecurity = \controllers\Security::start(self::$endPointParams['security'], self::$endPointParams['menus']);
+    self::$checkSecurity = \controllers\Security::start(self::$endPointParams['security'], self::$endPointParams['menus'], self::$infoUrl);
 
     // Manda parâmetros atualizados para a controller.
     self::$endpointClass->setParameters(['security' => self::$checkSecurity]);

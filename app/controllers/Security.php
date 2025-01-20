@@ -3,10 +3,13 @@
 namespace controllers;
 
 use classes\DevHelper;
+use classes\Session;
 
 class Security
 {
   private static $paramsSecurity = [];
+
+  private static $infoUrl = [];
 
   /**
    * start
@@ -15,22 +18,24 @@ class Security
    * @param  mixed $params
    * @return mixed
    */
-  public static function start($params = [], $menus = [])
+  public static function start($params = [], $menus = [], $infoUrl = [])
   {
     // Inicia a sessão independente se tiver sessão a página (para garantir que vai disponibilizar informações caso usuário estiver logado).
-    \classes\Session::start();
+    Session::start();
 
     // Salva os parâmetros de segurança.
     self::$paramsSecurity = $params;
 
+    self::$infoUrl = $infoUrl;
+
     // Mesmo não precisando de sessão, caso tenha, manda para a controller.
-    self::$paramsSecurity['session'] = \classes\Session::get();
+    self::$paramsSecurity['session'] = Session::get();
 
     // Guarda namespace (api ou page)
-    $namespace = \controllers\FriendlyUrl::getParameters('namespace');
+    $namespace = self::$infoUrl['namespace'];
 
     // Guarda a função atual (menu).
-    $menu = FriendlyUrl::getParameters('func');
+    $menu = self::$infoUrl['func'];
 
     // Verifica se segurança NÃO está ativa para endpoint atual e finaliza.
     if (!$params['ativo']) {
@@ -92,7 +97,7 @@ class Security
       // Verifica se existe sessão aberta.
       if (!\classes\Session::check($params['sessionTimeOut'])) {
         // Monta url de redirecionamento para login e passa a url atual.
-        $url = BASE_URL . $params['loginPage'] . '?redirect_url=' . FriendlyUrl::getParameters('url');
+        $url = BASE_URL . $params['loginPage'] . '?redirect_url=' . self::$infoUrl['url'];
         // Redireciona para url.
         header('location: ' . $url);
       }
@@ -197,9 +202,7 @@ class Security
     // Verifica se necessita de sessão. E analisa permissões do usuário logado.
     if ($params['session']) {
 
-      // todo - FAZER A PARTE DE PERMISSÕES POR USUÁRIO LOGADO E GRUPOS.
-      echo '{TEM QUE FAZER ESSA PARTE DE VERIFICAR PERMISSÕES DO ENDPOINT.} ' . __FILE__;
-      // Verifica se tem permissões específicas para acessar a função (menu) do endpoint.
+      // Verifica se tem permissões específicas (funão menu) ou geral do endpoint.
       if (isset($menus[$menu])) {
         // Permissões específicas para menu do endpoint.
         $permissionEndpoint = $menus[$menu]['permission'];
@@ -208,12 +211,17 @@ class Security
         $permissionEndpoint = $params['permission'];
       }
 
-      // Permissão da página atual.
-      $controller_path = \controllers\FriendlyUrl::getParameters('controller_path');
+      // Permissões que usuário tem na página atual.
+      $permissionUser = self::getPermissionUrlRelative(Session::get('permissions'), self::$infoUrl['url_relative']);
 
-      $permissionUser = \classes\Session::get('permissions');
-      echo '<hr>PERMISSÕES QUE USUÁRIO LOGADO TEM NESTA PÁGINA(MENU): <pre>';
-      print_r($permissionUser[$controller_path]);
+      // todo - verificar como está sendo gravado as permissões específicas. (tem que conseguir transformar em array de novo.)
+      // DevHelper::printr($params['permission']);
+      $tmp = $permissionUser;
+      $tmp = $tmp['especific'];
+      $tmp = '[' . $tmp . ']';
+      // $tmp = json_decode($tmp);
+      DevHelper::printr($tmp);
+
       echo '<hr>PERMISSÕES QUE A PÁGINA(MENU) ATUAL EXIGE: <pre>';
       print_r($permissionEndpoint);
       echo '<hr>PÁGINA(MENU) ATUAL: <pre>';
@@ -225,5 +233,14 @@ class Security
       print_r($params);
       exit;
     }
+  }
+
+  private static function getPermissionUrlRelative($permissionsUser, $urlRelative)
+  {
+    foreach ($permissionsUser as $key => $value) {
+      if ($value['urlPagina'] == $urlRelative)
+      return $value;
+    }
+    return false;
   }
 }
