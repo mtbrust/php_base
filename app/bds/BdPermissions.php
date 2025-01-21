@@ -398,7 +398,7 @@ class BdPermissions extends \controllers\DataBase
             "patch"     => '0',
             "del"       => true,
             "api"       => '0',
-            "especific" => '["botao_excluir1","botao_editar1"]',
+            "especific" => 'botao_excluir1,botao_editar1,botao_editar2',
             'obs'       => 'Cadastro Inicial.',
         ]);
 
@@ -427,7 +427,7 @@ class BdPermissions extends \controllers\DataBase
             "patch"     => true,
             "del"       => '0',
             "api"       => '0',
-            "especific" => '["botao_excluir2","botao_editar2"]',
+            "especific" => 'botao_excluir2,botao_editar2',
             'obs'       => 'Cadastro Inicial.',
         ]);
 

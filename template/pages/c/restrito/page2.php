@@ -68,11 +68,11 @@ class page2 extends \controllers\EndPoint
 				"post"    => 1,   // Permissão para acessar a função post ou requisição post desta página.
 				"put"     => 1,   // Permissão para acessar a função put ou requisição put desta página.
 				"patch"   => 1,   // Permissão para acessar a função patch ou requisição patch desta página.
-				"delete"  => 1,   // Permissão para acessar a função delete ou requisição delete desta página.
+				"del"  => 1,   // Permissão para acessar a função delete ou requisição delete desta página.
 				"api"     => 1,   // Permissão para acessar a função API desta página.
 				"especific" => [
-					'botao_excluir',
-					'botao_editar', // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+					'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+					'botao_editar' => 1,
 				],
 			],
 		];

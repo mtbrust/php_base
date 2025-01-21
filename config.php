@@ -172,25 +172,25 @@ define("BASE_PARAMS_SECURITY", [
   ],
 
   // Caminho para página de login.
-  'loginPage'         => 'login/',
+  'loginPage'         => 'admin/login/',
 
   // Caminho para página restrita.
   'restrictPage'      => 'admin/', // Page admin dentro do modelo.
 
   // // Permissões personalizadas da página atual. 
   // // [1] Usuário tem que ter permissão, [0] Não necessita permissão.
-  'permission'        => [ 
+  'permission'        => [
     "session" => 0,   // Necessário usuário com sessao nesta página.
     "get"     => 0,   // Permissão para acessar a função get desta página.
     "getFull" => 0,   // Permissão para acessar a função getFull desta página.
     "post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
     "put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
     "patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
-    "delete"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+    "del"     => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
     "api"     => 0,   // Permissão para acessar a função API desta página.
     "especific" => [
-      'botao_excluir',
-      'botao_editar', // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+      'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+      'botao_editar' => 1,
     ],
   ],
 
@@ -291,7 +291,20 @@ define("BASE_PARAMS_MENUS", [
   // Função:
   'get' => [
     'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
-    'permission' => '100010000',   // Permissões necessárias para acesso.
+    'permission' => [
+      "session" => 0,   // Necessário usuário com sessao nesta página.
+      "get"     => 0,   // Permissão para acessar a função get desta página.
+      "getFull" => 0,   // Permissão para acessar a função getFull desta página.
+      "post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
+      "put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
+      "patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
+      "del"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+      "api"     => 0,   // Permissão para acessar a função API desta página.
+      "especific" => [
+        'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+        'botao_editar' => 1,
+      ],
+    ],
     'groups'     => [],            // Quais grupos tem acesso a esse menu.
     'ids'        => [],            // Quais ids tem acesso a esse menu.
   ],
@@ -299,7 +312,20 @@ define("BASE_PARAMS_MENUS", [
   // Função:
   'test' => [
     'title'      => 'Teste',       // Nome exibido no menu. Somente pages.
-    'permission' => '100000010',   // Permissões necessárias para acesso.
+    'permission' => [
+      "session" => 0,   // Necessário usuário com sessao nesta página.
+      "get"     => 0,   // Permissão para acessar a função get desta página.
+      "getFull" => 0,   // Permissão para acessar a função getFull desta página.
+      "post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
+      "put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
+      "patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
+      "del"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+      "api"     => 0,   // Permissão para acessar a função API desta página.
+      "especific" => [
+        'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+        'botao_editar' => 1,
+      ],
+    ],
     'groups'     => [],            // Quais grupos tem acesso a esse menu.
     'ids'        => [],            // Quais ids tem acesso a esse menu.
   ],
@@ -380,36 +406,36 @@ define("BASE_PARAMS_PLUGINS", [
  */
 define("BASE_BDS", [
   0 => [
-      'TITLE'     => 'BD Principal DEV',
-      'ACTIVE'    => true,
-      'DBMANAGER' => 'mysql',
-      'HOST'      => 'localhost',
-      'PORT'      => '3306',
-      'USERNAME'  => 'root',
-      'PASSWORD'  => '',
-      'DATABASE'  => 'desv_base_php',
-      'CHARSET'   => 'utf8',
-      'PREFIX'    => 'base_php_',
+    'TITLE'     => 'BD Principal DEV',
+    'ACTIVE'    => true,
+    'DBMANAGER' => 'mysql',
+    'HOST'      => 'localhost',
+    'PORT'      => '3306',
+    'USERNAME'  => 'root',
+    'PASSWORD'  => '',
+    'DATABASE'  => 'desv_base_php',
+    'CHARSET'   => 'utf8',
+    'PREFIX'    => 'base_php_',
   ],
   1 => [
-      'TITLE'     => 'BD Secundario DEV',
-      'ACTIVE'    => true,
-      'DBMANAGER' => 'mysql',
-      'HOST'      => 'localhost',
-      'PORT'      => '3306',
-      'USERNAME'  => 'root',
-      'PASSWORD'  => '',
-      'DATABASE'  => 'base_php',
-      'CHARSET'   => 'utf8',
-      'PREFIX'    => 'v4',
+    'TITLE'     => 'BD Secundario DEV',
+    'ACTIVE'    => true,
+    'DBMANAGER' => 'mysql',
+    'HOST'      => 'localhost',
+    'PORT'      => '3306',
+    'USERNAME'  => 'root',
+    'PASSWORD'  => '',
+    'DATABASE'  => 'base_php',
+    'CHARSET'   => 'utf8',
+    'PREFIX'    => 'v4',
   ],
 ]);
 
 
 /**
-* * AUTORIZAÇÕES
-* Autorizações de APIs, TOKENS, Terceiros, Logins, etc de acordo com ambiente.
-*/
+ * * AUTORIZAÇÕES
+ * Autorizações de APIs, TOKENS, Terceiros, Logins, etc de acordo com ambiente.
+ */
 define("BASE_AUTH", [
   // Exemplo
   'CAMPO' => 'valor', // Campo personalizado.
@@ -417,9 +443,9 @@ define("BASE_AUTH", [
 
 
 /**
-* * CONFIGURAÇÕES
-* Configurações personalizadas de acordo com ambiente.
-*/
+ * * CONFIGURAÇÕES
+ * Configurações personalizadas de acordo com ambiente.
+ */
 define("BASE_CONFIG", [
   'SHOW_ERRORS' => 1,                     // [0] Não exibe erros php. [1] Exibe erros php na tela.
   'TIMEZONE'    => 'America/Sao_Paulo',   // Seta o horário local para o horário de brasília.

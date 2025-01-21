@@ -31,31 +31,28 @@ class Security
     // Mesmo não precisando de sessão, caso tenha, manda para a controller.
     self::$paramsSecurity['session'] = Session::get();
 
-    // Guarda namespace (api ou page)
-    $namespace = self::$infoUrl['namespace'];
-
     // Guarda a função atual (menu).
     $menu = self::$infoUrl['func'];
 
     // Verifica se segurança NÃO está ativa para endpoint atual e finaliza.
-    if (!$params['ativo']) {
+    if (!self::$paramsSecurity['ativo']) {
       return self::$paramsSecurity;
     }
 
     // Permite as origens informadas do endpoint.
-    self::allowOrigins($params);
+    self::allowOrigins();
 
     // Verifica se necessita de sessão.
-    self::checkSession($params);
+    self::checkSession();
 
     // Verifica se foi solicitada altenticação por headers.
-    self::checkAuthorizationHeaders($params, $namespace);
+    self::checkAuthorizationHeaders();
 
     // Verifica se é obrigatório uso de token na transação e se tem transação.
-    self::checkToken($params, $namespace, $menu);
+    self::checkToken();
 
     // Verifica se necessita de sessão. E analisa permissões do usuário logado.
-    self::checkPermissions($params, $menu, $menus);
+    self::checkPermissions($menus);
 
     // Retorna resultado da segurança.
     return self::$paramsSecurity;
@@ -67,14 +64,13 @@ class Security
    * 
    * Permite as origens informadas do endpoint.
    *
-   * @param  mixed $params
    * @return void
    */
-  private static function allowOrigins($params)
+  private static function allowOrigins()
   {
 
     // Verifica as origens permitidas do endpoint.
-    foreach ($params['origin'] as $key => $value) {
+    foreach (self::$paramsSecurity['origin'] as $key => $value) {
       // Permite as origens.
       header("Access-Control-Allow-Origin: " . $value);
     }
@@ -86,20 +82,16 @@ class Security
    * 
    * Verifica se necessita de sessão.
    *
-   * @param  mixed $params
    * @return void
    */
-  private static function checkSession($params)
+  private static function checkSession()
   {
     // Verifica se necessita de sessão.
-    if ($params['session']) {
+    if (self::$paramsSecurity['session']) {
 
-      // Verifica se existe sessão aberta.
-      if (!\classes\Session::check($params['sessionTimeOut'])) {
-        // Monta url de redirecionamento para login e passa a url atual.
-        $url = BASE_URL . $params['loginPage'] . '?redirect_url=' . self::$infoUrl['url'];
-        // Redireciona para url.
-        header('location: ' . $url);
+      // Verifica se não existe sessão aberta.
+      if (!\classes\Session::check(self::$paramsSecurity['sessionTimeOut'])) {
+        self::redirect('A página que tentou acessar é restrita.');
       }
     }
   }
@@ -109,23 +101,21 @@ class Security
    * 
    * Verifica se foi solicitada altenticação por headers.
    *
-   * @param  mixed $params
-   * @param  mixed $namespace
    * @return void
    */
-  private static function checkAuthorizationHeaders($params, $namespace)
+  private static function checkAuthorizationHeaders()
   {
     // Verifica se foi solicitada altenticação por headers.
-    if (!empty($params['headers']) && !empty($params['headers']['key']) && !empty($params['headers']['value'])) {
+    if (!empty(self::$paramsSecurity['headers']) && !empty(self::$paramsSecurity['headers']['key']) && !empty(self::$paramsSecurity['headers']['value'])) {
       // Verifica se tem valores no cabeçalho. Se não tiver, finaliza.
-      if (isset(getallheaders()[$params['headers']['key']]) && !empty(getallheaders()[$params['headers']['key']])) {
+      if (isset(getallheaders()[self::$paramsSecurity['headers']['key']]) && !empty(getallheaders()[self::$paramsSecurity['headers']['key']])) {
         // Guarda o valor da key.
-        $authorization = getallheaders()[$params['headers']['key']];
+        $authorization = getallheaders()[self::$paramsSecurity['headers']['key']];
         // Verifica se o valor da key recebida é diferente da solicitada e finaliza.
-        if ($authorization != $params['headers']['value']) {
+        if ($authorization != self::$paramsSecurity['headers']['value']) {
 
           // Verifica se é api.
-          if ($namespace == 'api') {
+          if (self::$infoUrl['namespace'] == 'api') {
             header('Content-Type: application/json; charset=utf-8');
             // Imprime na tela mensagem de erro e finaliza.
             echo '{"msg":"Autenticação falhou."}';
@@ -136,7 +126,7 @@ class Security
         }
       } else {
         // Verifica se é api.
-        if ($namespace == 'api') {
+        if (self::$infoUrl['namespace'] == 'api') {
           header('Content-Type: application/json; charset=utf-8');
           // Imprime na tela mensagem de erro e finaliza.
           echo '{"msg":"Autenticação falhou."}';
@@ -154,15 +144,12 @@ class Security
    * 
    * Verifica se é obrigatório uso de token na transação e se tem transação.
    *
-   * @param  mixed $params
-   * @param  mixed $namespace
-   * @param  mixed $menu
    * @return void
    */
-  private static function checkToken($params, $namespace, $menu)
+  private static function checkToken()
   {
     // Verifica se é obrigatório uso de token na transação e se tem transação.
-    if ($params['token'] && $menu != 'get') {
+    if (self::$paramsSecurity['token'] && self::$infoUrl['func'] != 'get') {
 
       // Acrescenta o token nos parâmetros da security. para ser usado nas transações.
       self::$paramsSecurity['token'] = BASE_AUTH['token'];
@@ -171,7 +158,7 @@ class Security
       if (empty($_POST) || !isset($_POST['token']) || $_POST['token'] != BASE_AUTH['token']) {
 
         // Verifica se é API.
-        if ($namespace == 'api') {
+        if (self::$infoUrl['namespace'] == 'api') {
           header('Content-Type: application/json; charset=utf-8');
           // Imprime na tela mensagem de erro e finaliza.
           echo '{"msg":"É necessário um token válido para terminar a requisição."}';
@@ -188,50 +175,42 @@ class Security
 
 
   /**
-   * todo - FAZER A PARTE DE PERMISSÕES POR USUÁRIO LOGADO E GRUPOS.
    * checkPermissions
    * 
    * Verifica se necessita de sessão. E analisa permissões do usuário logado.
    *
-   * @param  mixed $params
-   * @param  mixed $menu
+   * @param  array $menus
    * @return void
    */
-  private static function checkPermissions($params, $menu, $menus)
+  private static function checkPermissions($menus)
   {
     // Verifica se necessita de sessão. E analisa permissões do usuário logado.
-    if ($params['session']) {
+    if (self::$paramsSecurity['session']) {
 
       // Verifica se tem permissões específicas (funão menu) ou geral do endpoint.
-      if (isset($menus[$menu])) {
+      if (isset($menus[self::$infoUrl['func']])) {
         // Permissões específicas para menu do endpoint.
-        $permissionEndpoint = $menus[$menu]['permission'];
+        $permissionEndpoint = $menus[self::$infoUrl['func']]['permission'];
       } else {
         // Permissões gerais do endpoint.
-        $permissionEndpoint = $params['permission'];
+        $permissionEndpoint = self::$paramsSecurity['permission'];
       }
 
       // Permissões que usuário tem na página atual.
       $permissionUser = self::getPermissionUrlRelative(Session::get('permissions'), self::$infoUrl['url_relative']);
 
-      // todo - verificar como está sendo gravado as permissões específicas. (tem que conseguir transformar em array de novo.)
-      // DevHelper::printr($params['permission']);
-      $tmp = $permissionUser;
-      $tmp = $tmp['especific'];
-      $tmp = '[' . $tmp . ']';
-      // $tmp = json_decode($tmp);
-      DevHelper::printr($tmp);
-
-      echo '<hr>PERMISSÕES QUE A PÁGINA(MENU) ATUAL EXIGE: <pre>';
-      print_r($permissionEndpoint);
-      echo '<hr>PÁGINA(MENU) ATUAL: <pre>';
-      print_r($controller_path);
-
-      echo '<Hr>
-    Finalizar aqui.
-    ';
-      print_r($params);
-      exit;
+      // Caso não tenha permissões, finaliza.
+      if (!self::comparaPermissao($permissionEndpoint, $permissionUser)) {
+        // Verifica se é api.
+        if (self::$infoUrl['namespace'] == 'api') {
+          header('Content-Type: application/json; charset=utf-8');
+          // Imprime na tela mensagem de erro e finaliza.
+          echo '{"msg":"Sem permissões"}';
+        } else {
+          self::redirect('Usuário não tem permissões para acessar a página.');
+        }
+        exit;
+      }
     }
   }
 
@@ -239,8 +218,55 @@ class Security
   {
     foreach ($permissionsUser as $key => $value) {
       if ($value['urlPagina'] == $urlRelative)
-      return $value;
+        return $value;
     }
     return false;
+  }
+
+  private static function redirect($msg = 'Redirecionado.')
+  {
+    // Monta url de redirecionamento para login e passa a url atual.
+    $url = BASE_URL . self::$paramsSecurity['loginPage'] . '?redirect_url=' . self::$infoUrl['url'] . '&redirect_msg=' . $msg;
+    // Redireciona para url.
+    header('location: ' . $url);
+  }
+
+  /**
+   * Compara as permissões exigidas com as concedidas ao uauário.
+   *
+   * @param array $exigidas
+   * @param array $concedidas
+   * 
+   * @return bool
+   * 
+   */
+  private static function comparaPermissao($exigidas, $concedidas)
+  {
+    if ($exigidas['session'] > $concedidas['session']) {
+      return false;
+    };
+    if ($exigidas['get'] > $concedidas['get']) {
+      return false;
+    };
+    if ($exigidas['getFull'] > $concedidas['getFull']) {
+      return false;
+    };
+    if ($exigidas['post'] > $concedidas['post']) {
+      return false;
+    };
+    if ($exigidas['put'] > $concedidas['put']) {
+      return false;
+    };
+    if ($exigidas['patch'] > $concedidas['patch']) {
+      return false;
+    };
+    if ($exigidas['del'] > $concedidas['del']) {
+      return false;
+    };
+    if ($exigidas['api'] > $concedidas['api']) {
+      return false;
+    };
+
+    return true;
   }
 }

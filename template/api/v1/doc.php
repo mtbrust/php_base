@@ -85,21 +85,21 @@ class doc extends \controllers\EndPoint
       // 'loginPage'         => "api/login/", // Page login dentro do modelo.
 
       // // Permissões personalizadas da página atual. 
-			// // [1] Usuário tem que ter permissão, [0] Não necessita permissão.
-			// 'permission'        => [ 
-			// 	"session" => 1,   // Necessário usuário com sessao nesta página.
-			// 	"get"     => 1,   // Permissão para acessar a função get desta página.
-			// 	"getFull" => 1,   // Permissão para acessar a função getFull desta página.
-			// 	"post"    => 1,   // Permissão para acessar a função post ou requisição post desta página.
-			// 	"put"     => 1,   // Permissão para acessar a função put ou requisição put desta página.
-			// 	"patch"   => 1,   // Permissão para acessar a função patch ou requisição patch desta página.
-			// 	"delete"  => 1,   // Permissão para acessar a função delete ou requisição delete desta página.
-			// 	"api"     => 1,   // Permissão para acessar a função API desta página.
-			// 	"especific" => [
-			// 		'botao_excluir',
-			// 		'botao_editar', // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
-			// 	],
-			// ],
+      // // [1] Usuário tem que ter permissão, [0] Não necessita permissão.
+      // 'permission'        => [ 
+      // 	"session" => 1,   // Necessário usuário com sessao nesta página.
+      // 	"get"     => 1,   // Permissão para acessar a função get desta página.
+      // 	"getFull" => 1,   // Permissão para acessar a função getFull desta página.
+      // 	"post"    => 1,   // Permissão para acessar a função post ou requisição post desta página.
+      // 	"put"     => 1,   // Permissão para acessar a função put ou requisição put desta página.
+      // 	"patch"   => 1,   // Permissão para acessar a função patch ou requisição patch desta página.
+      // 	"del"  => 1,   // Permissão para acessar a função delete ou requisição delete desta página.
+      // 	"api"     => 1,   // Permissão para acessar a função API desta página.
+      // 	"especific" => [
+      //     'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+      //     'botao_editar' => 1,
+      //   ],
+      // ],
 
       // // Transações de dados (GET - POST) apenas com token. Usar classe Tokens. Exemplo: (<input name="token" type="text" value="{{token}}" hidden>').
       // 'token'             => true, // Só aceitar com token (definido na config "BASE_AUTH['token']").
@@ -153,10 +153,23 @@ class doc extends \controllers\EndPoint
     self::$params['menus']       = [
       // Função:
       'get' => [
-          'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
-          'permission' => '100010000',   // Permissões necessárias para acesso.
-          'groups'     => [],            // Quais grupos tem acesso a esse menu.
-          'ids'        => [],            // Quais ids tem acesso a esse menu.
+        'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
+        'permission' => [
+          "session" => 0,   // Necessário usuário com sessao nesta página.
+          "get"     => 1,   // Permissão para acessar a função get desta página.
+          "getFull" => 0,   // Permissão para acessar a função getFull desta página.
+          "post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
+          "put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
+          "patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
+          "del"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+          "api"     => 0,   // Permissão para acessar a função API desta página.
+          "especific" => [
+            'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+            'botao_editar' => 1,
+          ],
+        ],
+        'groups'     => [],            // Quais grupos tem acesso a esse menu.
+        'ids'        => [],            // Quais ids tem acesso a esse menu.
       ],
     ];
   }
@@ -176,5 +189,4 @@ class doc extends \controllers\EndPoint
     // Finaliza a execução da função.
     self::$params['response'] = \controllers\Render::obj('docs/show_params.html', $params);
   }
-  
 }

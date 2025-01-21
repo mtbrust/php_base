@@ -1,5 +1,6 @@
 <?php
 
+use classes\DevHelper;
 use Respect\Validation\Rules\Lowercase;
 
 /**
@@ -192,7 +193,6 @@ class Engine
    */
   private static function checkSecurity()
   {
-
     // Verifica sessão e segurança.
     self::$checkSecurity = \controllers\Security::start(self::$endPointParams['security'], self::$endPointParams['menus'], self::$infoUrl);
 

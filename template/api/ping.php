@@ -51,7 +51,20 @@ class ping extends \controllers\EndPoint
       // Função:
       'get' => [
           'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
-          'permission' => '000000000',   // Permissões necessárias para acesso.
+          'permission' => [
+            "session" => 0,   // Necessário usuário com sessao nesta página.
+            "get"     => 1,   // Permissão para acessar a função get desta página.
+            "getFull" => 0,   // Permissão para acessar a função getFull desta página.
+            "post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
+            "put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
+            "patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
+            "del"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+            "api"     => 0,   // Permissão para acessar a função API desta página.
+            "especific" => [
+              'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+              'botao_editar' => 1,
+            ],
+          ],
           'groups'     => [],            // Quais grupos tem acesso a esse menu.
           'ids'        => [],            // Quais ids tem acesso a esse menu.
       ],

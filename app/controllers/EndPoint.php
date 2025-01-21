@@ -118,7 +118,14 @@ abstract class EndPoint
     $menu = $infoUrl['func'];
 
     // Acrescenta nos parâmetros gerais do endpoint o conteúdo header.
-    self::$params[$menu] = $this->parse_raw_http_request();
+    // self::$params[$menu] = $this->parse_raw_http_request();
+    self::$params['func'][$menu] = $this->parse_raw_http_request();
+
+    // Acrescenta informações do get.
+    self::$params['_get'] = $_GET;
+
+    // Acrescenta informações do post.
+    self::$params['_post'] = $_POST;
 
     // Retorna
     return self::$params;
