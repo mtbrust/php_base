@@ -20,8 +20,10 @@ Criar um modelo limpo apenas para get simples.
 Endpoint
   Quando habilitar um menu utilizar as permissões do menu.
 
+
 Caso chame a API da página ignorar função post.
   Quando uso a pagina/api e mando um post o sistema está puxando a função post e não a função api.
+
 
 Ajustar BD
   acrescentaValoresObrigatorios igual do checkin.
@@ -30,8 +32,7 @@ Ajustar BD
     Melhor criar uma tabela para "logs request" para separar dos logs normais.
 
 
-Security.php
-  checar e calcular as permissões.
+PQ cache está vindo true na página standart? config está false e padrão está false.
 
 
 *** -> Fazer o painel administrativo logo para poder testar o login e as permissões.

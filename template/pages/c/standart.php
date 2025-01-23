@@ -227,6 +227,70 @@ class standart extends \controllers\EndPoint
 		self::$params['plugins']     = [
 			// 'modelo',   // Exemplo.
 		];
+
+		// Monta estrutura de parâmetros passados na url ou metodo.
+		self::$params['menus']       = [
+		  // Função:
+		  'get' => [
+			  'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
+			  'permission' => [
+				"session" => 1,   // Necessário usuário com sessao nesta página.
+				"get"     => 1,   // Permissão para acessar a função get desta página.
+				"getFull" => 0,   // Permissão para acessar a função getFull desta página.
+				"post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
+				"put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
+				"patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
+				"del"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+				"api"     => 0,   // Permissão para acessar a função API desta página.
+				"especific" => [
+				  'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+				  'botao_editar' => 1,
+				],
+			  ],
+			  'groups'     => [],            // Quais grupos tem acesso a esse menu.
+			  'ids'        => [],            // Quais ids tem acesso a esse menu.
+		  ],
+		  // Função:
+		  'post' => [
+			  'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
+			  'permission' => [
+				"session" => 1,   // Necessário usuário com sessao nesta página.
+				"get"     => 0,   // Permissão para acessar a função get desta página.
+				"getFull" => 0,   // Permissão para acessar a função getFull desta página.
+				"post"    => 1,   // Permissão para acessar a função post ou requisição post desta página.
+				"put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
+				"patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
+				"del"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+				"api"     => 0,   // Permissão para acessar a função API desta página.
+				"especific" => [
+				  'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+				  'botao_editar' => 1,
+				],
+			  ],
+			  'groups'     => [],            // Quais grupos tem acesso a esse menu.
+			  'ids'        => [],            // Quais ids tem acesso a esse menu.
+		  ],
+		  // Função:
+		  'api' => [
+			  'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
+			  'permission' => [
+				"session" => 1,   // Necessário usuário com sessao nesta página.
+				"get"     => 0,   // Permissão para acessar a função get desta página.
+				"getFull" => 0,   // Permissão para acessar a função getFull desta página.
+				"post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
+				"put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
+				"patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
+				"del"     => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+				"api"     => 1,   // Permissão para acessar a função API desta página.
+				"especific" => [
+				  'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+				  'botao_editar' => 1,
+				],
+			  ],
+			  'groups'     => [],            // Quais grupos tem acesso a esse menu.
+			  'ids'        => [],            // Quais ids tem acesso a esse menu.
+		  ],
+		];
 	}
 
 
@@ -237,9 +301,50 @@ class standart extends \controllers\EndPoint
 	 * Recebe todos os parâmetros do endpoint em $params.
 	 *
 	 * @param  mixed $params
+	 * 
+	 * @return mixed
 	 */
 	public function get($params)
 	{
-		self::$params['html'] = 'Padrão.';
+		// Exibe a lista de parâmetros que a página disponibiliza.
+		self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
+	}
+
+
+	/**
+	 * post
+	 * 
+	 * Função é chamada quando recebe um post.
+	 * Recebe todos os parâmetros do endpoint em $params.
+	 *
+	 * @param  mixed $params
+	 * 
+	 * @return mixed
+	 */
+	public function post($params)
+	{
+		// Exibe a lista de parâmetros que a página disponibiliza.
+		self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
+	}
+
+	/**
+	 * api
+	 * 
+	 * Função pode ser usada como api de página.
+	 * Caso tenha alguma informação específica.
+	 *
+	 * @param mixed $params
+	 * 
+	 * @return mixed
+	 * 
+	 */
+	public function api($params)
+	{
+		self::$params['render']['content_type'] = 'application/json';
+
+		// Finaliza a execução da função.
+		self::$params['response'] = 'teste';
+		self::$params['msg'] = 'Requisição recebida com sucesso.';
+		self::$params['status']   = 200;
 	}
 }

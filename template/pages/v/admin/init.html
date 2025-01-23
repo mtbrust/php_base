@@ -20,5 +20,18 @@
         </div>
     </div>
 </div>
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col">
+            <h4>Teste</h4>
+            <form action="{{base.url}}api/ping" method="post">
+                <input type="hidden" name="campo" value="valor">
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 {{base.url}}
 {{html|raw}}
