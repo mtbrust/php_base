@@ -32,6 +32,7 @@ class Session
         // Guarda os parâmetros default.
         $paramsDefault = [
             'timestampCreate' => time(),         // Guarda o tempo atual que foi criada a sessão.
+            'timestampLife'   => 0,              // Tempo restante da session.
             'user'            => $user,          // Informações do usuário logado.
             'permissions'     => $permissions,   // Informações de permissões (páginas e permissões).
             'menu'            => $menu           // Menus personalizados (Grupo ou individual).
@@ -67,9 +68,12 @@ class Session
         // Caso tenha sessão, porém está vencida.
         // Verifica se não está na validade, destroy sessão e finaliza.
         if ((time() - $_SESSION['timestampCreate']) > $sessionTimeDuration) {
-            $_SESSION = [];
+            Session::destroy();
             return false;
         }
+
+        // Guarda os segundos que faltam para finalizar a sessão.
+        $_SESSION['timestampLife'] = $sessionTimeDuration - (time() - $_SESSION['timestampCreate']);
 
         // Caso não tenha impeditivo a sessão está ok. Sessão válida.
         return true;

@@ -9,7 +9,7 @@ class AccessControl
     static public function logIn($login, $passWord, $redirectUrl = '')
     {
         // Verifica se retornou usuário.
-        if (!self::checkCredentials($login, $passWord)){
+        if (!self::checkCredentials($login, $passWord)) {
             return self::response(true, 'Login ou Senha inválidos.');
         }
 
@@ -26,6 +26,11 @@ class AccessControl
 
         // Crio a sessão com as informações de usuário.
         \classes\Session::create(self::$user, $permissions, $menu);
+
+        // Redireciona caso tenha redirect.
+        if ($redirectUrl) {
+            self::redirect($redirectUrl);
+        }
 
         // Retorno positivo.
         return self::response(false, 'Usuário: ' . $login . '. Nome: ' . self::$user['fullName'] . '. Logado com sucesso.', self::$user);
@@ -54,7 +59,7 @@ class AccessControl
         self::$user = $bdLogins->verificaLogin($login, $passWord);
 
         // Verifica se retornou usuário.
-        if (self::$user){
+        if (self::$user) {
             return true;
         }
         return false;
@@ -139,7 +144,8 @@ class AccessControl
      * @return array
      * 
      */
-    static private function trataEspecific($especific) {
+    static private function trataEspecific($especific)
+    {
         // Transforma as permissões específicas em chaves do array.
         $especificTratado = array_flip(array_unique(explode(',', $especific)));
 
@@ -150,5 +156,21 @@ class AccessControl
 
         // Retorna um array tratado.
         return $especificTratado;
+    }
+
+    /**
+     * Redireciona para uma url e passa uma mensagem.
+     *
+     * @param string $msg
+     * 
+     * @return void
+     * 
+     */
+    private static function redirect($url, $msg = 'Redirecionado.')
+    {
+        // Monta url de redirecionamento para login e passa a url atual.
+        $url = $url . '?redirect_msg=' . $msg;
+        // Redireciona para url.
+        header('location: ' . $url);
     }
 }

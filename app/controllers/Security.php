@@ -224,6 +224,14 @@ class Security
     return false;
   }
 
+  /**
+   * Redireciona para o login e passa uma mensagem.
+   *
+   * @param string $msg
+   * 
+   * @return void
+   * 
+   */
   private static function redirect($msg = 'Redirecionado.')
   {
     // Monta url de redirecionamento para login e passa a url atual.

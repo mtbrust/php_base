@@ -162,7 +162,7 @@ define("BASE_PARAMS_SECURITY", [
   // Acessar apenas logado.
   'session'           => false,
 
-  // Tempo para sessão acabar.
+  // Tempo para sessão acabar em segundos.
   'sessionTimeOut'    => (60 * 60 * 24), // 24 horas.
 
   // Segurança por autorização no cabeçalho.
