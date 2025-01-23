@@ -1,10 +1,22 @@
 <div class="container">
-    <div class="row">
+    <div class="row mt-5">
         <div class="col">
-            <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/ping', {},function(){}, 'GET')">Teste API</button>
+            <h4>Banco de Dados</h4>
             <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/v1/config/init/bd_tables_create', {},function(){}, 'GET')">BD Tables Create</button>
             <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/v1/config/init/bd_tables_delete', {},function(){}, 'GET')">BD Tables Delete</button>
             <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/v1/config/init/bd_tables_insert', {},function(){}, 'GET')">BD Tables Insert</button>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h4>API</h4>
+            <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/ping', {},function(){}, 'GET')">Teste API</button>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h4>Session</h4>
+            <button type="button" class="btn btn-success" onclick="ajaxDados('{{base.url}}api/v1/session/end', {},function(){}, 'GET')">Finaliza session</button>
         </div>
     </div>
 </div>

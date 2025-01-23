@@ -243,7 +243,7 @@ class login extends \controllers\EndPoint
 	 */
 	public function get($params)
 	{
-		self::$params['html'] = \controllers\Render::obj('forms/login.html', $params);
+		self::$params['html'] = \controllers\Render::obj('forms/login.html', $params) . \controllers\Render::obj('docs/show_params.html', $params);
 	}
 
 	public function post($params)
@@ -259,7 +259,9 @@ class login extends \controllers\EndPoint
 		$params['_get']['redirect_url'] = 'Login';
 		$params['_get']['redirect_msg'] = $result['msg'];
 
-		// self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
 		self::get($params);
+
+
+		// self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 
 use classes\DevHelper;
+use classes\Session;
 use Respect\Validation\Rules\Lowercase;
 
 /**
@@ -196,6 +197,9 @@ class Engine
     // Verifica sessão e segurança.
     self::$checkSecurity = \controllers\Security::start(self::$endPointParams['security'], self::$endPointParams['menus'], self::$infoUrl);
 
+    // Acrescenta informações da sessão.
+    self::$endpointClass->setParameters(['_session' => Session::get()]);
+
     // Manda parâmetros atualizados para a controller.
     self::$endpointClass->setParameters(['security' => self::$checkSecurity]);
 
@@ -252,7 +256,7 @@ class Engine
     }
 
     // Chama o processamento do endpoint.
-    self::$endPointParams = self::$endpointClass->start(self::$infoUrl['func'], self::$checkSecurity);
+    self::$endPointParams = self::$endpointClass->start(self::$infoUrl['func']);
 
     // Finaliza função.
     return true;
@@ -267,18 +271,19 @@ class Engine
    */
   private static function renderEndpoint()
   {
+    // Configura tipo de retorno.
+    header("Content-Type: " . self::$endPointParams['render']['content_type'] . "; charset=" . self::$endPointParams['render']['charset']);
+
     // Caso tenha cache, mostra na tela e finaliza.
     if (self::$renderCacheEndPoint) {
       // Renderiza o cache.
       echo self::$renderCacheEndPoint;
+      // Finaliza.
       return true;
     }
 
     // Renderiza o resultado final do processamento do endPoint e do motor.
     $endpoint = \controllers\Render::endPoint(self::$endPointParams);
-
-    // Configura tipo de retorno.
-    header("Content-Type: " . self::$endPointParams['render']['content_type'] . "; charset=" . self::$endPointParams['render']['charset']);
 
     // Verifica se resultado é uma string (provavelmente deu certo).
     if (is_string($endpoint)) {

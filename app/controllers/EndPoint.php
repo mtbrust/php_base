@@ -3,6 +3,7 @@
 namespace controllers;
 
 use classes\DevHelper;
+use classes\Session;
 
 /**
  * EndPoint
@@ -21,11 +22,8 @@ abstract class EndPoint
    * @param  mixed $endPoint
    * @return array
    */
-  public function start($menu, $session = null)
+  public function start($menu)
   {
-    // Acrescenta as demais informações para uso no endpoint.
-    self::$params['session'] = $session;
-
     // Carrega banco de dados.
     $this->carregaBDs();
 

@@ -26,10 +26,8 @@ class Security
     // Salva os parâmetros de segurança.
     self::$paramsSecurity = $params;
 
+    // Guarda informações da url
     self::$infoUrl = $infoUrl;
-
-    // Mesmo não precisando de sessão, caso tenha, manda para a controller.
-    self::$paramsSecurity['session'] = Session::get();
 
     // Guarda a função atual (menu).
     $menu = self::$infoUrl['func'];
@@ -198,6 +196,9 @@ class Security
 
       // Permissões que usuário tem na página atual.
       $permissionUser = self::getPermissionUrlRelative(Session::get('permissions'), self::$infoUrl['url_relative']);
+
+      // Guarda as permissões que usuário tem.
+      self::$paramsSecurity['permissionUser'] = $permissionUser;
 
       // Caso não tenha permissões, finaliza.
       if (!self::comparaPermissao($permissionEndpoint, $permissionUser)) {
