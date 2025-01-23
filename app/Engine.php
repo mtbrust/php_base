@@ -174,7 +174,7 @@ class Engine
     self::$endPointParams = self::$endpointClass->getParameters(self::$infoUrl);
 
     // Carrega os parâmetros do banco de dados caso tenha.
-    // todo - carregar os parâmetros do banco de dados.
+    // todo - carregar os parâmetros do banco de dados. para não precisar gastar tempo aqui.
 
     // Manda parâmetros atualizados para a controller.
     self::$endpointClass->setParameters(self::$endPointParams);

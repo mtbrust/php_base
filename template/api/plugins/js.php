@@ -46,7 +46,7 @@ class js extends \controllers\EndPoint
   {
     // Opções de renderização.
     self::$params['render']      = [
-      'cache'        => true,                // Ativa uso de cache para resultado.
+      'cache'        => false,                // Ativa uso de cache para resultado.
       // 'cacheTime'    => (60 * 30),            // Tempo para renovar cache em segundos. (30 Minutos).
       // 'cacheParams'  => true,                 // Cache por parametros (attr).
       // 'content_type' => 'application/json',   // Tipo do retorno padrão do cabeçalho http.
@@ -253,6 +253,13 @@ class js extends \controllers\EndPoint
    */
   public function get($params)
   {
+    if(!isset($params['infoUrl']['attr'][0])) {
+      self::$params['response'] = '';
+      self::$params['msg'] = 'Requisição recebida com sucesso.';
+      self::$params['status']   = 200;
+      return true;
+    }
+
     // Obtenho o caminho do arquivo do plugin.
     $pathFile = BASE_DIR . '/template/plugins/' . $params['infoUrl']['attr'][0] . '/' . $params['infoUrl']['attr'][0] . '.js';
 

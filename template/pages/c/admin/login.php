@@ -248,20 +248,15 @@ class login extends \controllers\EndPoint
 
 	public function post($params)
 	{
-		
 		// Tenta realizar o login.
 		$result = \AccessControl::logIn($_POST['user'], $_POST['senha'], $_POST['redirect_url']);
-		// DevHelper::printr($result);
-		// DevHelper::printr(Session::get());
 
-		// self::$params['html'] = json_encode($result, JSON_UNESCAPED_UNICODE);
-
+		// Salva url de onde foi restrito.
 		$params['_get']['redirect_url'] = 'Login';
+		// Salva informações do login.
 		$params['_get']['redirect_msg'] = $result['msg'];
 
+		// Chama a função get novamente para criar a página. (caso login não redirecione.)
 		self::get($params);
-
-
-		// self::$params['html'] = \controllers\Render::obj('docs/show_params.html', $params);
 	}
 }

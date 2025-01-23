@@ -21,7 +21,7 @@ class AccessControl
         // Obtém as permissões do usuário.
         $permissions = self::checkPermissions();
 
-        // todo - montar o menu específico do usuário e grupo no BD. (cachear) (menu mesmo do que ele pode acessar)
+        // todo - montar o menu específico do usuário e grupo no BD. (cachear) (menu lateral com links específcos do que ele pode acessar)
         $menu = [];
 
         // Crio a sessão com as informações de usuário.
