@@ -76,6 +76,23 @@ class page2 extends \controllers\EndPoint
 				],
 			],
 		];
+
+		// Carrega estrutura html. Somente pages.
+		self::$params['structure']   = [
+			// // Origem
+			'html'        => 'admin/default',   // Estrutura HTML geral.
+
+			// // Complementos
+			'head'         => 'admin/default',   // <head> da página.
+			'top'          => 'admin/default',   // Logo após a tag <body>.
+			'header'       => 'admin/default',   // Após a estrutura "top".
+			'nav'          => 'admin/default',   // Dentro do header ou personalizado.
+			'content_top'  => 'admin/default',   // Antes do conteúdo da página.
+			'content_page' => 'admin/default',   // Reservado para conteúdo da página. Sobrescrito depois.
+			'content_end'  => 'admin/default',   // Depois do conteúdo da página.
+			'footer'       => 'admin/default',   // footer da página.
+			'end'          => 'admin/default',   // Fim da página.
+		];
 	}
 
 
