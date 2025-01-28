@@ -9,7 +9,7 @@ Arrumar inclusão de plugins.
 ENGINE.PHP
 colocar a opção de definir informações por banco de dados.
 para não precisar ficar preenchendo arquivo.
-criar os bds necessários do APP
+criar os bds necessários do APP (Menus)
 Cachear parametros do endpoint para não precisar processar.
 
 
@@ -18,7 +18,7 @@ Criar um modelo limpo apenas para get simples.
 
 
 Endpoint
-  Quando habilitar um menu utilizar as permissões do menu.
+  Quando habilitar um menu utilizar as permissões do menu. (acho que está correto.)
 
 
 Caso chame a API da página ignorar função post.
@@ -31,8 +31,11 @@ Ajustar BD
   Alterar a classe logs.php para gravar os logs generico.
     Melhor criar uma tabela para "logs request" para separar dos logs normais.
 
+  Criação da tabela para salvar os menus personalizados de usuário e grupo. (pegar de projetos antigos - ta no PC)
 
-PQ cache está vindo true na página standart? config está false e padrão está false.
-
-
-*** -> Fazer o painel administrativo logo para poder testar o login e as permissões.
+Montar página para criar 
+  usuários (logins)
+  grupos
+  permissões
+  menus
+Testar logins e permissões.

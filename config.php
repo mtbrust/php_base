@@ -361,11 +361,11 @@ define("BASE_PARAMS_STRUCTURE", [
  */
 define("BASE_PARAMS_SCRIPTS", [
   'js' => [
+    'bootstrap.bundle.min.js', // 5.3.3
     'default.min.js', // Default.
   ],
   'libs' => [
     'jquery/jquery.min.js',  // JQuery.
-    'bootstrap/js/bootstrap.bundle.min.js',  // bootstrap.
     'sweetalert2/sweetalert2.min.js',  // sweetalert2.
   ],
 ]);
@@ -379,11 +379,12 @@ define("BASE_PARAMS_SCRIPTS", [
  */
 define("BASE_PARAMS_STYLES", [
   'css' => [
+    'bootstrap.min.css',  // bootstrap 5.3.3
+    'admin/bootstrap-icons.min.css', // 5.3.3
     'default.min.css', // Default.
     'simple.css', // demostração.
   ],
   'libs' => [
-    'bootstrap/css/bootstrap.min.css',  // bootstrap
     'sweetalert2/sweetalert2.min.css',  // sweetalert2
     'fontawesome/css/all.min.css',  // fontawesome
   ],
