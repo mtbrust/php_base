@@ -135,7 +135,7 @@ Notification.requestPermission();
 function cpTransferencia(value) {
     // Se input não está criado, cria.
     if (!$("input#cpTransferencia").length) {
-        $("body").append('<input type="text" id="cpTransferencia" value="" class="m-0 p-0" style="height: 0px;border: 0;"/>');
+        $("body footer").append('<input type="text" id="cpTransferencia" value="" class="m-0 p-0" style="height: 0px;border: 0;position: absolute;"/>');
     }
 
     // Atribui o valor a ser copiado ao input.
