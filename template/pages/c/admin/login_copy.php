@@ -2,7 +2,6 @@
 
 namespace pages;
 
-use AccessControl;
 use classes\DevHelper;
 use classes\Session;
 
@@ -24,7 +23,7 @@ use classes\Session;
  * O nome da controller vai ficar como "quemsomos".
  * 
  */
-class login extends \controllers\EndPoint
+class login_copy extends \controllers\EndPoint
 {
 
 	/**
@@ -189,18 +188,18 @@ class login extends \controllers\EndPoint
 		// Carrega estrutura html. Somente pages.
 		self::$params['structure']   = [
 			// // Origem
-			'html'        => 'admin/login',   // Estrutura HTML geral.
+			// 'html'        => 'default',   // Estrutura HTML geral.
 
 			// // Complementos
-			'head'         => 'empty',   // <head> da página.
-			'top'          => 'empty',   // Logo após a tag <body>.
-			'header'       => 'empty',   // Após a estrutura "top".
-			'nav'          => 'empty',   // Dentro do header ou personalizado.
-			'content_top'  => 'empty',   // Antes do conteúdo da página.
-			'content_page' => 'empty',   // Reservado para conteúdo da página. Sobrescrito depois.
-			'content_end'  => 'empty',   // Depois do conteúdo da página.
-			'footer'       => 'empty',   // footer da página.
-			'end'          => 'empty',   // Fim da página.
+			// 'head'         => 'default',   // <head> da página.
+			// 'top'          => 'default',   // Logo após a tag <body>.
+			// 'header'       => 'default',   // Após a estrutura "top".
+			// 'nav'          => 'default',   // Dentro do header ou personalizado.
+			// 'content_top'  => 'default',   // Antes do conteúdo da página.
+			// 'content_page' => 'default',   // Reservado para conteúdo da página. Sobrescrito depois.
+			// 'content_end'  => 'default',   // Depois do conteúdo da página.
+			// 'footer'       => 'default',   // footer da página.
+			// 'end'          => 'default',   // Fim da página.
 		];
 
 		// Carrega na página scripts (template/assets/js/) Somente pages.
@@ -234,26 +233,26 @@ class login extends \controllers\EndPoint
 
 		// Monta estrutura de parâmetros passados na url ou metodo.
 		self::$params['menus']       = [
-			// Função:
-			'get' => [
-				'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
-				'permission' => [
-					"session" => 0,   // Necessário usuário com sessao nesta página.
-					"get"     => 1,   // Permissão para acessar a função get desta página.
-					"getFull" => 0,   // Permissão para acessar a função getFull desta página.
-					"post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
-					"put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
-					"patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
-					"del"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
-					"api"     => 0,   // Permissão para acessar a função API desta página.
-					"especific" => [
-						'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
-						'botao_editar' => 1,
-					],
+		  // Função:
+		  'get' => [
+			  'title'      => 'Listar',      // Nome exibido no menu. Somente pages.
+			  'permission' => [
+				"session" => 0,   // Necessário usuário com sessao nesta página.
+				"get"     => 1,   // Permissão para acessar a função get desta página.
+				"getFull" => 0,   // Permissão para acessar a função getFull desta página.
+				"post"    => 0,   // Permissão para acessar a função post ou requisição post desta página.
+				"put"     => 0,   // Permissão para acessar a função put ou requisição put desta página.
+				"patch"   => 0,   // Permissão para acessar a função patch ou requisição patch desta página.
+				"del"  => 0,   // Permissão para acessar a função delete ou requisição delete desta página.
+				"api"     => 0,   // Permissão para acessar a função API desta página.
+				"especific" => [
+				  'botao_excluir' => 1, // Permissão personalizada da página. Exemplo: só aparece o botão excluir para quem tem essa permissão específica da página.
+				  'botao_editar' => 1,
 				],
-				'groups'     => [],            // Quais grupos tem acesso a esse menu.
-				'ids'        => [],            // Quais ids tem acesso a esse menu.
-			],
+			  ],
+			  'groups'     => [],            // Quais grupos tem acesso a esse menu.
+			  'ids'        => [],            // Quais ids tem acesso a esse menu.
+		  ],
 		];
 	}
 
@@ -268,20 +267,11 @@ class login extends \controllers\EndPoint
 	 */
 	public function get($params)
 	{
-		// Verifica se usuário já está logado.
-		if (AccessControl::logOn()) {
-			self::$params['html'] = \controllers\Render::obj('admin/logon.html', $params);
-		} else {
-			self::$params['html'] = \controllers\Render::obj('admin/login.html', $params);
-		}
+		self::$params['html'] = \controllers\Render::obj('forms/login.html', $params) . \controllers\Render::obj('docs/show_params.html', $params);
 	}
 
 	public function post($params)
 	{
-		if (empty($_POST['redirect_url'])) {
-			$_POST['redirect_url'] = $params['base']['url'] . 'admin/';
-		}
-
 		// Tenta realizar o login.
 		$result = \AccessControl::logIn($_POST['user'], $_POST['senha'], $_POST['redirect_url']);
 

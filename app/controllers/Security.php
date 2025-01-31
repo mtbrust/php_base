@@ -194,14 +194,21 @@ class Security
         $permissionEndpoint = self::$paramsSecurity['permission'];
       }
 
+      // Ajusta a url relativa para quando for api.
+      $urlRelative = self::$infoUrl['url_relative'];
+      if (self::$infoUrl['namespace'] == 'api')
+      {
+        $urlRelative = 'api/' . $urlRelative;
+      }
+
       // Permissões que usuário tem na página atual.
-      $permissionUser = self::getPermissionUrlRelative(Session::get('permissions'), self::$infoUrl['url_relative']);
+      $permissionUser = self::getPermissionUrlRelative(Session::get('permissions'), $urlRelative);
 
       // Guarda as permissões que usuário tem.
       self::$paramsSecurity['permissionUser'] = $permissionUser;
 
       // Caso não tenha permissões, finaliza.
-      if (!self::comparaPermissao($permissionEndpoint, $permissionUser)) {
+      if (!$permissionUser || !self::comparaPermissao($permissionEndpoint, $permissionUser)) {
         // Verifica se é api.
         if (self::$infoUrl['namespace'] == 'api') {
           header('Content-Type: application/json; charset=utf-8');

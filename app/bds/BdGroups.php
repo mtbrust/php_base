@@ -243,17 +243,17 @@ class BdGroups extends \controllers\DataBase
         // Retorno padrão.
         $r = true;
         
-        parent::insert(['name' => 'Administradores', 'description' => 'Grupo de Administradores.']);
-        parent::insert(['name' => 'Público', 'description' => 'Grupo público para menus e informações genéricas.']);
-        parent::insert(['name' => 'Colaborador', 'description' => 'Grupo geral para colaborador.']);
-        parent::insert(['name' => 'Ferramentas', 'description' => 'Novo grupo para abrigar as ferramentas dos colaboradores.']);
-        parent::insert(['name' => 'TI', 'description' => 'Grupo de Tecnologia da Informação.']);
-        parent::insert(['name' => 'RH', 'description' => 'Grupo de Recursos Humanos.']);
-        parent::insert(['name' => 'Marketing', 'description' => 'Grupo de Marketing.']);
-        parent::insert(['name' => 'Contabilidade', 'description' => 'Grupo de Contabilidade.']);
-        parent::insert(['name' => 'Logística', 'description' => 'Grupo da logística.']);
-        parent::insert(['name' => 'Coordenadores', 'description' => 'Coordenadores de área']);
-        parent::insert(['name' => 'Gerentes', 'description' => 'Gerentes']);
+        parent::insert(['name' => 'Administradores', 'description' => 'Grupo de Administradores.']); // id: 1
+        parent::insert(['name' => 'Público', 'description' => 'Grupo público para menus e informações genéricas.']); // id: 2
+        parent::insert(['name' => 'Colaborador', 'description' => 'Grupo geral para colaborador.']); // id: 3
+        parent::insert(['name' => 'Ferramentas', 'description' => 'Novo grupo para abrigar as ferramentas dos colaboradores.']); // id: 4
+        parent::insert(['name' => 'TI', 'description' => 'Grupo de Tecnologia da Informação.']); // id: 5
+        parent::insert(['name' => 'RH', 'description' => 'Grupo de Recursos Humanos.']); // id: 6
+        parent::insert(['name' => 'Marketing', 'description' => 'Grupo de Marketing.']); // id: 7
+        parent::insert(['name' => 'Contabilidade', 'description' => 'Grupo de Contabilidade.']); // id: 8
+        parent::insert(['name' => 'Logística', 'description' => 'Grupo da logística.']); // id: 9
+        parent::insert(['name' => 'Coordenadores', 'description' => 'Coordenadores de área']); // id: 10
+        parent::insert(['name' => 'Gerentes', 'description' => 'Gerentes']); // id: 11
 
 
         // Finaliza a função.

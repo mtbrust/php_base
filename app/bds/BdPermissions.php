@@ -360,8 +360,10 @@ class BdPermissions extends \controllers\DataBase
         $this->addPermissionsGroup(1, 'restrito/');
         $this->addPermissionsGroup(1, 'restrito/page2/');
 
+        // Acrescenta permissões iniciais de grupo. (Público)
         $this->addPermissionsGroup(2, 'restrito/');
         $this->addPermissionsGroup(2, 'restrito/page2/');
+        $this->addPermissionsGroup(2, 'api/admin/v1/session/end/');
 
         // Acrescenta permissões iniciais de login. (sistema)
         $this->addPermissionsLogin(1, 'restrito/');
@@ -395,9 +397,9 @@ class BdPermissions extends \controllers\DataBase
             "getFull"   => true,
             "post"      => true,
             "put"       => true,
-            "patch"     => '0',
+            "patch"     => true,
             "del"       => true,
-            "api"       => '0',
+            "api"       => true,
             "especific" => 'botao_excluir1,botao_editar1,botao_editar2',
             'obs'       => 'Cadastro Inicial.',
         ]);
@@ -425,8 +427,8 @@ class BdPermissions extends \controllers\DataBase
             "post"      => true,
             "put"       => true,
             "patch"     => true,
-            "del"       => '0',
-            "api"       => '0',
+            "del"       => true,
+            "api"       => true,
             "especific" => 'botao_excluir2,botao_editar2',
             'obs'       => 'Cadastro Inicial.',
         ]);

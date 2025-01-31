@@ -1,6 +1,7 @@
 <?php
 
 use classes\DevHelper;
+use classes\Session;
 
 class AccessControl
 {
@@ -38,7 +39,27 @@ class AccessControl
 
     static public function logOut() {}
 
-    static public function logOn() {}
+    /**
+     * Retorna true do usuário logado ou false.
+     *
+     * @return bool
+     * 
+     */
+    static public function logOn() {
+
+        // Obtém os valores da sessão
+        $session = Session::get();
+
+        // Verifica se existe usuário logado.
+        if(isset($session['timestampLife']))
+        {
+            // Retorna toda a sessão do usuário logaod.
+            return true;
+        }
+
+        // Retorna false caso não tenha sessão.
+        return false;
+    }
 
     /**
      * Verifica se existe o login.

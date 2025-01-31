@@ -145,17 +145,17 @@
         <!--begin::User Menu Dropdown-->
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <img src="{{base.dir_relative}}template\assets\midias\logo\favicon.ico" class="user-image rounded-circle shadow"
+                <img src="{{base.dir_relative}}template\assets\midias\user\{{_session.user.id}}.png" class="user-image rounded-circle shadow"
                     alt="User Image" />
-                <span class="d-none d-md-inline">Alexander Pierce</span>
+                <span class="d-none d-md-inline">{{_session.user.fullName}}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                 <!--begin::User Image-->
                 <li class="user-header text-bg-primary">
-                    <img src="{{base.dir_relative}}template\assets\midias\logo\favicon.ico" class="rounded-circle shadow" alt="User Image" />
+                    <img src="{{base.dir_relative}}template\assets\midias\user\{{_session.user.id}}.png" class="rounded-circle shadow bg-white" alt="User Image" />
                     <p>
-                        Alexander Pierce - Web Developer
-                        <small>Member since Nov. 2023</small>
+                        {{_session.user.fullName}}
+                        <small>Desde {{_session.user.dtCreate}}</small>
                     </p>
                 </li>
                 <!--end::User Image-->
@@ -163,17 +163,17 @@
                 <li class="user-body">
                     <!--begin::Row-->
                     <div class="row">
-                        <div class="col-4 text-center"><a href="#">Followers</a></div>
-                        <div class="col-4 text-center"><a href="#">Sales</a></div>
-                        <div class="col-4 text-center"><a href="#">Friends</a></div>
+                        <div class="col-4 text-center"><a href="#">Seguidores</a></div>
+                        <div class="col-4 text-center"><a href="#">Vendas</a></div>
+                        <div class="col-4 text-center"><a href="#">Amigos</a></div>
                     </div>
                     <!--end::Row-->
                 </li>
                 <!--end::Menu Body-->
                 <!--begin::Menu Footer-->
                 <li class="user-footer">
-                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+                    <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                    <a href="{{base.url}}" class="btn btn-default btn-flat float-end" onclick="ajaxDados('{{base.url}}api/admin/v1/session/end', {},function(){}, 'GET')">Sair</a>
                 </li>
                 <!--end::Menu Footer-->
             </ul>
