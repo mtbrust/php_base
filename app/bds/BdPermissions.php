@@ -303,7 +303,6 @@ class BdPermissions extends \controllers\DataBase
         return $r;
     }
 
-
     /**
      * consultaPersonalizada
      * 
@@ -361,9 +360,10 @@ class BdPermissions extends \controllers\DataBase
         $this->addPermissionsGroup(1, 'restrito/page2/');
 
         // Acrescenta permissões iniciais de grupo. (Público)
+        $this->addPermissionsGroup(2, 'admin/');
+        $this->addPermissionsGroup(2, 'api/admin/v1/session/end/');
         $this->addPermissionsGroup(2, 'restrito/');
         $this->addPermissionsGroup(2, 'restrito/page2/');
-        $this->addPermissionsGroup(2, 'api/admin/v1/session/end/');
 
         // Acrescenta permissões iniciais de login. (sistema)
         $this->addPermissionsLogin(1, 'restrito/');

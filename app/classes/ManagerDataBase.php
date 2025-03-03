@@ -22,6 +22,7 @@ class ManagerDataBase
         'BdLogins',
         'BdGroups',
         'BdLoginsGroups',
+        'BdLoginsGroupsMenu',
         'BdPermissions',
         'BdStatus',
         'BdModelo',

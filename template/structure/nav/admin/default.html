@@ -36,5 +36,60 @@
     </ul>
     <!--end::Sidebar Menu-->
 
+    {% for item in _session.menu %}
+
+        <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="true">
+
+            
+
+            {% if 'Usuário' == item.title %}
+                <li class="nav-header">Usuário</li>
+
+                {% for menu in item.submenu %}
+
+                {% if infoUrl.url_relative == menu.url_relative %}
+                    {% set menu_active = 'active' %}
+                {% endif %}
+                <li class="nav-item">
+                    <a href="{{base.url}}{{menu.url_relative}}" class="nav-link {{menu_active}}">
+                        <i class="nav-icon bi bi-circle"></i>
+                        <p>{{menu.title}}</p>
+                    </a>
+                </li>
+                {% set menu_active = '' %}
+                {% endfor %}
+                
+                <li class="nav-header">Grupos</li>
+            {% else %}
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon bi bi-speedometer"></i>
+                    <p>
+                        {{item.title}}
+                        <i class="nav-arrow bi bi-chevron-right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+
+                    {% for menu in item.submenu %}
+
+                    {% if infoUrl.url_relative == menu.url_relative %}
+                        {% set menu_active = 'active' %}
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="{{base.url}}{{menu.url_relative}}" class="nav-link {{menu_active}}">
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>{{menu.title}}</p>
+                        </a>
+                    </li>
+                    {% set menu_active = '' %}
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+        </ul>
+
+    {% endfor %}
+
 </nav>
 {% endblock %}

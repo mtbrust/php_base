@@ -22,8 +22,11 @@ class AccessControl
         // Obtém as permissões do usuário.
         $permissions = self::checkPermissions();
 
+        // Acrescenta nas informações do usuário os grupos que ele faz parte.
+        self::setGroupsInUser();
+
         // todo - montar o menu específico do usuário e grupo no BD. (cachear) (menu lateral com links específcos do que ele pode acessar)
-        $menu = [];
+        $menu = self::getMenuUser();
 
         // Crio a sessão com as informações de usuário.
         \classes\Session::create(self::$user, $permissions, $menu);
@@ -123,6 +126,49 @@ class AccessControl
 
         // Retorna as permissões tratadas.
         return $permissions;
+    }
+
+
+    /**
+     * Seta nas informações do usuário, os grupos que ele pertence.
+     *
+     * @return void
+     * 
+     */
+    static private function setGroupsInUser()
+    {
+        $bdLoginsGroups = new \BdLoginsGroups();
+        self::$user['groups'] = $bdLoginsGroups->gruposUsuario(self::$user['id']);
+    }
+
+    /**
+     * getMenuUser
+     * 
+     * Retorna os menus que usuário tem em forma de array.
+     *
+     * @return array
+     * 
+     */
+    static private function getMenuUser()
+    {
+        // Verifica se tem algum menu para login ou grupo desse usuário.
+        $bdLoginsGroupsMenu = new \BdLoginsGroupsMenu();
+        $menus = $bdLoginsGroupsMenu->menuLoginGroup(self::$user['id'], self::$user['groups']);
+
+        // Caso não tenha nenhum menu cadastrado para esse usuário retorna vazio.
+        if (!is_array($menus)) 
+        {
+            return [];
+        }
+
+        // Ajuste o menu para array.
+        $menu = [];
+        foreach ($menus as $key => $value) {
+            array_push($menu, json_decode($value['menu'], true));
+        }
+
+        // Retorna o menu em formato array.
+        return $menu;
     }
 
     /**

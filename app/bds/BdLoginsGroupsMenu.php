@@ -1,6 +1,8 @@
 <?php
 
-class BdLoginsGroups extends \controllers\DataBase
+use classes\DevHelper;
+
+class BdLoginsGroupsMenu extends \controllers\DataBase
 {
 
     /**
@@ -9,7 +11,7 @@ class BdLoginsGroups extends \controllers\DataBase
      *
      * @var string
      */
-    protected $tableName = 'loginsGroups';
+    protected $tableName = 'loginsGroupsMenu';
 
 
     /**
@@ -43,6 +45,9 @@ class BdLoginsGroups extends \controllers\DataBase
             // Informações básicas
             "idLogin" => "INT NULL",
             "idGroup" => "INT NULL",
+
+            // Menu formato json.
+            "menu"       => "TEXT NULL",
 
 
             // CRIADO AUTOMATICAMENTE
@@ -221,21 +226,26 @@ class BdLoginsGroups extends \controllers\DataBase
         return $r;
     }
 
+    
+
+
     /**
-     * gruposUsuario
+     * consultaPersonalizada
      * 
-     * Retorna os grupos que usuário faz parte separados por vírgula.
+     * Retorna os menus cadastrados para esse login ou grupo.
      *
-     * @param PDO $conn
      * @return bool|array
      */
-    public function gruposUsuario($idUsuario)
+    public function menuLoginGroup($idLogin, $idsGroup)
     {
         // Ajusta nome real da tabela.
         $table = parent::fullTableName();
+        // $tableInnerMidia = parent::fullTableName('midia');
+        // $tableInnerLogin = parent::fullTableName('login');
+        // $tableInnerUsers = parent::fullTableName('users');
 
         // Monta SQL.
-        $sql = "SELECT GROUP_CONCAT(idGroup SEPARATOR ',') as grupos FROM $table WHERE idLogin = '$idUsuario';";
+        $sql = "SELECT menu FROM $table WHERE idLogin = '$idLogin' or idGroup in($idsGroup)";
 
         // Executa o select
         $r = parent::executeQuery($sql);
@@ -245,8 +255,9 @@ class BdLoginsGroups extends \controllers\DataBase
             return false;
 
         // Retorna primeira linha.
-        return $r[0]['grupos'];
+        return $r;
     }
+
 
     /**
      * consultaPersonalizada
@@ -328,49 +339,138 @@ class BdLoginsGroups extends \controllers\DataBase
         // Retorno padrão.
         $r = true;
 
-        // Adiciona todos os grupos ao login sistema.
-        $this->loginInGroup(1, 1);
-        $this->loginInGroup(1, 2);
-        $this->loginInGroup(1, 3);
-        $this->loginInGroup(1, 4);
-        $this->loginInGroup(1, 5);
-        $this->loginInGroup(1, 6);
-        $this->loginInGroup(1, 7);
-        $this->loginInGroup(1, 8);
-        $this->loginInGroup(1, 9);
-        $this->loginInGroup(1, 10);
-        $this->loginInGroup(1, 11);
 
-        // Adiciona todos os grupos ao login mateus.brust.
-        $this->loginInGroup(2, 1);
-        $this->loginInGroup(2, 2);
-        $this->loginInGroup(2, 3);
-        $this->loginInGroup(2, 4);
-        $this->loginInGroup(2, 5);
-        $this->loginInGroup(2, 6);
-        $this->loginInGroup(2, 7);
-        $this->loginInGroup(2, 8);
-        $this->loginInGroup(2, 9);
-        $this->loginInGroup(2, 10);
-        $this->loginInGroup(2, 11);
+        $menuUser = [
+            'icon' => '',
+            'title' => 'Usuário',
+            'type' => '',
+            'submenu' => [
+                [
+                    'title' => 'Início',
+                    'url_relative' => 'admin/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+                [
+                    'title' => 'Parâmetros da Página',
+                    'url_relative' => 'admin/parametros-pagina/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+                [
+                    'title' => 'Login',
+                    'url_relative' => 'admin/login/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+                [
+                    'title' => 'Teste',
+                    'url_relative' => 'admin/teste/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+            ]
+        ];
+
+        $menuPublic = [
+            'icon' => '',
+            'title' => 'Público',
+            'type' => '',
+            'submenu' => [
+                [
+                    'title' => 'Início',
+                    'url_relative' => 'admin/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+                [
+                    'title' => 'Login',
+                    'url_relative' => 'admin/login/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+                [
+                    'title' => 'Teste',
+                    'url_relative' => 'admin/teste/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+            ]
+        ];
+
+        $menuAdmin = [
+            'icon' => '',
+            'title' => 'Administração',
+            'type' => '',
+            'submenu' => [
+                [
+                    'title' => 'Início',
+                    'url_relative' => 'admin/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+                [
+                    'title' => 'Login',
+                    'url_relative' => 'admin/login/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+                [
+                    'title' => 'Teste',
+                    'url_relative' => 'admin/teste/',
+                    'icon' => '',
+                    'type' => '',
+                ],
+            ]
+        ];
+
+        $menuUser = json_encode($menuUser);
+        $menuPublic = json_encode($menuPublic);
+        $menuAdmin = json_encode($menuAdmin);
+
+        // Menu a um login.
+        $this->loginMenu(1, $menuUser);
+        $this->loginMenu(2, $menuUser);
+
+        // Menu a um grupo.
+        $this->groupMenu(1, $menuPublic);
+        $this->groupMenu(2, $menuAdmin);
 
         // Finaliza a função.
         return $r;
     }
 
     /**
-     * Função que associa login a um grupo.
+     * Função que associa login a um menu.
      *
      * @param int $id
-     * @param int $group
+     * @param int $menu
      * @return bool
      */
-    private function loginInGroup($id, $group)
+    private function loginMenu($id, $menu)
     {
         // Administradores
         parent::insert([
             'idLogin' => $id,
-            'idGroup' => $group,
+            'menu' => $menu,
+        ]);
+
+        return true;
+    }
+
+    /**
+     * Função que associa grupo a um menu.
+     *
+     * @param int $id
+     * @param int $menu
+     * @return bool
+     */
+    private function groupMenu($id, $menu)
+    {
+        // Administradores
+        parent::insert([
+            'idGroup' => $id,
+            'menu' => $menu,
         ]);
 
         return true;

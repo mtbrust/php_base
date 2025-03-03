@@ -39,3 +39,12 @@ Montar página para criar
   permissões
   menus
 Testar logins e permissões.
+
+
+Ajustar menus para icones, links e cores (tipos)
+
+fazer a pasta APP separada. APP vai conter o git da aplicação.
+  Necessário para que a base possa ser usada em vários projetos.
+
+Fazer a pasta template personalizada para o gliente (git do cliente).
+  Assim consigo separar os desenvolvimentos e os acessos.
